@@ -1,4 +1,6 @@
-@import url("photographer.css");
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: "DM Sans", sans-serif;
@@ -31,7 +33,7 @@ h1 {
     margin-top: 100px;
 }
 
-.photographer_section article {
+.section_article {
     justify-self: center;
     display: flex;
     justify-content: center;
@@ -39,12 +41,31 @@ h1 {
     flex-direction: column;
 }
 
-.photographer_section article h2 {
-    color: #D3573C;
-    font-size: 36px;
-}
-
-.photographer_section article img {
+.section_img {
     height: 200px;
     width: 200px;
+}
+
+.section_titre {
+    color: #D3573C;
+    font-size: 36px;
+    margin: 30px 0 10px 0;
+    font-weight: 500;
+}
+
+.section_ville {
+    color: #D3573C;
+    font-size: 14px;
+    margin: 0 0 5px 0;
+}
+
+.section_citation {
+    quotes: none;
+    font-size: 11px;
+}
+
+.section_prix {
+    color: #a1a0a0;
+    margin: 5px 0 0 0;
+    font-size: 11px;
 }
