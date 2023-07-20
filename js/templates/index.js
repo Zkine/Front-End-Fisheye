@@ -6,7 +6,7 @@ class PhotographersTemplate {
   getUserCardDOM() {
     const article = document.createElement("article");
     const link = document.createElement("a");
-    link.setAttribute("href", `./photographer.html`);
+    link.setAttribute("href", `./photographer.html?id=${this._data._id}`);
     link.classList.add("link");
     article.appendChild(link);
     const img = document.createElement("img");
@@ -28,10 +28,10 @@ class PhotographersTemplate {
     pCity.classList.add("section_ville");
     link.insertAdjacentElement("beforeend", pCity);
 
-    const q = document.createElement("q");
-    q.textContent = `${this._data.tagline}`;
-    q.classList.add("section_citation");
-    link.insertAdjacentElement("beforeend", q);
+    const qCitation = document.createElement("q");
+    qCitation.textContent = `${this._data.tagline}`;
+    qCitation.classList.add("section_citation");
+    link.insertAdjacentElement("beforeend", qCitation);
 
     const pPrice = document.createElement("p");
     pPrice.textContent = `${this._data.price}€/jours`;
