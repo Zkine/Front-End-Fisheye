@@ -9,6 +9,11 @@ class PhotographersTemplate {
     link.setAttribute("href", `./photographer.html?id=${this._data._id}`);
     link.classList.add("link");
     article.appendChild(link);
+
+    const div = document.createElement("div");
+    div.classList.add("section_div");
+    link.appendChild(div);
+
     const img = document.createElement("img");
     img.setAttribute(
       "src",
@@ -16,7 +21,7 @@ class PhotographersTemplate {
     );
     img.setAttribute("alt", `Portrait de ${this._data.name}`);
     img.classList.add("section_img");
-    link.insertAdjacentElement("afterbegin", img);
+    div.insertAdjacentElement("afterbegin", img);
 
     const h2 = document.createElement("h2");
     h2.textContent = `${this._data.name}`;
