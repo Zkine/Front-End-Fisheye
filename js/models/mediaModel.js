@@ -1,5 +1,4 @@
-//Mettre le code JavaScript lié à la page photographer.html
-class mediaModel {
+class MediaModel {
   constructor(media) {
     this._id = media.id;
     this._photographerId = media.photographerId;
@@ -28,7 +27,7 @@ class mediaModel {
   }
 
   get image() {
-    return this._image;
+    return `../../assets/images/${this._image}`;
   }
 
   get likes() {

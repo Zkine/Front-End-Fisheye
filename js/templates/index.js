@@ -42,6 +42,7 @@ class PhotographersTemplate {
     pPrice.textContent = `${this._data.price}€/jours`;
     pPrice.classList.add("section_prix");
     link.insertAdjacentElement("beforeend", pPrice);
+
     return article;
   }
 }
