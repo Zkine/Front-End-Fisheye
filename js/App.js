@@ -8,9 +8,9 @@ class App {
     const photographeData = await this.photographeApi.getPhotographe();
 
     photographeData
-      .map((data) => new Photographers(data))
+      .map((data) => new PhotographersModel(data))
       .forEach((data) => {
-        const Template = new PhotographeTemplate(data);
+        const Template = new PhotographersTemplate(data);
         this.photographeSection.appendChild(Template.getUserCardDOM());
       });
   }

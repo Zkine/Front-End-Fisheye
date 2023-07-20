@@ -33,12 +33,13 @@ h1 {
     margin-top: 50px;
 }
 
-.section_article {
+.link {
     justify-self: center;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-decoration: none;
 }
 
 .section_img {
@@ -54,7 +55,7 @@ h1 {
 }
 
 .section_ville {
-    color: #D3573C;
+    color: #901C1C;
     font-size: 14px;
     margin: 0 0 5px 0;
 }
@@ -62,10 +63,11 @@ h1 {
 .section_citation {
     quotes: none;
     font-size: 11px;
+    color: #000000;
 }
 
 .section_prix {
-    color: #a1a0a0;
+    color: #757575;
     margin: 5px 0 0 0;
     font-size: 11px;
 }
