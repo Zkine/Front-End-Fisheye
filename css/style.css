@@ -4,47 +4,43 @@
 
 body {
     font-family: "DM Sans", sans-serif;
-    margin: 0;
 }
 
-
-header {
+.banner {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     height: 90px;
+    padding: 0 100px;
 }
 
-h1 {
-    color: #901C1C;
-    margin-right: 100px;
+.h1-titre {
+    color: #D3573C;
 }
 
 .logo {
     height: 50px;
-    margin-left: 100px;
+    color: #D3573C;
 }
 
 .photographer_section {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 45px;
     margin-top: 50px;
 }
 
 .link {
-    justify-self: center;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
     text-decoration: none;
+    font-size: 11px;
 }
 
 .section_div {
-    height: 200px;
     width: 200px;
+    height: 200px;
 }
 
 .section_img {
@@ -57,8 +53,7 @@ h1 {
 .section_titre {
     color: #D3573C;
     font-size: 36px;
-    margin: 30px 0 10px 0;
-    font-weight: 500;
+    margin: 20px 0 3px 0;
 }
 
 .section_ville {
@@ -69,12 +64,10 @@ h1 {
 
 .section_citation {
     quotes: none;
-    font-size: 11px;
     color: #000000;
 }
 
 .section_prix {
     color: #757575;
     margin: 5px 0 0 0;
-    font-size: 11px;
 }

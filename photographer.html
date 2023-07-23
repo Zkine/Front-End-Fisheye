@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr" dir="ltr">
 
 <head>
-  <link rel="stylesheet" href="css/photographer.css" />
   <meta charset="utf-8">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/normalize.css">
+  <link rel="stylesheet" href="/css/photographer.css" />
   <title>Fisheye - photographe </title>
 </head>
 
@@ -14,16 +15,16 @@
     <img src="assets/images/logo.png" class="logo" />
   </header>
   <main id="main">
-    <div class="photograph-header">
+    <article class="photograph-banner">
       <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
-    </div>
+    </article>
   </main>
-  <div id="contact_modal">
+  <aside id="contact_modal">
     <div class="modal">
-      <header>
-        <h2>Contactez-moi</h2>
+      <article>
+        <h1>Contactez-moi</h1>
         <img src="assets/icons/close.svg" onclick="closeModal()" />
-      </header>
+      </article>
       <form>
         <div>
           <label>Prénom</label>
@@ -32,7 +33,8 @@
         <button class="contact_button">Envoyer</button>
       </form>
     </div>
-  </div>
+  </aside>
+  <script src="js/factories/DataFactorie"></script>
   <script src="js/templates/photographer.js"></script>
   <script src="js/models/MediaModel.js"></script>
   <script src="js/models/PhotographersModel.js"></script>

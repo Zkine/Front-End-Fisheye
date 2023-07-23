@@ -4,7 +4,6 @@
 
 body {
     font-family: "DM Sans", sans-serif;
-    margin: 0;
 }
 
 header {
@@ -22,7 +21,7 @@ header {
     display: none;
 }
 
-.photograph-header {
+.photograph-banner {
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;

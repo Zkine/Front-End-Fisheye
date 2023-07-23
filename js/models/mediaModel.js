@@ -1,29 +1,33 @@
-class MediaModel {
-  constructor(media) {
-    this._id = media.id;
-    this._photographerId = media.photographerId;
-    this._city = media.city;
-    this._title = media.title;
-    this._image = media.image;
-    this._likes = media.likes;
-    this._date = media.date;
-    this._price = media.price;
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  get photographerId() {
-    return this._photographerId;
+class PhotographersMedia {
+  constructor(photographersMedia) {
+    this._city = photographersMedia.city;
+    this._country = photographersMedia.country;
+    this._date = photographersMedia.date;
+    this._id = photographersMedia.id;
+    this._image = photographersMedia.image;
+    this._likes = photographersMedia.likes;
+    this._name = photographersMedia.name;
+    this._photographerId = photographersMedia.photographerId;
+    this._portrait = photographersMedia.portrait;
+    this._price = photographersMedia.price;
+    this._tagline = photographersMedia.tagline;
+    this._title = photographersMedia.title;
   }
 
   get city() {
     return this._city;
   }
 
-  get title() {
-    return this._title;
+  get country() {
+    return this._country;
+  }
+
+  get date() {
+    return this._date;
+  }
+
+  get id() {
+    return this._id;
   }
 
   get image() {
@@ -34,11 +38,27 @@ class MediaModel {
     return this._likes;
   }
 
-  get date() {
-    return this._date;
+  get name() {
+    return this._name;
+  }
+
+  get photographerId() {
+    return this._photographerId;
+  }
+
+  get portrait() {
+    return `../../assets/photographers/${this._portrait}`;
   }
 
   get price() {
     return this._price;
+  }
+
+  get tagline() {
+    return this._tagline;
+  }
+
+  get title() {
+    return this._title;
   }
 }
