@@ -1,19 +1,35 @@
 class App {
   constructor() {
     this.photographeSection = document.querySelector(".photographer_section");
-    this.photographBanner = document.querySelector(".photograph-banner");
+    this.photographBanner = document.querySelector("#main");
     this.photographeApi = new PhotographeApi("/data/photographers.json");
     this.url = new URL(window.location.href);
   }
 
   async main() {
-    const photographeData = await this.photographeApi.getPhotographe();
-    const FullData = photographeData.map((data) =>
+    console.log(this.photographeApi);
+    const reponse = await fetch(this.photographeApi._urlData);
+    const pieces = await reponse.json();
+    console.log(pieces);
+    const photographeData = await pieces.media.getPhotographe();
+    // const mediaData = await this.mediaApi.getPhotographe();
+
+    const photographe = photographeData.map((data) =>
       this.url.pathname === "/index.html"
         ? new DataFactorie(data, "photographers")
-        : new DataFactorie(data, "photographersMedia")
+        : this.url.pathname === "/photographer.html" &&
+          new DataFactorie(data, "photographers")
     );
-    FullData.forEach((data) => {
+
+    // const media = mediaData.map(
+    //   (data) =>
+    //     this.url.pathname === "/photographer.html" &&
+    //     new DataFactorie(data, "media")
+    // );
+
+    // const FullData = photographe.concat(media);
+    // console.log("FullData", FullData);
+    photographe.forEach((data) => {
       const Template =
         this.url.pathname === "/index.html"
           ? new AccueilTemplate(data)

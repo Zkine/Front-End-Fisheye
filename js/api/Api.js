@@ -12,27 +12,39 @@ class Api {
           case "/index.html":
             return res.photographers;
           case "/photographer.html":
-            const PhotographersData = res.photographers.find(
+            const Photographers = res.photographers.find(
               (element) => element.id === Number(this.id)
             );
+            // console.log("PhotographersData", PhotographersData);
+            // const MediaFilter = res.media.filter(
+            //   (element) => element.photographerId === Number(this.id)
+            // );
 
-            let MediaData = res.media.find(
-              (element) => element.photographerId === Number(this.id)
-            );
-
-            const MediaFilter = res.media.filter(
+            // console.log("MediaFilter", MediaFilter);
+            const MediaVideo = res.media.filter(
               (element) =>
-                element.photographerId === Number(this.id) &&
-                element.image !== undefined
+                element.photographerId === Number(this.id) && element.video
             );
 
-            const MediaMap = MediaFilter.map((element) => element.image);
+            const Media = res.media.filter(
+              (element) =>
+                element.photographerId === Number(this.id) && element.image
+            );
 
-            MediaData.image = MediaMap;
-
-            const PhotographersMedia = [{ ...PhotographersData, ...MediaData }];
-            console.log(PhotographersMedia);
-            return PhotographersMedia;
+            // const PhotographersObjet = {
+            //   PhotographersData: PhotographersData,
+            //   MediaVideo: MediaVideo,
+            //   MediaImg: MediaImg,
+            // };
+            // console.log(MediaVideo);
+            // PhotographersData.video = MediaVideo;
+            // PhotographersData.image = MediaImg;
+            if (Photographers) {
+              return [Photographers];
+            } else if (Media) {
+              return [Media];
+            }
+          // return [Photographers, Media];
           default:
             throw "Unknown type format";
         }

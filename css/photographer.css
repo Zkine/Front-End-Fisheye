@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "DM Sans";
+    src: url("../font/DM_Sans/DMSans-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: optional;
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -22,23 +31,124 @@ header {
 }
 
 .photograph-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: #FAFAFA;
     height: 300px;
     margin: 0 100px;
+    border-radius: 5px;
+    padding: 0 50px 0 50px;
+}
+
+.photographer-h1 {
+    color: #D3573C;
+    font-size: 64px;
+    font-weight: 400;
+    margin: -50px 0 5px 0;
+}
+
+.photographer-city {
+    color: #901C1C;
+    font-size: 24px;
+    margin: 18px 0 18px 0;
+}
+
+.photographer-citation {
+    quotes: none;
+    color: #525252;
+    font-size: 18px;
 }
 
 .contact_button {
     font-size: 20px;
-    font-weight: bold;
+    font-weight: 700;
     color: white;
-    padding: 11px;
     width: 170px;
-    height: 70px;
+    height: 69px;
     border: none;
     background-color: #901C1C;
     border-radius: 5px;
     cursor: pointer;
 }
+
+.conteneur-img {
+    width: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+
+.portait-img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.photographer-section {
+    position: relative;
+    padding: 0 100px 0 100px;
+}
+
+
+.conteneur-like {
+    background-color: #DB8876;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 376px;
+    height: 89px;
+    border-radius: 5px;
+    font-size: 24px;
+    font-weight: 500;
+    position: absolute;
+    bottom: 0;
+    right: 50px;
+}
+
+.photographer-like {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 170px;
+    height: 102px;
+}
+
+.photographer-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 170px;
+    height: 102px;
+}
+
+.divTri {
+    display: flex;
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 5px;
+}
+
+.buttonTri {
+    width: 170px;
+    background-color: #901C1C;
+    border: none;
+    border-radius: 5px;
+}
+
+.figurePhoto {
+    width: 350px;
+    height: 351px;
+}
+
+.articleimg {
+    width: 350px;
+    height: 351px;
+}
+
+
+
+
+
 
 .modal {
     border-radius: 5px;

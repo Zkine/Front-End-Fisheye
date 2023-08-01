@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "DM Sans";
+    src: url("../font/DM_Sans/DMSans-Medium.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: optional;
+    font-display: swap;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -64,7 +73,7 @@ body {
 
 .section_citation {
     quotes: none;
-    color: #000000;
+    color: #525252;
 }
 
 .section_prix {
