@@ -1,98 +1,129 @@
-class MediaModel {
-  constructor(Media) {
-    console.log("Media", Media);
-    this._date = Media.image;
-    this._id = Media.id;
-    // this.media_id = Media.media;
-    this._image = Media.image;
-    // this._video = Media.image;
-    this._likes = Media.image;
-    this._photographerId = Media.image;
-    this._price = Media.image;
-    this._title = Media.image;
+// initialisation des deux constanes permettant le calcule des likes et prix
+const arrayLikes = [];
+const arrayPrice = [];
+
+class MelidaFullLikesPrice {
+  constructor(data) {
+    this._MediaLikes = data.likes;
+    this._MediaPrice = data.price;
+
+    arrayLikes.push(this._MediaLikes);
+
+    arrayPrice.push(this._MediaPrice);
   }
 
-  get date() {
+  MediaFullLickes() {
+    const initialValue = 0;
+    const somme = arrayLikes.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return somme;
+  }
+
+  MediaFullprice() {
+    const initialValue = 0;
+    const somme = arrayPrice.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return somme;
+  }
+}
+
+class MediaModel extends MelidaFullLikesPrice {
+  constructor(data) {
+    super(data);
+    this._MediaId = data.id;
+    this._MediaDate = data.date;
+    if (data.image) {
+      this._MediaImage = data.image;
+    } else if (data.video && !data.image) {
+      this._Mediavideo = data.video;
+    }
+    this._MediaLikes = data.likes;
+    this._MediaPhotographerId = data.photographerId;
+    this._MediaPrice = data.price;
+    this._MediaTitle = data.title;
+  }
+
+  get MediaDate() {
     return this._date;
   }
 
-  get id() {
+  get Mediaid() {
     return this._id;
   }
 
-  // async getVideoDOM() {
-  //   const articleVideo = document.createElement("video");
-  //   articleVideo.classList.add("articleimg");
-  //   articleVideo.setAttribute(
-  //     "src",
-  //     `../../assets/images/Mimi/${this._video.forEach((e) => {
-  //       e.video;
-  //     })}`
-  //   );
-  //   this.photographeSection.appendChild(articleVideo);
-  // }
-
-  get image() {
-    // const ImageFilter = this._image.filter((i) => i.image);
-    // console.log("ImageFilter", ImageFilter);
-    // const ImageMap = ImageFilter.map((e) => e.image);
-    // console.log("ImageMap", ImageMap);
-    for (let i in this._image) {
-      console.log(this._image[i]);
-      switch (this._id) {
-        case 243:
-          return `../../assets/images/Mimi/${this._image[i].image}`;
-
-        case 930:
-          return `../../assets/images/Ellie Rose/${this._image[i].image}`;
-        case 82:
-          return `../../assets/images/Tracy/${this._image.image}`;
-        case 527:
-          return `../../assets/images/Nabeel/${this._image.image}`;
-        case 925:
-          return `../../assets/images/Rhode/${this._image.image}`;
-        case 195:
-          return `../../assets/images/Marcel/${this._image.image}`;
-        default:
-          throw "Vérifier le chemin des images avec l'id de l'utilisateur";
-      }
-    }
-  }
-
-  get video() {
-    switch (this._id) {
+  get Mediaimage() {
+    switch (this._MediaPhotographerId) {
       case 243:
-        return `../../assets/images/Mimi/${this._video.forEach((e) => {
-          return e.video;
-        })}`;
+        return `../../assets/images/Mimi/${this._MediaImage}`;
       case 930:
-        return `../../assets/images/Ellie Rose/${this._video[i].video}`;
+        return `../../assets/images/Ellie Rose/${this._MediaImage}`;
       case 82:
-        return `../../assets/images/Tracy/${this._video[i].video}`;
+        return `../../assets/images/Tracy/${this._MediaImage}`;
       case 527:
-        return `../../assets/images/Nabeel/${this._video[i].video}`;
+        return `../../assets/images/Nabeel/${this._MediaImage}`;
       case 925:
-        return `../../assets/images/Rhode/${this._video[i].video}`;
+        return `../../assets/images/Rhode/${this._MediaImage}`;
       case 195:
-        return `../../assets/images/Marcel/${this._video[i].video}`;
+        return `../../assets/images/Marcel/${this._MediaImage}`;
       default:
         throw "Vérifier le chemin des images avec l'id de l'utilisateur";
     }
   }
 
-  get likes() {
-    return this._likes;
+  get Mediavideo() {
+    switch (this._MediaPhotographerId) {
+      case 243:
+        return `../../assets/images/Mimi/${this._Mediavideo}`;
+      case 930:
+        return `../../assets/images/Ellie Rose/${this._Mediavideo}`;
+      case 82:
+        return `../../assets/images/Tracy/${this._Mediavideo}`;
+      case 527:
+        return `../../assets/images/Nabeel/${this._Mediavideo}`;
+      case 925:
+        return `../../assets/images/Rhode/${this._Mediavideo}`;
+      case 195:
+        return `../../assets/images/Marcel/${this._Mediavideo}`;
+      default:
+        throw "Vérifier le chemin des images avec l'id de l'utilisateur";
+    }
   }
 
-  get photographerId() {
-    return this._photographerId;
+  get Medialikes() {
+    return this._MediaLikes;
   }
 
-  get price() {
-    return this._price;
+  // MediaFullLickes() {
+  //   const initialValue = 0;
+  //   const somme = arrayLikes.reduce(
+  //     (accumulator, currentValue) => accumulator + currentValue,
+  //     initialValue
+  //   );
+  //   return somme;
+  // }
+
+  get MediaphotographerId() {
+    return this._MediaPhotographerId;
   }
 
-  get title() {
-    return this._title;
+  // MediaFullprice() {
+  //   const initialValue = 0;
+  //   const somme = arrayPrice.reduce(
+  //     (accumulator, currentValue) => accumulator + currentValue,
+  //     initialValue
+  //   );
+  //   return somme;
+  // }
+
+  get Mediaprice() {
+    return this._Mediaprice;
+  }
+
+  get MediaTitle() {
+    return this._MediaTitle;
   }
 }

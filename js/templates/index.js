@@ -1,9 +1,11 @@
 class AccueilTemplate {
   constructor(data) {
+    // initialisation des données pour la page
     this._data = data;
   }
 
-  getUserCardDOM() {
+  render() {
+    // création des articles contenant les images portrait de la page
     const article = document.createElement("article");
 
     const link = document.createElement("a");

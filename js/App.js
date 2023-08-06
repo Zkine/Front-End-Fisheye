@@ -7,37 +7,30 @@ class App {
   }
 
   async main() {
-    console.log(this.photographeApi);
-    const reponse = await fetch(this.photographeApi._urlData);
-    const pieces = await reponse.json();
-    console.log(pieces);
-    const photographeData = await pieces.media.getPhotographe();
-    // const mediaData = await this.mediaApi.getPhotographe();
-
-    const photographe = photographeData.map((data) =>
-      this.url.pathname === "/index.html"
-        ? new DataFactorie(data, "photographers")
-        : this.url.pathname === "/photographer.html" &&
-          new DataFactorie(data, "photographers")
+    // création de deux constantes qui fait appel à l'api.js pour récupérer les données du dossier data - photographers.json
+    const photographeData = await this.photographeApi.getPhotographe();
+    const mediaData = await this.photographeApi.getMedia();
+    // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et crée le ou les objets pour construire les pages index.html et photographer.html
+    const photographe = photographeData.map(
+      (data) => new DataFactorie(data, "photographers")
     );
-
-    // const media = mediaData.map(
-    //   (data) =>
-    //     this.url.pathname === "/photographer.html" &&
-    //     new DataFactorie(data, "media")
-    // );
-
-    // const FullData = photographe.concat(media);
-    // console.log("FullData", FullData);
-    photographe.forEach((data) => {
-      const Template =
-        this.url.pathname === "/index.html"
-          ? new AccueilTemplate(data)
-          : new PhotographerTemplate(data);
-      this.url.pathname === "/index.html"
-        ? this.photographeSection.appendChild(Template.getUserCardDOM())
-        : this.photographBanner.appendChild(Template.getUserCardDOM());
-    });
+    if (this.url.pathname === "/index.html") {
+      photographe.forEach((data) => {
+        // initialisation des données data exploitable dans la class AccueilTemplate
+        const Template = new AccueilTemplate(data);
+        this.photographeSection.appendChild(Template.render());
+      });
+    } else if (this.url.pathname === "/photographer.html") {
+      // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et crée les objets MédiaModel pour construire la photographer.html
+      const media = mediaData.map((data) => new DataFactorie(data, "media"));
+      const FullData = photographe.concat(media);
+      console.log("FullData", FullData);
+      FullData.forEach((data) => {
+        // initialisation des données data exploitable dans la class PhotographerTemplate
+        const Template = new PhotographerTemplate(data);
+        this.photographBanner.appendChild(Template.render());
+      });
+    }
   }
 }
 

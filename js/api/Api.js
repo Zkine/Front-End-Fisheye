@@ -4,7 +4,7 @@ class Api {
     this.url = new URL(window.location.href);
     this.id = this.url.searchParams.get("id");
   }
-  async get() {
+  async getportait() {
     return fetch(this._urlData)
       .then((res) => res.json())
       .then((res) => {
@@ -15,38 +15,25 @@ class Api {
             const Photographers = res.photographers.find(
               (element) => element.id === Number(this.id)
             );
-            // console.log("PhotographersData", PhotographersData);
-            // const MediaFilter = res.media.filter(
-            //   (element) => element.photographerId === Number(this.id)
-            // );
-
-            // console.log("MediaFilter", MediaFilter);
-            const MediaVideo = res.media.filter(
-              (element) =>
-                element.photographerId === Number(this.id) && element.video
-            );
-
-            const Media = res.media.filter(
-              (element) =>
-                element.photographerId === Number(this.id) && element.image
-            );
-
-            // const PhotographersObjet = {
-            //   PhotographersData: PhotographersData,
-            //   MediaVideo: MediaVideo,
-            //   MediaImg: MediaImg,
-            // };
-            // console.log(MediaVideo);
-            // PhotographersData.video = MediaVideo;
-            // PhotographersData.image = MediaImg;
-            if (Photographers) {
-              return [Photographers];
-            } else if (Media) {
-              return [Media];
-            }
-          // return [Photographers, Media];
+            return [Photographers];
           default:
             throw "Unknown type format";
+        }
+      })
+      .catch((err) => console.log("an error occurs", err));
+  }
+
+  async getmedia() {
+    return fetch(this._urlData)
+      .then((res) => res.json())
+      .then((res) => {
+        if (this.url.pathname === "/photographer.html") {
+          const Media = res.media.filter(
+            (element) => element.photographerId === Number(this.id)
+          );
+          return Media;
+        } else {
+          throw "Unknown type format";
         }
       })
       .catch((err) => console.log("an error occurs", err));
@@ -54,15 +41,16 @@ class Api {
 }
 
 class PhotographeApi extends Api {
-  /**
-   *
-   * @param {string} url
-   */
+  // (url) récupèration du chemin du dossier data - photographers.json
   constructor(url) {
     super(url);
   }
-
+  // appel de la function ci-dessous pour construire l'objet -PhotographersModel
   async getPhotographe() {
-    return await this.get();
+    return await this.getportait();
+  }
+  // appel de la function ci-dessous pour construire l'objet -MediaModel
+  async getMedia() {
+    return await this.getmedia();
   }
 }
