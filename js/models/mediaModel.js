@@ -1,39 +1,39 @@
-// initialisation des deux constanes permettant le calcule des likes et prix
+// initialisation des deux constanes permettant le calcule des likes et du prix global du photographe
 const arrayLikes = [];
 const arrayPrice = [];
 
-class MelidaFullLikesPrice {
+// class MelidaFullLikesPrice {
+//   constructor(data) {
+//     this._MediaLikes = data.likes;
+//     this._MediaPrice = data.price;
+
+//     arrayLikes.push(this._MediaLikes);
+
+//     arrayPrice.push(this._MediaPrice);
+//   }
+
+//   MediaFullLickes() {
+//     const initialValue = 0;
+//     const somme = arrayLikes.reduce(
+//       (accumulator, currentValue) => accumulator + currentValue,
+//       initialValue
+//     );
+//     return somme;
+//   }
+
+//   MediaFullprice() {
+//     const initialValue = 0;
+//     const somme = arrayPrice.reduce(
+//       (accumulator, currentValue) => accumulator + currentValue,
+//       initialValue
+//     );
+//     return somme;
+//   }
+// }
+
+class MediaModel {
   constructor(data) {
-    this._MediaLikes = data.likes;
-    this._MediaPrice = data.price;
-
-    arrayLikes.push(this._MediaLikes);
-
-    arrayPrice.push(this._MediaPrice);
-  }
-
-  MediaFullLickes() {
-    const initialValue = 0;
-    const somme = arrayLikes.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      initialValue
-    );
-    return somme;
-  }
-
-  MediaFullprice() {
-    const initialValue = 0;
-    const somme = arrayPrice.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      initialValue
-    );
-    return somme;
-  }
-}
-
-class MediaModel extends MelidaFullLikesPrice {
-  constructor(data) {
-    super(data);
+    // super(data);
     this._MediaId = data.id;
     this._MediaDate = data.date;
     if (data.image) {
@@ -45,14 +45,17 @@ class MediaModel extends MelidaFullLikesPrice {
     this._MediaPhotographerId = data.photographerId;
     this._MediaPrice = data.price;
     this._MediaTitle = data.title;
+
+    arrayLikes.push(this._MediaLikes);
+    arrayPrice.push(this._MediaPrice);
   }
 
   get MediaDate() {
-    return this._date;
+    return this._MediaDate;
   }
 
-  get Mediaid() {
-    return this._id;
+  get MediaId() {
+    return this._MediaId;
   }
 
   get Mediaimage() {
@@ -97,27 +100,27 @@ class MediaModel extends MelidaFullLikesPrice {
     return this._MediaLikes;
   }
 
-  // MediaFullLickes() {
-  //   const initialValue = 0;
-  //   const somme = arrayLikes.reduce(
-  //     (accumulator, currentValue) => accumulator + currentValue,
-  //     initialValue
-  //   );
-  //   return somme;
-  // }
+  MediaFullLickes() {
+    const initialValue = 0;
+    const somme = arrayLikes.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return somme;
+  }
 
   get MediaphotographerId() {
     return this._MediaPhotographerId;
   }
 
-  // MediaFullprice() {
-  //   const initialValue = 0;
-  //   const somme = arrayPrice.reduce(
-  //     (accumulator, currentValue) => accumulator + currentValue,
-  //     initialValue
-  //   );
-  //   return somme;
-  // }
+  MediaFullprice() {
+    const initialValue = 0;
+    const somme = arrayPrice.reduce(
+      (accumulator, currentValue) => accumulator + currentValue,
+      initialValue
+    );
+    return somme;
+  }
 
   get Mediaprice() {
     return this._Mediaprice;

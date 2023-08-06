@@ -4,4 +4,4 @@
 
 Rien à installer ici.
 
-Depuis votre éditeur de code - lancer le live server depuis la page index.html
+Depuis votre éditeur de code - lancer le "live server" depuis la page index.html

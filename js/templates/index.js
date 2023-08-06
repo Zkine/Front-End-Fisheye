@@ -5,7 +5,7 @@ class AccueilTemplate {
   }
 
   render() {
-    // création des articles contenant les images portrait de la page
+    // création des articles contenant les images du portrait des photographes
     const article = document.createElement("article");
 
     const link = document.createElement("a");
