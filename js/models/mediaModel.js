@@ -96,11 +96,7 @@ class MediaModel {
     }
   }
 
-  get Medialikes() {
-    return this._MediaLikes;
-  }
-
-  MediaFullLickes() {
+  static MediaFullLickes() {
     const initialValue = 0;
     const somme = arrayLikes.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
@@ -109,17 +105,21 @@ class MediaModel {
     return somme;
   }
 
-  get MediaphotographerId() {
-    return this._MediaPhotographerId;
-  }
-
-  MediaFullprice() {
+  static MediaFullprice() {
     const initialValue = 0;
     const somme = arrayPrice.reduce(
       (accumulator, currentValue) => accumulator + currentValue,
       initialValue
     );
     return somme;
+  }
+
+  get Medialikes() {
+    return this._MediaLikes;
+  }
+
+  get MediaphotographerId() {
+    return this._MediaPhotographerId;
   }
 
   get Mediaprice() {

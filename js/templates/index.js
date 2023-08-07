@@ -1,6 +1,6 @@
 class AccueilTemplate {
   constructor(data) {
-    // initialisation des données pour la page
+    // renvoi les données data pour la création du DOM - index.html
     this._data = data;
   }
 

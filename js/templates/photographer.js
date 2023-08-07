@@ -3,28 +3,15 @@ const id = url.searchParams.get("id");
 
 class PhotographerTemplate {
   constructor(data) {
-    // initialisation des données la page
+    // renvoi les données data pour la création du DOM - photographer.html
     this._data = data;
-    console.log(data.lenght);
   }
 
-  // VideoDOM() {
-  //   this.innerHTML = `<video class ="articleimg" src = ../../assets/images/Mimi/${this._Mediavideo} ></video>`;
-  //   // const articleVideo = document.createElement("video");
-  //   // articleVideo.classList.add("articleimg");
-  //   // articleVideo.setAttribute(
-  //   //   "src",
-  //   //   `../../assets/images/Mimi/${this._MediaImage}`
-  //   // );
-  //   // articlePhoto.photographeSection.appendChild(articleVideo);
-  // }
-
   render() {
+    const article = document.createElement("article");
+    article.classList.add("photograph-banner");
     // création du banner de la page
     if (this._data.name) {
-      const article = document.createElement("article");
-      article.classList.add("photograph-banner");
-
       const divBanner = document.createElement("div");
       article.insertAdjacentElement("afterbegin", divBanner);
 
@@ -61,50 +48,65 @@ class PhotographerTemplate {
       portrait.setAttribute("alt", `Portrait d'${this._data.name}`);
       portrait.classList.add("portait-img");
       divImg.insertAdjacentElement("afterbegin", portrait);
-      return article;
-    }
-    if (this._data.MediaFullprice) {
-      // création de la section contenant l'addition des prix des photos ainsi que les lickes
-      const section = document.createElement("section");
-      section.classList.add("photographer-section");
-      const divLike = document.createElement("div");
-      divLike.classList.add("conteneur-like");
-      section.insertAdjacentElement("afterbegin", divLike);
-      const spanLike = document.createElement("span");
-      spanLike.classList.add("photographer-like");
-      divLike.insertAdjacentElement("afterbegin", spanLike);
-      const pLike = document.createElement("p");
-      pLike.classList.add("calcul-like");
-      pLike.textContent = `${this._data.MediaFullLickes()}`;
-      spanLike.insertAdjacentElement("afterbegin", pLike);
-      const spanheart = document.createElement("img");
-      spanheart.setAttribute("src", "../../assets/icons/heart.svg");
-      spanheart.setAttribute("alt", "icon like");
-      spanheart.classList.add("icon-heart");
-      spanLike.insertAdjacentElement("beforeend", spanheart);
-      const spanPrice = document.createElement("span");
-      spanPrice.classList.add("photographer-price");
-      divLike.insertAdjacentElement("beforeend", spanPrice);
-      const pPrice = document.createElement("p");
-      pPrice.classList.add("calcul-price");
-      pPrice.textContent = `${this._data.MediaFullprice()}€ / jour`;
-      spanPrice.insertAdjacentElement("afterbegin", pPrice);
-      const divTri = document.createElement("div");
-      divTri.classList.add("divTri");
-      section.insertAdjacentElement("beforeend", divTri);
-      const pTri = document.createElement("p");
-      pTri.textContent = "Trier par";
-      divTri.insertAdjacentElement("afterbegin", pTri);
-      const buttonTri = document.createElement("button");
-      buttonTri.classList.add("buttonTri");
-      buttonTri.textContent = "Populaire";
-      divTri.insertAdjacentElement("beforeend", buttonTri);
 
-      return section;
-    } else if (this._data.Mediaimage) {
+      // const dinMain = document.createElement("div");
+      // article.insertAdjacentElement("afterend", dinMain);
+
+      // création de la section contenant l'addition des prix des photos ainsi que les lickes
+      if (MediaModel.MediaFullLickes()) {
+        const section = document.createElement("section");
+        section.classList.add("photographer-section");
+        article.insertAdjacentElement("afterend", section);
+
+        const divLike = document.createElement("div");
+        divLike.classList.add("conteneur-like");
+        section.insertAdjacentElement("afterbegin", divLike);
+
+        const spanLike = document.createElement("span");
+        spanLike.classList.add("photographer-like");
+        divLike.insertAdjacentElement("afterbegin", spanLike);
+
+        const pLike = document.createElement("p");
+        pLike.classList.add("calcul-like");
+        pLike.textContent = `${MediaModel.MediaFullLickes()}`;
+        spanLike.insertAdjacentElement("afterbegin", pLike);
+
+        const spanheart = document.createElement("img");
+        spanheart.setAttribute("src", "../../assets/icons/heart.svg");
+        spanheart.setAttribute("alt", "icon like");
+        spanheart.classList.add("icon-heart");
+        spanLike.insertAdjacentElement("beforeend", spanheart);
+
+        const spanPrice = document.createElement("span");
+        spanPrice.classList.add("photographer-price");
+        divLike.insertAdjacentElement("beforeend", spanPrice);
+
+        const pPrice = document.createElement("p");
+        pPrice.classList.add("calcul-price");
+        pPrice.textContent = `${MediaModel.MediaFullprice()}€ / jour`;
+        spanPrice.insertAdjacentElement("afterbegin", pPrice);
+
+        const divTri = document.createElement("div");
+        divTri.classList.add("divTri");
+        section.insertAdjacentElement("beforeend", divTri);
+
+        const pTri = document.createElement("p");
+        pTri.textContent = "Trier par";
+        divTri.insertAdjacentElement("afterbegin", pTri);
+
+        const buttonTri = document.createElement("button");
+        buttonTri.classList.add("buttonTri");
+        buttonTri.textContent = "Populaire";
+        divTri.insertAdjacentElement("beforeend", buttonTri);
+
+        return article;
+      }
+    }
+    if (this._data.Mediaimage) {
       // création de la section contenant les médias du photographe
       const sectionImg = document.createElement("section");
       sectionImg.classList.add("img-section");
+      article.insertAdjacentElement("beforeend", sectionImg);
       if (this._data.Mediaimage && this._data.Mediaimage.includes("jpg")) {
         const articlePhoto = document.createElement("article");
         articlePhoto.classList.add("articlePhoto");
@@ -120,10 +122,10 @@ class PhotographerTemplate {
         articleImg.setAttribute("alt", `${this._data.MediaTitle}`);
         figurePhoto.insertAdjacentElement("afterbegin", articleImg);
 
-        const figcaptionPhoto = document.createElement("figcaption");
-        figcaptionPhoto.classList.add("figcaptionPhoto");
-        figcaptionPhoto.textContent = `${this._data.MediaTitle}`;
-        figurePhoto.insertAdjacentElement("beforeend", figcaptionPhoto);
+        const figcaptionImg = document.createElement("figcaption");
+        figcaptionImg.classList.add("figcaptionPhoto");
+        figcaptionImg.textContent = `${this._data.MediaTitle}`;
+        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
 
         const pPhoto = document.createElement("p");
         pPhoto.classList.add("spanPhoto");
@@ -131,10 +133,14 @@ class PhotographerTemplate {
         figurePhoto.insertAdjacentElement("beforeend", pPhoto);
         return articlePhoto;
       } else if (this._data.Mediavideo) {
-        const articleVideo = document.createElement("video");
-        articleVideo.classList.add("articleimg");
-        articleVideo.setAttribute("src", `${this._data.Mediavideo}`);
-        sectionImg.insertAdjacentElement("beforeend", articleVideo);
+        const articleVideo = document.createElement("article");
+        articleVideo.classList.add("articlePhoto");
+        article.insertAdjacentElement("beforeend", articleVideo);
+
+        const video = document.createElement("video");
+        video.classList.add("articleimg");
+        video.setAttribute("src", `${this._data.Mediavideo}`);
+        articleVideo.insertAdjacentElement("beforeend", video);
         return articleVideo;
       } else {
         return sectionImg;
