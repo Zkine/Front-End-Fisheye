@@ -1,7 +1,8 @@
 class App {
   constructor() {
     this.photographeSection = document.querySelector(".photographer_section");
-    this.photographBanner = document.querySelector("#main");
+    this.$bannerPhotograph = document.getElementById("photograph-banner");
+    this.$imgSection = document.getElementById("img-section");
     this.photographeApi = new PhotographeApi("/data/photographers.json");
     this.url = new URL(window.location.href);
   }
@@ -27,7 +28,10 @@ class App {
       FullData.forEach((data) => {
         // initialisation des données data exploitables dans la class PhotographerTemplate
         const Template = new PhotographerTemplate(data);
-        this.photographBanner.appendChild(Template.render());
+        data.name
+          ? this.$bannerPhotograph.appendChild(Template.renderBanner())
+          : data.Mediaimage &&
+            this.$imgSection.appendChild(Template.renderMedia());
       });
     }
   }

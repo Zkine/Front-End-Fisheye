@@ -111,7 +111,7 @@ class MediaModel {
       (accumulator, currentValue) => accumulator + currentValue,
       initialValue
     );
-    return somme;
+    return `${somme}€ / jour`;
   }
 
   get Medialikes() {

@@ -5,146 +5,129 @@ class PhotographerTemplate {
   constructor(data) {
     // renvoi les données data pour la création du DOM - photographer.html
     this._data = data;
+    this.$imgSection = document.getElementById("img-section");
+    // affichage des likes
+    this.$claculLikes = document.getElementById("calcul-like");
+    this.$claculLikes.textContent = MediaModel.MediaFullLickes();
+    // affichage du prix
+    this.$claculPrice = document.getElementById("calcul-price");
+    this.$claculPrice.textContent = MediaModel.MediaFullprice();
   }
 
-  render() {
-    const article = document.createElement("article");
-    article.classList.add("photograph-banner");
-    // création du banner de la page
-    if (this._data.name) {
-      const divBanner = document.createElement("div");
-      article.insertAdjacentElement("afterbegin", divBanner);
+  renderBanner() {
+    // création du banner de la page photographer.html
+    const divBanner = document.createElement("div");
+    divBanner.classList.add("photograph-banner");
 
-      const h1 = document.createElement("h1");
-      h1.classList.add("photographer-h1");
-      h1.textContent = `${this._data.name}`;
-      divBanner.insertAdjacentElement("afterbegin", h1);
+    const divh1 = document.createElement("div");
+    divBanner.insertAdjacentElement("afterbegin", divh1);
 
-      const city = document.createElement("p");
-      city.classList.add("photographer-city");
-      city.textContent = `${this._data.city}, ${this._data.country}`;
-      divBanner.insertAdjacentElement("beforeend", city);
+    const h1 = document.createElement("h1");
+    h1.classList.add("photographer-h1");
+    h1.textContent = `${this._data.name}`;
+    divh1.insertAdjacentElement("afterbegin", h1);
 
-      const citation = document.createElement("q");
-      citation.classList.add("photographer-citation");
-      citation.textContent = `${this._data.tagline}`;
-      divBanner.insertAdjacentElement("beforeend", citation);
+    const city = document.createElement("p");
+    city.classList.add("photographer-city");
+    city.textContent = `${this._data.city}, ${this._data.country}`;
+    divh1.insertAdjacentElement("beforeend", city);
 
-      const button = document.createElement("button");
-      button.classList.add("contact_button");
-      button.id = "displayModal";
-      button.textContent = "Contactez-moi";
-      article.insertAdjacentElement("beforeend", button);
+    const citation = document.createElement("q");
+    citation.classList.add("photographer-citation");
+    citation.textContent = `${this._data.tagline}`;
+    divh1.insertAdjacentElement("beforeend", citation);
 
-      const divImg = document.createElement("div");
-      divImg.classList.add("conteneur-img");
-      article.insertAdjacentElement("beforeend", divImg);
+    const button = document.createElement("button");
+    button.classList.add("contact_button");
+    button.id = "displayModal";
+    button.textContent = "Contactez-moi";
+    divBanner.insertAdjacentElement("beforeend", button);
 
-      const portrait = document.createElement("img");
-      portrait.setAttribute(
-        "src",
-        `../../assets/photographers/${this._data.portrait}`
-      );
-      portrait.setAttribute("alt", `Portrait d'${this._data.name}`);
-      portrait.classList.add("portait-img");
-      divImg.insertAdjacentElement("afterbegin", portrait);
+    const divImg = document.createElement("div");
+    divImg.classList.add("conteneur-img");
+    divBanner.insertAdjacentElement("beforeend", divImg);
 
-      // const dinMain = document.createElement("div");
-      // article.insertAdjacentElement("afterend", dinMain);
+    const portrait = document.createElement("img");
+    portrait.setAttribute(
+      "src",
+      `../../assets/photographers/${this._data.portrait}`
+    );
+    portrait.setAttribute("alt", `Portrait d'${this._data.name}`);
+    portrait.classList.add("portait-img");
+    divImg.insertAdjacentElement("afterbegin", portrait);
+    return divBanner;
+  }
 
-      // création de la section contenant l'addition des prix des photos ainsi que les lickes
-      if (MediaModel.MediaFullLickes()) {
-        const section = document.createElement("section");
-        section.classList.add("photographer-section");
-        article.insertAdjacentElement("afterend", section);
+  renderMedia() {
+    // /création des médias de la page photographer.html
+    if (this._data.Mediaimage && this._data.Mediaimage.includes("jpg")) {
+      const articlePhoto = document.createElement("article");
+      articlePhoto.classList.add("article-media");
+      this.$imgSection.insertAdjacentElement("afterbegin", articlePhoto);
 
-        const divLike = document.createElement("div");
-        divLike.classList.add("conteneur-like");
-        section.insertAdjacentElement("afterbegin", divLike);
+      const figurePhoto = document.createElement("figure");
+      figurePhoto.classList.add("figurePhoto");
+      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
 
-        const spanLike = document.createElement("span");
-        spanLike.classList.add("photographer-like");
-        divLike.insertAdjacentElement("afterbegin", spanLike);
+      const articleImg = document.createElement("img");
+      articleImg.classList.add("articleimg");
+      articleImg.setAttribute("src", `${this._data.Mediaimage}`);
+      articleImg.setAttribute("alt", `${this._data.MediaTitle}`);
+      figurePhoto.insertAdjacentElement("beforeend", articleImg);
 
-        const pLike = document.createElement("p");
-        pLike.classList.add("calcul-like");
-        pLike.textContent = `${MediaModel.MediaFullLickes()}`;
-        spanLike.insertAdjacentElement("afterbegin", pLike);
+      const figcaptionImg = document.createElement("figcaption");
+      figcaptionImg.classList.add("figcaption-Media");
+      figcaptionImg.textContent = `${this._data.MediaTitle}`;
+      figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
 
-        const spanheart = document.createElement("img");
-        spanheart.setAttribute("src", "../../assets/icons/heart.svg");
-        spanheart.setAttribute("alt", "icon like");
-        spanheart.classList.add("icon-heart");
-        spanLike.insertAdjacentElement("beforeend", spanheart);
+      const pPhoto = document.createElement("p");
+      pPhoto.classList.add("number-likes");
+      pPhoto.textContent = `${this._data.Medialikes}`;
+      figurePhoto.insertAdjacentElement("beforeend", pPhoto);
 
-        const spanPrice = document.createElement("span");
-        spanPrice.classList.add("photographer-price");
-        divLike.insertAdjacentElement("beforeend", spanPrice);
+      const buttonHeart = document.createElement("button");
+      buttonHeart.classList.add("buttonHeart");
+      figurePhoto.insertAdjacentElement("beforeend", buttonHeart);
 
-        const pPrice = document.createElement("p");
-        pPrice.classList.add("calcul-price");
-        pPrice.textContent = `${MediaModel.MediaFullprice()}€ / jour`;
-        spanPrice.insertAdjacentElement("afterbegin", pPrice);
+      const imgHeart = document.createElement("img");
+      imgHeart.classList.add("imgHeart");
+      imgHeart.setAttribute("src", "../../assets/icons/heart.svg");
+      imgHeart.setAttribute("alt", "heart");
+      buttonHeart.insertAdjacentElement("afterbegin", imgHeart);
 
-        const divTri = document.createElement("div");
-        divTri.classList.add("divTri");
-        section.insertAdjacentElement("beforeend", divTri);
+      return articlePhoto;
+    } else if (this._data.Mediavideo && this._data.Mediavideo.includes("mp4")) {
+      const articleVideo = document.createElement("article");
+      articleVideo.classList.add("article-media");
+      this.$imgSection.insertAdjacentElement("beforeend", articleVideo);
 
-        const pTri = document.createElement("p");
-        pTri.textContent = "Trier par";
-        divTri.insertAdjacentElement("afterbegin", pTri);
+      const figcaptionVideo = document.createElement("figcaption");
+      figcaptionVideo.classList.add("figcaption-Media");
+      figcaptionVideo.textContent = `${this._data.MediaTitle}`;
+      articleVideo.insertAdjacentElement("beforeend", figcaptionVideo);
 
-        const buttonTri = document.createElement("button");
-        buttonTri.classList.add("buttonTri");
-        buttonTri.textContent = "Populaire";
-        divTri.insertAdjacentElement("beforeend", buttonTri);
+      const video = document.createElement("video");
+      video.classList.add("articleimg");
+      video.setAttribute("alt", `${this._data.MediaTitle}`);
+      video.setAttribute("src", `${this._data.Mediavideo}`);
+      video.setAttribute("controls", "controls");
+      figcaptionVideo.insertAdjacentElement("afterbegin", video);
 
-        return article;
-      }
-    }
-    if (this._data.Mediaimage) {
-      // création de la section contenant les médias du photographe
-      const sectionImg = document.createElement("section");
-      sectionImg.classList.add("img-section");
-      article.insertAdjacentElement("beforeend", sectionImg);
-      if (this._data.Mediaimage && this._data.Mediaimage.includes("jpg")) {
-        const articlePhoto = document.createElement("article");
-        articlePhoto.classList.add("articlePhoto");
-        sectionImg.insertAdjacentElement("afterbegin", articlePhoto);
+      const pVideo = document.createElement("p");
+      pVideo.classList.add("number-likes");
+      pVideo.textContent = `${this._data.Medialikes}`;
+      figcaptionVideo.insertAdjacentElement("afterend", pVideo);
 
-        const figurePhoto = document.createElement("figure");
-        figurePhoto.classList.add("figurePhoto");
-        articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+      const buttonHeart = document.createElement("button");
+      buttonHeart.classList.add("buttonHeart");
+      pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-        const articleImg = document.createElement("img");
-        articleImg.classList.add("articleimg");
-        articleImg.setAttribute("src", `${this._data.Mediaimage}`);
-        articleImg.setAttribute("alt", `${this._data.MediaTitle}`);
-        figurePhoto.insertAdjacentElement("afterbegin", articleImg);
-
-        const figcaptionImg = document.createElement("figcaption");
-        figcaptionImg.classList.add("figcaptionPhoto");
-        figcaptionImg.textContent = `${this._data.MediaTitle}`;
-        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-
-        const pPhoto = document.createElement("p");
-        pPhoto.classList.add("spanPhoto");
-        pPhoto.textContent = `${this._data.Medialikes}`;
-        figurePhoto.insertAdjacentElement("beforeend", pPhoto);
-        return articlePhoto;
-      } else if (this._data.Mediavideo) {
-        const articleVideo = document.createElement("article");
-        articleVideo.classList.add("articlePhoto");
-        article.insertAdjacentElement("beforeend", articleVideo);
-
-        const video = document.createElement("video");
-        video.classList.add("articleimg");
-        video.setAttribute("src", `${this._data.Mediavideo}`);
-        articleVideo.insertAdjacentElement("beforeend", video);
-        return articleVideo;
-      } else {
-        return sectionImg;
-      }
+      const imgHeart = document.createElement("img");
+      imgHeart.classList.add("imgHeart");
+      imgHeart.setAttribute("src", "../../assets/icons/heart.svg");
+      imgHeart.setAttribute("alt", "heart");
+      buttonHeart.insertAdjacentElement("afterbegin", imgHeart);
+      return articleVideo;
     }
   }
 }
