@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/normalize.css">
   <link rel="stylesheet" href="/css/photographer.css" />
+  <script src="https://kit.fontawesome.com/f9725270b0.js" crossorigin="anonymous"></script>
   <title>Fisheye - photographe </title>
 </head>
 
@@ -22,11 +23,10 @@
     <section class="photographer-section">
       <div class="conteneur-like">
         <span class="photographer-like">
-          <p class="calcul-like" id="calcul-like"></p>
-          <img src="../../assets/icons/heart-solid.svg" alt="icon like" class="icon-heart">
+          <p id="calcul-like"></p>
         </span>
         <span class="photographer-price">
-          <p class="calcul-price" id="calcul-price">€/jour</p>
+          <p id="calcul-price"></p>
         </span>
       </div>
       <div class="divTri">
@@ -36,16 +36,18 @@
         <button class="buttonTri">Populaire</button>
       </div>
     </section>
-    <section class="img-section" id="img-section">
-
-    </section>
-
+    <section class="img-section" id="img-section"></section>
   </main>
+
+  <aside id="lightbox-modal">
+
+  </aside>
+
   <aside id="contact_modal">
     <div class="modal">
       <article>
         <h1>Contactez-moi</h1>
-        <img src="assets/icons/close.svg" onclick="closeModal()" />
+        <!-- <img src="assets/icons/close.svg" onclick="closeModal()" /> -->
       </article>
       <form>
         <div>
@@ -56,11 +58,11 @@
       </form>
     </div>
   </aside>
+  <script src="js/api/Api.js"></script>
   <script src="js/factories/DataFactorie.js"></script>
-  <script src="js/templates/photographer.js"></script>
   <script src="js/models/MediaModel.js"></script>
   <script src="js/models/PhotographersModel.js"></script>
-  <script src="js/api/Api.js"></script>
+  <script src="js/templates/photographer.js"></script>
   <script src="js/App.js"></script>
 </body>
 

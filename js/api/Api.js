@@ -30,8 +30,6 @@ class Api {
             (element) => element.photographerId === Number(this.id)
           );
           return Media;
-        } else {
-          throw "Unknown type format";
         }
       })
       .catch((err) => console.log("an error occurs", err));

@@ -1,8 +1,85 @@
 const url = new URL(window.location.href);
 const id = url.searchParams.get("id");
 
-class PhotographerTemplate {
+class Lightbox {
+  //initialisation de la lightbox
+
+  static initLightbox() {}
+
+  constructor() {
+    this.$imgSection = document.querySelectorAll("img");
+    console.log(this.$imgSection);
+    // const link = array.form();
+  }
+
+  //création du DOM de la lightbox
+  static DomLightbox(e) {
+    const imgClick = e.target.children[0].attributes[1].value;
+    const imgAlt = e.target.children[0].attributes[2].value;
+    const imgDescriptoin = e.target.childNodes[1].childNodes[0].textContent;
+
+    e.stopPropagation();
+    const selectDomLightbox = document.getElementById("lightbox-modal");
+    const section = document.createElement("section");
+    section.classList.add("section-lightbox");
+    section.id = "section-lightbox-id";
+    selectDomLightbox.appendChild(section);
+
+    const figure = document.createElement("figure");
+    figure.classList.add("figure-lightbox");
+    section.appendChild(figure);
+
+    const img = document.createElement("img");
+    img.classList.add("img-lightbox");
+    img.setAttribute("src", imgClick);
+    img.setAttribute("alt", imgAlt);
+    figure.insertAdjacentElement("afterbegin", img);
+
+    const figcaption = document.createElement("figcaption");
+    figcaption.classList.add("figcaption-lightbox");
+    figure.insertAdjacentElement("beforeend", figcaption);
+
+    const p = document.createElement("p");
+    p.classList.add("descriptif-img");
+    p.textContent = imgDescriptoin;
+    figcaption.insertAdjacentElement("beforeend", p);
+
+    const previousLink = document.createElement("a");
+    previousLink.setAttribute("type", "button");
+    previousLink.classList.add("previous-link");
+    previousLink.id = "previous-link-id";
+    figure.appendChild(previousLink);
+
+    const nextLink = document.createElement("a");
+    nextLink.setAttribute("type", "button");
+    nextLink.classList.add("next-link");
+    nextLink.id = "next-link-id";
+    figure.appendChild(nextLink);
+
+    const buttonModal = document.createElement("button");
+    buttonModal.classList.add("button-modal");
+    figure.appendChild(buttonModal);
+
+    buttonModal.addEventListener("click", this.lightboxClose.bind(this));
+
+    return section;
+  }
+
+  // fermeture de la modale
+  lightboxClose(e) {
+    const sectionModal = e.target.closest("#lightbox-modal");
+    const section = sectionModal.querySelector("#section-lightbox-id");
+    return sectionModal.removeChild(section);
+  }
+
+  static nextImg() {
+    return;
+  }
+}
+
+class PhotographerTemplate extends Lightbox {
   constructor(data) {
+    super();
     // renvoi les données data pour la création du DOM - photographer.html
     this._data = data;
     this.$imgSection = document.getElementById("img-section");
@@ -67,6 +144,7 @@ class PhotographerTemplate {
 
       const figurePhoto = document.createElement("figure");
       figurePhoto.classList.add("figurePhoto");
+      figurePhoto.id = "imgModal";
       articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
 
       const articleImg = document.createElement("img");
@@ -89,11 +167,7 @@ class PhotographerTemplate {
       buttonHeart.classList.add("buttonHeart");
       figurePhoto.insertAdjacentElement("beforeend", buttonHeart);
 
-      const imgHeart = document.createElement("img");
-      imgHeart.classList.add("imgHeart");
-      imgHeart.setAttribute("src", "../../assets/icons/heart.svg");
-      imgHeart.setAttribute("alt", "heart");
-      buttonHeart.insertAdjacentElement("afterbegin", imgHeart);
+      figurePhoto.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
       return articlePhoto;
     } else if (this._data.Mediavideo && this._data.Mediavideo.includes("mp4")) {
@@ -122,11 +196,6 @@ class PhotographerTemplate {
       buttonHeart.classList.add("buttonHeart");
       pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-      const imgHeart = document.createElement("img");
-      imgHeart.classList.add("imgHeart");
-      imgHeart.setAttribute("src", "../../assets/icons/heart.svg");
-      imgHeart.setAttribute("alt", "heart");
-      buttonHeart.insertAdjacentElement("afterbegin", imgHeart);
       return articleVideo;
     }
   }

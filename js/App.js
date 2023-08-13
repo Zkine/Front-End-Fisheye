@@ -22,7 +22,7 @@ class App {
         this.photographeSection.appendChild(Template.render());
       });
     } else if (this.url.pathname === "/photographer.html") {
-      // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et crée les objets MédiaModel pour construire la photographer.html
+      // constante qui fait appel à la fuction DataFactorie - nous permettant de récupérer les données et créer les objets MédiaModel pour incrémenter la photographer.html
       const media = mediaData.map((data) => new DataFactorie(data, "media"));
       const FullData = [...photographe, ...media];
       FullData.forEach((data) => {
