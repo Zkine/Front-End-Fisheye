@@ -41,6 +41,7 @@ header {
     margin: 0 100px;
     border-radius: 5px;
     padding: 0 50px 0 50px;
+
 }
 
 .photographer-h1 {
@@ -83,6 +84,7 @@ header {
     width: 200px;
     height: 200px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .photographer-section {
@@ -90,6 +92,7 @@ header {
 }
 
 /* Style trie et compteur global */
+
 .conteneur-like {
     background-color: #DB8876;
     display: flex;
@@ -145,10 +148,7 @@ header {
     border-radius: 5px;
 }
 
-
-
 /* Style media */
-
 
 .img-section {
     position: relative;
@@ -168,14 +168,14 @@ header {
     position: relative;
 }
 
-.figurePhoto {
+.figure-media {
     width: 350px;
     height: 351px;
     margin: auto;
     position: relative;
 }
 
-.figurePhoto::after {
+.figure-media::after {
     content: "";
     position: absolute;
     width: 350px;
@@ -184,14 +184,14 @@ header {
     cursor: pointer;
 }
 
-.articleimg {
+.item-media {
     width: 350px;
     height: 300px;
     border-radius: 5px;
     object-fit: cover;
 }
 
-.figcaption-Media {
+.figcaption-media {
     position: relative;
     width: 290px;
 }
@@ -224,14 +224,14 @@ header {
     padding: 0;
     position: absolute;
     right: 0;
-    bottom: 0em;
-    z-index: 0;
+    bottom: 0;
+    z-index: 1;
     border: none;
     background-color: #ffffff;
     cursor: pointer;
 }
 
-/* model Lightbox */
+/* style Lightbox */
 
 .section-lightbox {
     display: flex;
@@ -253,33 +253,28 @@ header {
     align-items: center;
     width: 65.844%;
     height: 96.09%;
-    position: relative;
     margin-top: 40px;
 }
 
-.img-lightbox {
-    width: 83.8%;
-    height: 97%;
+.media-lightbox {
+    width: 1050px;
+    height: 850px;
     border-radius: 5px;
     object-fit: cover;
 }
 
 .figcaption-lightbox {
     width: 83.805%;
-    height: 89px;
+    height: 40px;
     color: #901C1C;
     font-size: 24px;
-}
-
-.descriptif-img {
-    margin-top: 15px;
 }
 
 .previous-link {
     color: #901C1C;
     position: absolute;
     top: 43%;
-    left: 45px;
+    left: 20%;
     cursor: pointer;
 }
 
@@ -296,7 +291,7 @@ header {
     color: #901C1C;
     position: absolute;
     top: 43%;
-    right: 45px;
+    right: 20%;
     cursor: pointer;
 }
 
@@ -314,8 +309,8 @@ header {
     color: #901C1C;
     background-color: #ffffff;
     position: absolute;
-    top: -15px;
-    right: 45px;
+    top: 37px;
+    right: 19.5%;
     cursor: pointer;
 }
 
@@ -337,7 +332,7 @@ header {
 
 
 
-.modal {
+/* .modal {
     border-radius: 5px;
     background-color: #DB8876;
     width: 50%;
@@ -389,4 +384,4 @@ form input {
     height: 68px;
     border: none;
     border-radius: 5px;
-}
+} */

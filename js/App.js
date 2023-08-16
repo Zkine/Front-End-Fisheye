@@ -30,7 +30,7 @@ class App {
         const Template = new PhotographerTemplate(data);
         data.name
           ? this.$bannerPhotograph.appendChild(Template.renderBanner())
-          : data.Mediaimage &&
+          : data.MediaItems &&
             this.$imgSection.appendChild(Template.renderMedia());
       });
     }
