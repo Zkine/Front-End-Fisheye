@@ -18,7 +18,6 @@ class Lightbox {
   //création du DOM de la lightbox
   static DomLightbox(e) {
     e.stopPropagation();
-    console.log(e);
     const selectDomLightbox = document.getElementById("lightbox-modal");
     const section = document.createElement("section");
     section.classList.add("section-lightbox");
