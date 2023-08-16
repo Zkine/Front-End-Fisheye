@@ -175,20 +175,21 @@ header {
     position: relative;
 }
 
-.figure-media::after {
+/* .figure-media::after {
     content: "";
     position: absolute;
     width: 350px;
     height: 300px;
     top: 0;
     cursor: pointer;
-}
+} */
 
 .item-media {
     width: 350px;
     height: 300px;
     border-radius: 5px;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .figcaption-media {

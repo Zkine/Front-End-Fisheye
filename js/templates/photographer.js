@@ -18,6 +18,7 @@ class Lightbox {
   //création du DOM de la lightbox
   static DomLightbox(e) {
     e.stopPropagation();
+    console.log(e);
     const selectDomLightbox = document.getElementById("lightbox-modal");
     const section = document.createElement("section");
     section.classList.add("section-lightbox");
@@ -29,10 +30,9 @@ class Lightbox {
     figureLightbox.id = "figure-lightbox-id";
     section.appendChild(figureLightbox);
 
-    if (e.target.children[0].attributes[1].textContent.includes("jpg")) {
-      const imgClick = e.target.children[0].attributes[1].textContent;
-      const imgAlt = e.target.children[0].attributes[2].textContent;
-      const imgDescriptoin = e.target.childNodes[1].childNodes[0].textContent;
+    if (e.target.attributes[1].textContent.includes("jpg")) {
+      const imgClick = e.target.attributes[1].textContent;
+      const imgAlt = e.target.attributes[2].textContent;
 
       const imgLightbox = document.createElement("img");
       imgLightbox.classList.add("media-lightbox");
@@ -43,22 +43,15 @@ class Lightbox {
 
       const figcaption = document.createElement("figcaption");
       figcaption.classList.add("figcaption-lightbox");
-      figcaption.textContent = `${imgDescriptoin}`;
+      figcaption.textContent = `${imgAlt}`;
       figureLightbox.insertAdjacentElement("beforeend", figcaption);
-    } else if (
-      e.target.children[0].childNodes[0].attributes[2].textContent.includes(
-        "mp4"
-      )
-    ) {
-      const videoClick =
-        e.target.children[0].childNodes[0].attributes[2].textContent;
-      const videoAlt =
-        e.target.children[0].children[0].attributes[1].textContent;
-      const videoDescriptoin = e.target.childNodes[1].childNodes[0].textContent;
+    } else if (e.target.children[0].attributes[2].textContent.includes("mp4")) {
+      const videoClick = e.target.children[0].attributes[2].textContent;
+      const videoAlt = e.target.children[0].attributes[1].textContent;
 
       const video = document.createElement("video");
       video.classList.add("media-lightbox");
-      video.id = "video-id";
+      video.id = "item-media-id";
       video.setAttribute("controls", "");
       figureLightbox.insertAdjacentElement("afterbegin", video);
 
@@ -71,7 +64,7 @@ class Lightbox {
 
       const figcaptionVideo = document.createElement("figcaption");
       figcaptionVideo.classList.add("figcaption-lightbox");
-      figcaptionVideo.textContent = `${videoDescriptoin}`;
+      figcaptionVideo.textContent = `${videoAlt}`;
       figureLightbox.appendChild(figcaptionVideo);
     }
     const previousLink = document.createElement("a");
@@ -145,7 +138,7 @@ class Lightbox {
     } else if (mediaLightbox[mediaItems + 1].includes("mp4")) {
       const video = document.createElement("video");
       video.classList.add("media-lightbox");
-      video.id = "video-id";
+      video.id = "item-media-id";
       video.setAttribute("controls", "");
       figureLightbox.insertAdjacentElement("afterbegin", video);
 
@@ -204,7 +197,7 @@ class Lightbox {
     } else if (mediaLightbox[mediaItems - 1].includes("mp4")) {
       const video = document.createElement("video");
       video.classList.add("media-lightbox");
-      video.id = "video-id";
+      video.id = "item-media-id";
       video.setAttribute("controls", "");
       figureLightbox.insertAdjacentElement("afterbegin", video);
 
@@ -299,6 +292,7 @@ class PhotographerTemplate extends Lightbox {
       Img.classList.add("item-media");
       Img.setAttribute("src", `${this._data.MediaItems}`);
       Img.setAttribute("alt", `${this._data.MediaTitle}`);
+      Img.id = "item-media-id";
       figurePhoto.insertAdjacentElement("beforeend", Img);
 
       const figcaptionImg = document.createElement("figcaption");
@@ -308,7 +302,7 @@ class PhotographerTemplate extends Lightbox {
     } else if (this._data.MediaItems.includes("mp4")) {
       const video = document.createElement("video");
       video.classList.add("item-media");
-      video.id = "video-id";
+      video.id = "item-media-id";
       figurePhoto.insertAdjacentElement("afterbegin", video);
 
       const source = document.createElement("source");
@@ -332,7 +326,8 @@ class PhotographerTemplate extends Lightbox {
     buttonHeart.classList.add("buttonHeart");
     pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-    articlePhoto.addEventListener("click", Lightbox.DomLightbox.bind(this));
+    const mediaId = document.getElementById("item-media-id");
+    mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
     return articlePhoto;
   }
