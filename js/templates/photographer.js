@@ -217,7 +217,25 @@ class Lightbox {
   }
 }
 
-class PhotographerTemplate extends Lightbox {
+class SortMedia extends Lightbox {
+  constructor(data) {
+    super(data);
+    this.$btnPopulaire = document.getElementById("button-populaire-id");
+    this.$btnPopulaire.addEventListener(
+      "click",
+      this.renderPopulaire.bind(this)
+    );
+    // this.$btnDate = document.getElementById("button-date");
+    // this.$btnTitre = document.getElementById("button-titre");
+  }
+
+  renderPopulaire(e) {
+    console.log(e);
+    return;
+  }
+}
+
+class PhotographerTemplate extends SortMedia {
   constructor(data) {
     super(data);
     // renvoi les données data pour la création du DOM - photographer.html

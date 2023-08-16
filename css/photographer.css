@@ -134,18 +134,103 @@ header {
     height: 102px;
 }
 
-.divTri {
+.div-tri {
     display: flex;
+    justify-content: space-between;
+    width: 255px;
     font-size: 18px;
     font-weight: 700;
     margin-top: 5px;
+    height: 69px;
+}
+
+.div-button {
+    display: flex;
+    flex-direction: column;
+    width: 170px;
+    height: 67px;
+    position: relative;
+    right: 0;
+    z-index: 1;
+}
+
+.div-button:hover {
+    height: 207px;
 }
 
 .buttonTri {
     width: 170px;
-    background-color: #901C1C;
+    height: 69px;
     border: none;
+    background-color: #901C1C;
+    color: #ffffff;
+    cursor: pointer;
+    text-align: start;
+    padding-left: 15px;
+    position: relative;
+}
+
+.buttonTri:nth-child(1) {
     border-radius: 5px;
+    position: relative;
+}
+
+.buttonTri:nth-child(1):before {
+    font: var(--fa-font-solid);
+    content: "\f107";
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    color: #ffffff;
+    position: absolute;
+    top: 27px;
+    right: 15px;
+}
+
+.div-button:hover .buttonTri:nth-child(1):before {
+    transform: rotate(180deg);
+}
+
+.div-button:hover .buttonTri:nth-child(1):after {
+    content: "";
+    width: 90%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 7px;
+    background-color: #ffffff;
+}
+
+.div-button:hover .buttonTri:nth-child(1) {
+    border-radius: 5px 5px 0 0;
+}
+
+.buttonTri:nth-child(2) {
+    display: none;
+}
+
+.buttonTri:nth-child(2):after {
+    content: "";
+    width: 90%;
+    height: 1px;
+    position: absolute;
+    bottom: 0;
+    left: 7px;
+    background-color: #ffffff;
+}
+
+.div-button:hover .buttonTri:nth-child(2) {
+    display: block;
+}
+
+.buttonTri:nth-child(3) {
+    border-radius: 0 0 5px 5px;
+    display: none;
+}
+
+.div-button:hover .buttonTri:nth-child(3) {
+    display: block;
 }
 
 /* Style media */
@@ -159,7 +244,7 @@ header {
     gap: 10px 326px;
     color: #901C1C;
     font-size: 24px;
-    margin-top: 70px;
+    margin-top: 45px;
 }
 
 .article-media {
@@ -174,15 +259,6 @@ header {
     margin: auto;
     position: relative;
 }
-
-/* .figure-media::after {
-    content: "";
-    position: absolute;
-    width: 350px;
-    height: 300px;
-    top: 0;
-    cursor: pointer;
-} */
 
 .item-media {
     width: 350px;
