@@ -8,20 +8,26 @@ class App {
   }
 
   async main() {
-    // création de deux constantes qui fait appel à l'api.js pour récupérer les données du dossier data - photographers.json
-    const photographeData = await this.photographeApi.getPhotographe();
-    const mediaData = await this.photographeApi.getMedia();
-    // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et créer le ou les objets pour construire les pages index.html et photographer.html
-    const photographe = photographeData.map(
-      (data) => new DataFactorie(data, "photographers")
-    );
     if (this.url.pathname === "/index.html") {
+      // création de deux constantes qui fait appel à l'api.js pour récupérer les données du dossier data - photographers.json
+      const photographeData = await this.photographeApi.getPhotographe();
+      // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et créer le ou les objets pour construire les pages index.html et photographer.html
+
+      const photographe = photographeData.map(
+        (data) => new DataFactorie(data, "photographers")
+      );
+      // initialisation des données data exploitables dans la class AccueilTemplate
       photographe.forEach((data) => {
-        // initialisation des données data exploitables dans la class AccueilTemplate
         const Template = new AccueilTemplate(data);
         this.photographeSection.appendChild(Template.render());
       });
     } else if (this.url.pathname === "/photographer.html") {
+      const photographeData = await this.photographeApi.getPhotographe();
+      const mediaData = await this.photographeApi.getMedia();
+
+      const photographe = photographeData.map(
+        (data) => new DataFactorie(data, "photographers")
+      );
       // constante qui fait appel à la fuction DataFactorie - nous permettant de récupérer les données et créer les objets MédiaModel pour incrémenter la photographer.html
       const media = mediaData.map((data) => new DataFactorie(data, "media"));
       const FullData = [...photographe, ...media];

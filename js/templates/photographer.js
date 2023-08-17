@@ -91,6 +91,7 @@ class Lightbox {
 
   // fermeture de la modale
   lightboxClose(e) {
+    e.stopPropagation();
     const sectionModal = e.target.closest("#lightbox-modal");
     const section = sectionModal.querySelector("#section-lightbox-id");
     return sectionModal.removeChild(section);
@@ -98,6 +99,7 @@ class Lightbox {
 
   nextImg(e) {
     e.preventDefault();
+    e.stopPropagation();
     //récupération du lien de l'image affichée dans la constante linkMedia
     const imgParent = e.target.closest("#section-lightbox-id");
     const linkMedia = imgParent.querySelector("#media-lightbox-id");
@@ -159,6 +161,7 @@ class Lightbox {
 
   prevImg(e) {
     e.preventDefault();
+    e.stopPropagation();
     //récupération du lien de l'image affichée dans la constante linkMedia
     const imgParent = e.target.closest("#section-lightbox-id");
     const linkMedia = imgParent.querySelector("#media-lightbox-id");
@@ -217,21 +220,85 @@ class Lightbox {
   }
 }
 
+let dataMedia = [];
+
 class SortMedia extends Lightbox {
   constructor(data) {
     super(data);
+    dataMedia.push(data);
     this.$btnPopulaire = document.getElementById("button-populaire-id");
     this.$btnPopulaire.addEventListener(
       "click",
-      this.renderPopulaire.bind(this)
+      SortMedia.renderPopulaire.bind(this)
     );
     // this.$btnDate = document.getElementById("button-date");
     // this.$btnTitre = document.getElementById("button-titre");
   }
 
-  renderPopulaire(e) {
-    console.log(e);
-    return;
+  static renderPopulaire(e) {
+    e.stopPropagation();
+    console.log("e", e);
+    // console.log(dataMedia);
+    // dataMedia.sort(function (a, b) {
+    //   if (a._MediaLikes < b._MediaLikes) return -1;
+    //   if (b._MediaLikes > b._MediaLikes) return 1;
+    //   return 0;
+    // });
+    // console.log(dataMedia);
+
+    // dataMedia.forEach((e) => {
+    //   dataMedia.shift();
+
+    //   const articlePhoto = document.getElementById("article-media-id");
+    //   if (e.MediaItems.includes("jpg")) {
+    //     const figurePhoto = document.createElement("figure");
+    //     figurePhoto.classList.add("figure-media");
+    //     figurePhoto.id = "imgModal";
+    //     articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+
+    //     const Img = document.createElement("img");
+    //     Img.classList.add("item-media");
+    //     Img.setAttribute("src", `${e.MediaItems}`);
+    //     Img.setAttribute("alt", `${e.MediaTitle}`);
+    //     Img.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("beforeend", Img);
+
+    //     const figcaptionImg = document.createElement("figcaption");
+    //     figcaptionImg.classList.add("figcaption-media");
+    //     figcaptionImg.textContent = `${e.MediaTitle}`;
+    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+    //   } else if (e.MediaItems.includes("mp4")) {
+    //     const video = document.createElement("video");
+    //     video.classList.add("item-media");
+    //     video.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("afterbegin", video);
+
+    //     const source = document.createElement("source");
+    //     source.id = "source-id";
+    //     source.setAttribute("alt", `${e.MediaTitle}`);
+    //     source.setAttribute("src", `${e.MediaItems}`);
+    //     source.setAttribute("type", "video/mp4");
+    //     video.appendChild(source);
+
+    //     const figcaptionVideo = document.createElement("figcaption");
+    //     figcaptionVideo.classList.add("figcaption-media");
+    //     figcaptionVideo.textContent = `${dataMedia.MediaTitle}`;
+    //     figurePhoto.appendChild(figcaptionVideo);
+    //   }
+    //   const pVideo = document.createElement("p");
+    //   pVideo.classList.add("number-likes");
+    //   pVideo.textContent = `${e.Medialikes}`;
+    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
+
+    //   const buttonHeart = document.createElement("button");
+    //   buttonHeart.classList.add("buttonHeart");
+    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
+
+    //   const mediaId = document.getElementById("item-media-id");
+    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+    //   articlePhoto.innerHTML = "";
+    //   return articlePhoto;
+    // });
   }
 }
 
@@ -254,23 +321,24 @@ class PhotographerTemplate extends SortMedia {
     const divBanner = document.createElement("div");
     divBanner.classList.add("photograph-banner");
 
-    const divh1 = document.createElement("div");
-    divBanner.insertAdjacentElement("afterbegin", divh1);
+    const divTiltle = document.createElement("div");
+    divTiltle.classList.add("div-title");
+    divBanner.insertAdjacentElement("afterbegin", divTiltle);
 
     const h1 = document.createElement("h1");
     h1.classList.add("photographer-h1");
     h1.textContent = `${this._data.name}`;
-    divh1.insertAdjacentElement("afterbegin", h1);
+    divTiltle.insertAdjacentElement("afterbegin", h1);
 
     const city = document.createElement("p");
     city.classList.add("photographer-city");
     city.textContent = `${this._data.city}, ${this._data.country}`;
-    divh1.insertAdjacentElement("beforeend", city);
+    divTiltle.insertAdjacentElement("beforeend", city);
 
     const citation = document.createElement("q");
     citation.classList.add("photographer-citation");
     citation.textContent = `${this._data.tagline}`;
-    divh1.insertAdjacentElement("beforeend", citation);
+    divTiltle.insertAdjacentElement("beforeend", citation);
 
     const button = document.createElement("button");
     button.classList.add("contact_button");
@@ -297,6 +365,7 @@ class PhotographerTemplate extends SortMedia {
     // /création des médias de la page photographer.html
     const articlePhoto = document.createElement("article");
     articlePhoto.classList.add("article-media");
+    articlePhoto.id = "article-media-id";
     this.$imgSection.insertAdjacentElement("afterbegin", articlePhoto);
 
     const figurePhoto = document.createElement("figure");
