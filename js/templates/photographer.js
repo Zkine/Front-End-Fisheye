@@ -82,22 +82,22 @@ class Lightbox {
     buttonModal.classList.add("button-modal");
     section.appendChild(buttonModal);
 
-    buttonModal.addEventListener("click", this.lightboxClose.bind(this));
-    nextLink.addEventListener("click", this.nextImg.bind(this));
-    previousLink.addEventListener("click", this.prevImg.bind(this));
+    buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
+    nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
+    previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
 
     return section;
   }
 
   // fermeture de la modale
-  lightboxClose(e) {
+  static lightboxClose(e) {
     e.stopPropagation();
     const sectionModal = e.target.closest("#lightbox-modal");
     const section = sectionModal.querySelector("#section-lightbox-id");
     return sectionModal.removeChild(section);
   }
 
-  nextImg(e) {
+  static nextImg(e) {
     e.preventDefault();
     e.stopPropagation();
     //récupération du lien de l'image affichée dans la constante linkMedia
@@ -159,7 +159,7 @@ class Lightbox {
     }
   }
 
-  prevImg(e) {
+  static prevImg(e) {
     e.preventDefault();
     e.stopPropagation();
     //récupération du lien de l'image affichée dans la constante linkMedia
@@ -226,81 +226,231 @@ class SortMedia extends Lightbox {
   constructor(data) {
     super(data);
     dataMedia.push(data);
-    this.$btnPopulaire = document.getElementById("button-populaire-id");
-    this.$btnPopulaire.addEventListener(
-      "click",
-      SortMedia.renderPopulaire.bind(this)
-    );
-    // this.$btnDate = document.getElementById("button-date");
-    // this.$btnTitre = document.getElementById("button-titre");
   }
 
   static renderPopulaire(e) {
     e.stopPropagation();
-    console.log("e", e);
-    // console.log(dataMedia);
-    // dataMedia.sort(function (a, b) {
-    //   if (a._MediaLikes < b._MediaLikes) return -1;
-    //   if (b._MediaLikes > b._MediaLikes) return 1;
-    //   return 0;
-    // });
-    // console.log(dataMedia);
+    console.log(dataMedia);
+    const imgSection = document.getElementById("img-section");
+    imgSection.innerHTML = "";
+    dataMedia.sort(function (a, b) {
+      if (a._MediaLikes < b._MediaLikes) return -1;
+      if (b._MediaLikes > b._MediaLikes) return 1;
+      return 0;
+    });
+    if (dataMedia[0]._name) {
+      dataMedia.shift();
+    }
+    const dataMediaAll = dataMedia;
+    console.log(dataMediaAll);
+    dataMediaAll.forEach((e) => {
+      const articlePhoto = document.createElement("article");
 
-    // dataMedia.forEach((e) => {
-    //   dataMedia.shift();
+      articlePhoto.classList.add("article-media");
+      articlePhoto.id = "article-media-id";
+      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
 
-    //   const articlePhoto = document.getElementById("article-media-id");
-    //   if (e.MediaItems.includes("jpg")) {
-    //     const figurePhoto = document.createElement("figure");
-    //     figurePhoto.classList.add("figure-media");
-    //     figurePhoto.id = "imgModal";
-    //     articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+      const figurePhoto = document.createElement("figure");
+      figurePhoto.classList.add("figure-media");
+      figurePhoto.id = "imgModal";
+      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+      if (e.MediaItems && e.MediaItems.includes("jpg")) {
+        const Img = document.createElement("img");
+        Img.classList.add("item-media");
+        Img.setAttribute("src", `${e.MediaItems}`);
+        Img.setAttribute("alt", `${e.MediaTitle}`);
+        Img.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("beforeend", Img);
 
-    //     const Img = document.createElement("img");
-    //     Img.classList.add("item-media");
-    //     Img.setAttribute("src", `${e.MediaItems}`);
-    //     Img.setAttribute("alt", `${e.MediaTitle}`);
-    //     Img.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("beforeend", Img);
+        const figcaptionImg = document.createElement("figcaption");
+        figcaptionImg.classList.add("figcaption-media");
+        figcaptionImg.textContent = `${e.MediaTitle}`;
+        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+      } else if (e.MediaItems && e.MediaItems.includes("mp4")) {
+        const video = document.createElement("video");
+        video.classList.add("item-media");
+        video.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("afterbegin", video);
 
-    //     const figcaptionImg = document.createElement("figcaption");
-    //     figcaptionImg.classList.add("figcaption-media");
-    //     figcaptionImg.textContent = `${e.MediaTitle}`;
-    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-    //   } else if (e.MediaItems.includes("mp4")) {
-    //     const video = document.createElement("video");
-    //     video.classList.add("item-media");
-    //     video.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("afterbegin", video);
+        const source = document.createElement("source");
+        source.id = "source-id";
+        source.setAttribute("alt", `${e.MediaTitle}`);
+        source.setAttribute("src", `${e.MediaItems}`);
+        source.setAttribute("type", "video/mp4");
+        video.appendChild(source);
 
-    //     const source = document.createElement("source");
-    //     source.id = "source-id";
-    //     source.setAttribute("alt", `${e.MediaTitle}`);
-    //     source.setAttribute("src", `${e.MediaItems}`);
-    //     source.setAttribute("type", "video/mp4");
-    //     video.appendChild(source);
+        const figcaptionVideo = document.createElement("figcaption");
+        figcaptionVideo.classList.add("figcaption-media");
+        figcaptionVideo.textContent = `${e.MediaTitle}`;
+        figurePhoto.appendChild(figcaptionVideo);
+      }
+      const pVideo = document.createElement("p");
+      pVideo.classList.add("number-likes");
+      pVideo.textContent = `${e.Medialikes}`;
+      figurePhoto.insertAdjacentElement("afterend", pVideo);
 
-    //     const figcaptionVideo = document.createElement("figcaption");
-    //     figcaptionVideo.classList.add("figcaption-media");
-    //     figcaptionVideo.textContent = `${dataMedia.MediaTitle}`;
-    //     figurePhoto.appendChild(figcaptionVideo);
-    //   }
-    //   const pVideo = document.createElement("p");
-    //   pVideo.classList.add("number-likes");
-    //   pVideo.textContent = `${e.Medialikes}`;
-    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
+      const buttonHeart = document.createElement("button");
+      buttonHeart.classList.add("buttonHeart");
+      pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-    //   const buttonHeart = document.createElement("button");
-    //   buttonHeart.classList.add("buttonHeart");
-    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
+      const mediaId = document.getElementById("item-media-id");
+      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
-    //   const mediaId = document.getElementById("item-media-id");
-    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-    //   articlePhoto.innerHTML = "";
-    //   return articlePhoto;
-    // });
+      return articlePhoto;
+    });
+  }
+  static renderDate(e) {
+    e.stopPropagation();
+    const imgSection = document.getElementById("img-section");
+    imgSection.innerHTML = "";
+    dataMedia.sort(function (a, b) {
+      if (a._MediaDate < b._MediaDate) return -1;
+      if (b._MediaDate > b._MediaDate) return 1;
+      return 0;
+    });
+    if (dataMedia[0]._name) {
+      dataMedia.shift();
+    }
+    const dataMediaAll = dataMedia;
+    console.log(dataMediaAll);
+    dataMediaAll.forEach((e) => {
+      const articlePhoto = document.createElement("article");
+
+      articlePhoto.classList.add("article-media");
+      articlePhoto.id = "article-media-id";
+      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+
+      const figurePhoto = document.createElement("figure");
+      figurePhoto.classList.add("figure-media");
+      figurePhoto.id = "imgModal";
+      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+      if (e.MediaItems && e.MediaItems.includes("jpg")) {
+        const Img = document.createElement("img");
+        Img.classList.add("item-media");
+        Img.setAttribute("src", `${e.MediaItems}`);
+        Img.setAttribute("alt", `${e.MediaTitle}`);
+        Img.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("beforeend", Img);
+
+        const figcaptionImg = document.createElement("figcaption");
+        figcaptionImg.classList.add("figcaption-media");
+        figcaptionImg.textContent = `${e.MediaTitle}`;
+        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+      } else if (e.MediaItems && e.MediaItems.includes("mp4")) {
+        const video = document.createElement("video");
+        video.classList.add("item-media");
+        video.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("afterbegin", video);
+
+        const source = document.createElement("source");
+        source.id = "source-id";
+        source.setAttribute("alt", `${e.MediaTitle}`);
+        source.setAttribute("src", `${e.MediaItems}`);
+        source.setAttribute("type", "video/mp4");
+        video.appendChild(source);
+
+        const figcaptionVideo = document.createElement("figcaption");
+        figcaptionVideo.classList.add("figcaption-media");
+        figcaptionVideo.textContent = `${e.MediaTitle}`;
+        figurePhoto.appendChild(figcaptionVideo);
+      }
+      const pVideo = document.createElement("p");
+      pVideo.classList.add("number-likes");
+      pVideo.textContent = `${e.Medialikes}`;
+      figurePhoto.insertAdjacentElement("afterend", pVideo);
+
+      const buttonHeart = document.createElement("button");
+      buttonHeart.classList.add("buttonHeart");
+      pVideo.insertAdjacentElement("afterend", buttonHeart);
+
+      const mediaId = document.getElementById("item-media-id");
+      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+
+      return articlePhoto;
+    });
+  }
+
+  static renderTitre(e) {
+    e.stopPropagation();
+    const imgSection = document.getElementById("img-section");
+    imgSection.innerHTML = "";
+    dataMedia.sort(function (a, b) {
+      if (a._MediaTitle > b._MediaTitle) return -1;
+      if (b._MediaTitle < b._MediaTitle) return 1;
+      return 0;
+    });
+    if (dataMedia[0]._name) {
+      dataMedia.shift();
+    }
+    const dataMediaAll = dataMedia;
+    console.log(dataMediaAll);
+    dataMediaAll.forEach((e) => {
+      const articlePhoto = document.createElement("article");
+
+      articlePhoto.classList.add("article-media");
+      articlePhoto.id = "article-media-id";
+      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+
+      const figurePhoto = document.createElement("figure");
+      figurePhoto.classList.add("figure-media");
+      figurePhoto.id = "imgModal";
+      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+      if (e.MediaItems && e.MediaItems.includes("jpg")) {
+        const Img = document.createElement("img");
+        Img.classList.add("item-media");
+        Img.setAttribute("src", `${e.MediaItems}`);
+        Img.setAttribute("alt", `${e.MediaTitle}`);
+        Img.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("beforeend", Img);
+
+        const figcaptionImg = document.createElement("figcaption");
+        figcaptionImg.classList.add("figcaption-media");
+        figcaptionImg.textContent = `${e.MediaTitle}`;
+        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+      } else if (e.MediaItems && e.MediaItems.includes("mp4")) {
+        const video = document.createElement("video");
+        video.classList.add("item-media");
+        video.id = "item-media-id";
+        figurePhoto.insertAdjacentElement("afterbegin", video);
+
+        const source = document.createElement("source");
+        source.id = "source-id";
+        source.setAttribute("alt", `${e.MediaTitle}`);
+        source.setAttribute("src", `${e.MediaItems}`);
+        source.setAttribute("type", "video/mp4");
+        video.appendChild(source);
+
+        const figcaptionVideo = document.createElement("figcaption");
+        figcaptionVideo.classList.add("figcaption-media");
+        figcaptionVideo.textContent = `${e.MediaTitle}`;
+        figurePhoto.appendChild(figcaptionVideo);
+      }
+      const pVideo = document.createElement("p");
+      pVideo.classList.add("number-likes");
+      pVideo.textContent = `${e.Medialikes}`;
+      figurePhoto.insertAdjacentElement("afterend", pVideo);
+
+      const buttonHeart = document.createElement("button");
+      buttonHeart.classList.add("buttonHeart");
+      pVideo.insertAdjacentElement("afterend", buttonHeart);
+
+      const mediaId = document.getElementById("item-media-id");
+      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+
+      return articlePhoto;
+    });
   }
 }
+// écoute le boutton popularité et envoie à la fonction renderPopulaire()
+const btnPopulaire = document.getElementById("button-populaire-id");
+btnPopulaire.addEventListener("click", SortMedia.renderPopulaire.bind(this));
+
+// écoute le boutton popularité et envoie à la fonction renderPopulaire()
+const btnDate = document.getElementById("button-date-id");
+btnDate.addEventListener("click", SortMedia.renderDate.bind(this));
+
+const btnTitre = document.getElementById("button-titre-id");
+btnTitre.addEventListener("click", SortMedia.renderTitre.bind(this));
 
 class PhotographerTemplate extends SortMedia {
   constructor(data) {
