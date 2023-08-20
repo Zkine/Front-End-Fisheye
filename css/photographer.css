@@ -291,7 +291,7 @@ header {
     bottom: -0.3em;
 }
 
-.buttonHeart {
+.button-heart {
     width: 24px;
     height: 24px;
     padding: 0;
@@ -303,21 +303,12 @@ header {
     background-color: #ffffff;
 }
 
-.buttonHeart::after {
-    font: var(--fa-font-regular);
-    content: "\f004";
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font-size: 24px;
-    padding: 0;
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-    border: none;
-    background-color: #ffffff;
+.fa-heart {
     cursor: pointer;
+}
+
+.fa-solid {
+    color: #901C1C;
 }
 
 /* style Lightbox */

@@ -4,7 +4,6 @@ const id = url.searchParams.get("id");
 class Lightbox {
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("#media-lightbox-id");
-    console.log(linkMedia);
     const mediaAll = Array.from(document.querySelectorAll("#item-media-id"));
     Media = mediaAll.map(
       (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
@@ -23,14 +22,10 @@ class Lightbox {
 
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
   }
-  constructor(data) {
-    this._data = data;
-  }
 
   //création du DOM de la lightbox
-  static async DomLightbox(e) {
+  static DomLightbox(e) {
     e.stopPropagation();
-
     const selectDomLightbox = document.getElementById("lightbox-modal");
     const section = document.createElement("section");
     section.classList.add("section-lightbox");
@@ -323,9 +318,64 @@ class Lightbox {
   }
 }
 
-let dataMedia = [];
+class LikesMedia {
+  constructor(data) {
+    this._data = data;
+  }
+  static gestionLikes(e) {
+    const likesFull = document.getElementById("calcul-like");
+    const likesMedia = e.target.parentElement.previousElementSibling;
+    const classHeart = e.target;
+    if (classHeart.classList.contains("fa-regular")) {
+      classHeart.classList.remove("fa-regular");
+      classHeart.classList.add("fa-solid");
+      likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
+      if (this._data !== undefined) {
+        likesMedia.textContent =
+          Number(parseInt(`${this._data.Medialikes}`)) + 1;
+      } else {
+        likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
+      }
+    } else if (classHeart.classList.contains("fa-solid")) {
+      classHeart.classList.remove("fa-solid");
+      classHeart.classList.add("fa-regular");
+      likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
+      if (this._data !== undefined) {
+        likesMedia.textContent = Number(parseInt(`${this._data.Medialikes}`));
+      } else {
+        likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
+      }
+    }
+  }
+}
 
-class SortMedia extends Lightbox {
+let dataMedia = [];
+let likesMediaUpdate = [];
+class SortMedia extends LikesMedia {
+  // static LikesUpdate(imgSection, dataMedia, likesfull) {
+  //     const imgSection = document.getElementById("img-section");
+  //     imgSection.innerHTML = "";
+  //     dataMedia.sort(function (a, b) {
+  //       if (a._MediaLikes < b._MediaLikes) return -1;
+  //       if (b._MediaLikes > b._MediaLikes) return 1;
+  //       return 0;
+  //     });
+  //     if (dataMedia[0]._name) {
+  //       dataMedia.shift();
+
+  //       const likesfull = document.getElementById("calcul-like");
+  //       const likesFull = parseInt(likesfull.textContent);
+  //       if (dataMedia === likesFull) {
+  //         likesfull = dataMedia.push(data);
+  //         console.log(likesfull);
+  //       } else if (dataMedia !== likesFull) {
+  //         console.log(likesFull);
+  //         likesFull;
+  //       }
+
+  //     return [MimgSection, dataMedia, likesfull];
+  //   }
+  // }
   constructor(data) {
     super(data);
     dataMedia.push(data);
@@ -333,9 +383,7 @@ class SortMedia extends Lightbox {
 
   static renderPopulaire(e) {
     e.stopPropagation();
-    console.log(dataMedia);
     const imgSection = document.getElementById("img-section");
-    imgSection.innerHTML = "";
     dataMedia.sort(function (a, b) {
       if (a._MediaLikes < b._MediaLikes) return -1;
       if (b._MediaLikes > b._MediaLikes) return 1;
@@ -343,12 +391,44 @@ class SortMedia extends Lightbox {
     });
     if (dataMedia[0]._name) {
       dataMedia.shift();
-    }
-    const dataMediaAll = dataMedia;
-    console.log(dataMediaAll);
-    dataMediaAll.forEach((e) => {
-      const articlePhoto = document.createElement("article");
 
+      const likesfull = document.getElementById("calcul-like");
+      const likesFull = Number(parseInt(likesfull.textContent));
+      if (likesFull === dataMedia) {
+        likesfull = dataMedia.push(data);
+      } else if (likesFull !== dataMedia) {
+        likesFull;
+      }
+    }
+
+    const likesMedia = document.querySelectorAll("#number-likes-id");
+    likesMedia.forEach((e) =>
+      likesMediaUpdate.push(Number(parseInt(e.textContent)))
+    );
+
+    console.log(dataMedia);
+    const dataMediaAll = dataMedia;
+
+    const dataMediaMap = Array.from(dataMediaAll.map((o) => o._MediaLikes));
+
+    const likesFilterModif = likesMediaUpdate.filter(
+      (z) => !dataMediaMap.includes(z)
+    );
+
+    const likesFilter = likesMediaUpdate.filter(
+      (f) => !dataMediaAll._MediaLikes
+    );
+    console.log(likesFilter);
+
+    imgSection.innerHTML = "";
+    dataMediaAll.forEach((e) => {
+      const likesFilter = likesMediaUpdate.filter((f) =>
+        e._MediaLikes.toString().includes(f)
+      );
+      // console.log(likesFilter);
+      dataMediaAll._MediaLikes;
+
+      const articlePhoto = document.createElement("article");
       articlePhoto.classList.add("article-media");
       articlePhoto.id = "article-media-id";
       imgSection.insertAdjacentElement("afterbegin", articlePhoto);
@@ -389,13 +469,28 @@ class SortMedia extends Lightbox {
       }
       const pVideo = document.createElement("p");
       pVideo.classList.add("number-likes");
-      pVideo.textContent = `${e.Medialikes}`;
+
+      if (likesFilter[0] === parseInt(`${e.Medialikes}`)) {
+        pVideo.textContent = `${e.Medialikes}`;
+      } else if (likesFilter[0] !== parseInt(`${e.Medialikes}`)) {
+        pVideo.textContent = likesFilterModif;
+      }
+
       figurePhoto.insertAdjacentElement("afterend", pVideo);
 
       const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("buttonHeart");
+      buttonHeart.classList.add("button-heart");
+      buttonHeart.id = "button-heart-id";
       pVideo.insertAdjacentElement("afterend", buttonHeart);
 
+      const iconHeart = document.createElement("i");
+      const classesFontAwesome = ["fa-regular", "fa-heart"];
+      classesFontAwesome.forEach(() => {
+        iconHeart.classList.add(...classesFontAwesome);
+      });
+      buttonHeart.appendChild(iconHeart);
+
+      buttonHeart.addEventListener("click", LikesMedia.gestionLikes.bind(this));
       const mediaId = document.getElementById("item-media-id");
       mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
@@ -415,7 +510,7 @@ class SortMedia extends Lightbox {
       dataMedia.shift();
     }
     const dataMediaAll = dataMedia;
-    console.log(dataMediaAll);
+
     dataMediaAll.forEach((e) => {
       const articlePhoto = document.createElement("article");
 
@@ -463,12 +558,20 @@ class SortMedia extends Lightbox {
       figurePhoto.insertAdjacentElement("afterend", pVideo);
 
       const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("buttonHeart");
+      buttonHeart.classList.add("button-heart");
+      buttonHeart.id = "button-heart-id";
       pVideo.insertAdjacentElement("afterend", buttonHeart);
 
+      const iconHeart = document.createElement("i");
+      const classesFontAwesome = ["fa-regular", "fa-heart"];
+      classesFontAwesome.forEach(() => {
+        iconHeart.classList.add(...classesFontAwesome);
+      });
+      buttonHeart.appendChild(iconHeart);
+
+      buttonHeart.addEventListener("click", LikesMedia.gestionLikes.bind(this));
       const mediaId = document.getElementById("item-media-id");
       mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-
       return articlePhoto;
     });
   }
@@ -486,7 +589,6 @@ class SortMedia extends Lightbox {
       dataMedia.shift();
     }
     const dataMediaAll = dataMedia;
-    console.log(dataMediaAll);
     dataMediaAll.forEach((e) => {
       const articlePhoto = document.createElement("article");
 
@@ -530,13 +632,23 @@ class SortMedia extends Lightbox {
       }
       const pVideo = document.createElement("p");
       pVideo.classList.add("number-likes");
+      pVideo.id = "number-likes-id";
       pVideo.textContent = `${e.Medialikes}`;
       figurePhoto.insertAdjacentElement("afterend", pVideo);
 
       const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("buttonHeart");
+      buttonHeart.classList.add("button-heart");
+      buttonHeart.id = "button-heart-id";
       pVideo.insertAdjacentElement("afterend", buttonHeart);
 
+      const iconHeart = document.createElement("i");
+      const classesFontAwesome = ["fa-regular", "fa-heart"];
+      classesFontAwesome.forEach(() => {
+        iconHeart.classList.add(...classesFontAwesome);
+      });
+      buttonHeart.appendChild(iconHeart);
+
+      buttonHeart.addEventListener("click", LikesMedia.gestionLikes.bind(this));
       const mediaId = document.getElementById("item-media-id");
       mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
@@ -544,14 +656,15 @@ class SortMedia extends Lightbox {
     });
   }
 }
-// écoute le boutton popularité et envoie à la fonction renderPopulaire()
+// écoute le boutton popularité et appel à la fonction renderPopulaire()
 const btnPopulaire = document.getElementById("button-populaire-id");
 btnPopulaire.addEventListener("click", SortMedia.renderPopulaire.bind(this));
 
-// écoute le boutton popularité et envoie à la fonction renderPopulaire()
+// écoute le boutton popularité et appel à la fonction renderPopulaire()
 const btnDate = document.getElementById("button-date-id");
 btnDate.addEventListener("click", SortMedia.renderDate.bind(this));
 
+// écoute le boutton popularité et appel à la fonction renderTitre()
 const btnTitre = document.getElementById("button-titre-id");
 btnTitre.addEventListener("click", SortMedia.renderTitre.bind(this));
 
@@ -658,12 +771,23 @@ class PhotographerTemplate extends SortMedia {
     }
     const pVideo = document.createElement("p");
     pVideo.classList.add("number-likes");
+    pVideo.id = "number-likes-id";
     pVideo.textContent = `${this._data.Medialikes}`;
     figurePhoto.insertAdjacentElement("afterend", pVideo);
 
     const buttonHeart = document.createElement("button");
-    buttonHeart.classList.add("buttonHeart");
+    buttonHeart.classList.add("button-heart");
+    buttonHeart.id = "button-heart-id";
     pVideo.insertAdjacentElement("afterend", buttonHeart);
+
+    const iconHeart = document.createElement("i");
+    const classesFontAwesome = ["fa-regular", "fa-heart"];
+    classesFontAwesome.forEach(() => {
+      iconHeart.classList.add(...classesFontAwesome);
+    });
+    buttonHeart.appendChild(iconHeart);
+
+    buttonHeart.addEventListener("click", LikesMedia.gestionLikes.bind(this));
 
     const mediaId = document.getElementById("item-media-id");
     mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
