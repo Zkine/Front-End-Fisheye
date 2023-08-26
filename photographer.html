@@ -20,7 +20,7 @@
     <article id="photograph-banner">
 
     </article>
-    <section class="photographer-section">
+    <section class="photographer-section" id="photographer-section-id">
       <div class="conteneur-like">
         <span class="photographer-like">
           <p id="calcul-like"></p>
@@ -44,28 +44,16 @@
   </main>
 
   <aside id="lightbox-modal"></aside>
+  <aside id="contact_modal-id"></aside>
 
-  <aside id="contact_modal">
-    <div class="modal">
-      <article>
-        <h1>Contactez-moi</h1>
-        <!-- <img src="assets/icons/close.svg" onclick="closeModal()" /> -->
-      </article>
-      <form>
-        <div>
-          <label>Prénom</label>
-          <input />
-        </div>
-        <button class="contact_button">Envoyer</button>
-      </form>
-    </div>
-  </aside>
   <script src="js/api/Api.js"></script>
-  <script src="js/factories/DataFactorie.js"></script>
-  <script src="js/models/MediaModel.js"></script>
-  <script src="js/models/PhotographersModel.js"></script>
-  <script src="js/templates/photographer.js"></script>
   <script src="js/App.js"></script>
+  <script src="js/factories/DataFactorie.js"></script>
+  <script src="js/models/PhotographersModel.js"></script>
+  <script src="js/models/MediaModel.js"></script>
+  <script src="js/templates/Photographer.js"></script>
+  <script src="js/utils/Lightbox.js"></script>
+  <script src="js/utils/Modale.js"></script>
 </body>
 
 </html>
