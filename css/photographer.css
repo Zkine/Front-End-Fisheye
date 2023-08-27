@@ -110,7 +110,7 @@ header {
 .conteneur-like {
     background-color: #DB8876;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     width: 376px;
     height: 89px;
@@ -125,20 +125,26 @@ header {
 
 .photographer-like {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     width: 170px;
     height: 102px;
 }
 
-.photographer-like::after {
+.calcul-like+.fa-heart {
+    color: #000000;
+    font-size: 24px;
+    margin-left: 15px;
+}
+
+/* .photographer-like::after {
     font: var(--fa-font-solid);
     content: "\f004";
     display: inline-block;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     font-size: 24px;
-}
+} */
 
 .photographer-price {
     display: flex;
@@ -188,22 +194,13 @@ header {
 .buttonTri:nth-child(1) {
     border-radius: 5px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 15px;
 }
 
-.buttonTri:nth-child(1):before {
-    font: var(--fa-font-solid);
-    content: "\f107";
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font-size: 16px;
-    color: #ffffff;
-    position: absolute;
-    top: 27px;
-    right: 15px;
-}
-
-.div-button:hover .buttonTri:nth-child(1):before {
+.div-button:hover .fa-angle-down {
     transform: rotate(180deg);
 }
 
@@ -315,7 +312,7 @@ header {
     cursor: pointer;
 }
 
-.fa-solid {
+.button-heart .fa-solid {
     color: #901C1C;
 }
 
@@ -403,12 +400,8 @@ header {
     cursor: pointer;
 }
 
-.button-modal::before {
-    font: var(--fa-font-solid);
-    content: "\f00d";
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
+.button-modal .fa-xmark {
+    color: #901C1C;
     font-size: 42px;
 }
 
@@ -433,27 +426,30 @@ header {
     display: flex;
     flex-direction: column;
     align-items: start;
-    padding-left: 35px;
+    padding: 0 35px;
     width: 669px;
-    height: 829px;
+    height: 833px;
     background-color: #DB8876;
     border-radius: 5px;
     margin: auto;
     position: relative;
+    box-shadow: 0px 8px 13px 2px rgba(0, 0, 0, 0.38)
 }
 
 .modale_article {
-    font-size: 40px;
+    font-size: 34px;
     width: 75%;
 }
 
 .modale_titre {
     margin: 15px 0 15px 0;
+    font-weight: 400;
 }
 
 .div_form {
     color: #312E2E;
     font-size: 25px;
+    margin-top: 10px;
 }
 
 .modale_paragraphe {
@@ -496,8 +492,6 @@ header {
     border: 2px solid #f8021b;
 }
 
-
-
 .textarea-modale {
     height: 150px;
     border-radius: 5px;
@@ -531,11 +525,11 @@ header {
     background-color: #DB8876;
     position: absolute;
     top: 15px;
-    right: 20px;
+    right: 25px;
 }
 
 .fa-xmark {
-    font-size: 72px;
+    font-size: 65px;
     color: #ffffff;
     cursor: pointer;
 }

@@ -1,7 +1,7 @@
 class Lightbox {
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("#media-lightbox-id");
-    const mediaAll = Array.from(document.querySelectorAll("#item-media-id"));
+    const mediaAll = [...document.querySelectorAll("#item-media-id")];
     Media = mediaAll.map(
       (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
     );
@@ -109,6 +109,13 @@ class Lightbox {
     buttonModal.classList.add("button-modal");
     section.appendChild(buttonModal);
 
+    const fontAwesomeCross = document.createElement("i");
+    const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
+    classesFontAwesomeCross.forEach(() => {
+      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
+    });
+    buttonModal.appendChild(fontAwesomeCross);
+
     buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
     nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
     previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
@@ -214,6 +221,13 @@ class Lightbox {
     buttonModal.classList.add("button-modal");
     sectionLithtbox.appendChild(buttonModal);
 
+    const fontAwesomeCross = document.createElement("i");
+    const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
+    classesFontAwesomeCross.forEach(() => {
+      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
+    });
+    buttonModal.appendChild(fontAwesomeCross);
+
     buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
     nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
     previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
@@ -307,6 +321,13 @@ class Lightbox {
     const buttonModal = document.createElement("button");
     buttonModal.classList.add("button-modal");
     sectionLithtbox.appendChild(buttonModal);
+
+    const fontAwesomeCross = document.createElement("i");
+    const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
+    classesFontAwesomeCross.forEach(() => {
+      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
+    });
+    buttonModal.appendChild(fontAwesomeCross);
 
     buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
     nextLink.addEventListener("click", Lightbox.nextImg.bind(this));

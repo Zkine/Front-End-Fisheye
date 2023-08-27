@@ -1,7 +1,7 @@
 class Modale {
-  constructor(regExNomPrenom, regExEmail) {
-    this.$regExNomPrenom = regExNomPrenom;
-    this.$regExEmail = regExEmail;
+  constructor() {
+    // this.$regExNomPrenom = regExNomPrenom;
+    // this.$regExEmail = regExEmail;
   }
 
   static renderModale(e) {
@@ -84,7 +84,7 @@ class Modale {
       paragrapheMail.setAttribute("data-error-visible", "false");
       paragrapheMail.setAttribute(
         "data-error",
-        "Pour valider un email, un @ ainsi qu'un . en fin de l'email est obligatoire."
+        "Pour valider votre email, un @ ainsi qu'un . en fin de l'email est obligatoire."
       );
       form.appendChild(paragrapheMail);
 
@@ -106,7 +106,7 @@ class Modale {
       paragrapheMessage.setAttribute("data-error-visible", "false");
       paragrapheMessage.setAttribute(
         "data-error",
-        " Veuillez entrer un minimum dans 65 caractères."
+        " Veuillez entrer un minimum de 65 caractères pour valider votre message."
       );
       form.appendChild(paragrapheMessage);
 
@@ -181,7 +181,7 @@ const asynsEcoute = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
     buttonContact.addEventListener("click", Modale.renderModale.bind(this));
-  }, 800);
+  }, 1000);
 };
 asynsEcoute();
 // regex permettant de valider les données inscrites par l'utilisateur
@@ -275,7 +275,7 @@ const validate = (e) => {
 
   if (testPrenom && testNom && testMail && testMessage) {
     console.log(
-      `Prémon: ${imputPrenom.value}, Nom: ${imputNom.value}, Email: ${imputEmail.value} Message: ${imputMessage.value}`
+      `Prémon: ${imputPrenom.value}\nNom: ${imputNom.value}\nEmail: ${imputEmail.value}\nMessage: ${imputMessage.value}`
     );
   }
 };

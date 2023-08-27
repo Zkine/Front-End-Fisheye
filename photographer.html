@@ -14,7 +14,8 @@
 <body>
   <header>
     <a href="index.html">
-      <img src="assets/images/logo.png" class="logo" alt="fisheye logo" /></a>
+      <img src="assets/images/logo.png" class="logo" alt="fisheye logo" />
+    </a>
   </header>
   <main>
     <article id="photograph-banner">
@@ -23,10 +24,11 @@
     <section class="photographer-section" id="photographer-section-id">
       <div class="conteneur-like">
         <span class="photographer-like">
-          <p id="calcul-like"></p>
+          <p class="calcul-like" id="calcul-like-id"></p>
+          <i class="fa-solid fa-heart"></i>
         </span>
         <span class="photographer-price">
-          <p id="calcul-price"></p>
+          <p id="calcul-price-id"></p>
         </span>
       </div>
       <div class="div-tri" id="div-tri-id">
@@ -34,7 +36,7 @@
           Trier par
         </p>
         <div class="div-button">
-          <button class="buttonTri" id="button-populaire-id">Popularité</button>
+          <button class="buttonTri" id="button-populaire-id">Popularité<i class="fa-solid fa-angle-down"></i></button>
           <button class="buttonTri" id="button-date-id">Date</button>
           <button class="buttonTri" id="button-titre-id">Titre</button>
         </div>
@@ -43,17 +45,18 @@
     <section class="img-section" id="img-section"></section>
   </main>
 
-  <aside id="lightbox-modal"></aside>
-  <aside id="contact_modal-id"></aside>
+  <aside aria-label="lightbox des photos" id="lightbox-modal"></aside>
+  <aside aria-label="Formulaire de contact" id="contact_modal-id"></aside>
 
-  <script src="js/api/Api.js"></script>
-  <script src="js/App.js"></script>
-  <script src="js/factories/DataFactorie.js"></script>
-  <script src="js/models/PhotographersModel.js"></script>
-  <script src="js/models/MediaModel.js"></script>
-  <script src="js/templates/Photographer.js"></script>
+
   <script src="js/utils/Lightbox.js"></script>
   <script src="js/utils/Modale.js"></script>
+  <script src="js/templates/Photographer.js"></script>
+  <script src="js/models/PhotographersModel.js"></script>
+  <script src="js/models/MediaModel.js"></script>
+  <script src="js/factories/DataFactorie.js"></script>
+  <script src="js/api/Api.js"></script>
+  <script src="js/App.js"></script>
 </body>
 
 </html>

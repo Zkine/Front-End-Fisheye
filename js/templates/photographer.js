@@ -1,6 +1,3 @@
-const url = new URL(window.location.href);
-const id = url.searchParams.get("id");
-
 let dataMedia = [];
 class PhotographerTemplate {
   constructor(data) {
@@ -8,10 +5,10 @@ class PhotographerTemplate {
     this._data = data;
     this.$imgSection = document.getElementById("img-section");
     // affichage des likes
-    this.$claculLikes = document.getElementById("calcul-like");
+    this.$claculLikes = document.getElementById("calcul-like-id");
     this.$claculLikes.textContent = MediaModel.MediaFullLickes();
     // affichage du prix
-    this.$claculPrice = document.getElementById("calcul-price");
+    this.$claculPrice = document.getElementById("calcul-price-id");
     this.$claculPrice.textContent = MediaModel.MediaFullprice();
 
     dataMedia.push(data);
@@ -142,7 +139,7 @@ class SortMedia extends PhotographerTemplate {
     if (dataMedia[0]._name) {
       dataMedia.shift();
 
-      const likesfull = document.getElementById("calcul-like");
+      const likesfull = document.getElementById("calcul-like-id");
       const likesFull = Number(parseInt(likesfull.textContent));
       if (likesFull === dataMedia) {
         likesfull = dataMedia.push(data);
@@ -462,7 +459,7 @@ class LikesMedia extends SortMedia {
     this._data = data;
   }
   static gestionLikes(e) {
-    const likesFull = document.getElementById("calcul-like");
+    const likesFull = document.getElementById("calcul-like-id");
     const articleMedia = e.target.closest("#article-media-id");
     const media = articleMedia.querySelector("#figcaption-media-id");
     const likesMedia = articleMedia.querySelector("#number-likes-id");
