@@ -135,6 +135,7 @@ class PhotographerTemplate {
 }
 
 class SortMedia extends PhotographerTemplate {
+  // const itemMedia = document.getElementById("item-media-id");
   static LikesUpdate(dataMediaAll) {
     if (dataMedia[0]._name) {
       dataMedia.shift();
@@ -172,6 +173,7 @@ class SortMedia extends PhotographerTemplate {
   }
 
   static renderPopulaire(e) {
+    console.log(this);
     e.stopPropagation();
     const imgSection = document.getElementById("img-section");
     dataMedia.sort(function (a, b) {
@@ -262,6 +264,96 @@ class SortMedia extends PhotographerTemplate {
     });
   }
 
+  // static renderPopulaire(e) {
+  //   e.stopPropagation();
+  //   console.log(itemMedia);
+  //   const imgSection = document.getElementById("img-section");
+  //   dataMedia.sort(function (a, b) {
+  //     if (a._MediaLikes < b._MediaLikes) return -1;
+  //     if (b._MediaLikes > b._MediaLikes) return 1;
+  //     return 0;
+  //   });
+
+  //   imgSection.innerHTML = "";
+  //   const [dataMediaAll] = SortMedia.LikesUpdate(e);
+
+  //   dataMediaAll.forEach((w) => {
+  //     const articlePhoto = document.createElement("article");
+  //     articlePhoto.classList.add("article-media");
+  //     articlePhoto.id = "article-media-id";
+  //     imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+
+  //     const figurePhoto = document.createElement("figure");
+  //     figurePhoto.classList.add("figure-media");
+  //     figurePhoto.id = "imgModal";
+  //     articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+  //     if (w.MediaItems && w.MediaItems.includes("jpg")) {
+  //       const Img = document.createElement("img");
+  //       Img.classList.add("item-media");
+  //       Img.setAttribute("src", `${w.MediaItems}`);
+  //       Img.setAttribute("alt", `${w.MediaTitle}`);
+  //       Img.id = "item-media-id";
+  //       figurePhoto.insertAdjacentElement("beforeend", Img);
+
+  //       const figcaptionImg = document.createElement("figcaption");
+  //       figcaptionImg.classList.add("figcaption-media");
+  //       figcaptionImg.textContent = `${w.MediaTitle}`;
+  //       figcaptionImg.id = "figcaption-media-id";
+  //       figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+  //     } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
+  //       const video = document.createElement("video");
+  //       video.classList.add("item-media");
+  //       video.id = "item-media-id";
+  //       figurePhoto.insertAdjacentElement("afterbegin", video);
+
+  //       const source = document.createElement("source");
+  //       source.id = "source-id";
+  //       source.setAttribute("alt", `${w.MediaTitle}`);
+  //       source.setAttribute("src", `${w.MediaItems}`);
+  //       source.setAttribute("type", "video/mp4");
+  //       video.appendChild(source);
+
+  //       const figcaptionVideo = document.createElement("figcaption");
+  //       figcaptionVideo.classList.add("figcaption-media");
+  //       figcaptionVideo.textContent = `${w.MediaTitle}`;
+  //       figcaptionVideo.id = "figcaption-media-id";
+  //       figurePhoto.appendChild(figcaptionVideo);
+  //     }
+  //     const pVideo = document.createElement("p");
+  //     pVideo.classList.add("number-likes");
+  //     pVideo.id = "number-likes-id";
+  //     pVideo.textContent = `${w.Medialikes}`;
+  //     figurePhoto.insertAdjacentElement("afterend", pVideo);
+
+  //     const buttonHeart = document.createElement("button");
+  //     buttonHeart.classList.add("button-heart");
+  //     buttonHeart.id = "button-heart-id";
+  //     pVideo.insertAdjacentElement("afterend", buttonHeart);
+
+  //     const iconHeart = document.createElement("i");
+  //     if (!w._MediaHeart) {
+  //       const classesFontAwesome = ["fa-regular", "fa-heart"];
+  //       iconHeart.classList.add(...classesFontAwesome);
+  //     } else if (w._MediaHeart) {
+  //       if (w._MediaHeart === "fa-regular fa-heart") {
+  //         const classesFontAwesome = ["fa-regular", "fa-heart"];
+  //         iconHeart.classList.add(...classesFontAwesome);
+  //       } else {
+  //         const classesFontAwesome = ["fa-solid", "fa-heart"];
+  //         iconHeart.classList.add(...classesFontAwesome);
+  //       }
+  //     }
+  //     iconHeart.id = "fontawesome-id";
+  //     buttonHeart.appendChild(iconHeart);
+
+  //     const HeartId = document.getElementById("button-heart-id");
+  //     HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
+  //     const mediaId = document.getElementById("item-media-id");
+  //     mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+
+  //     return articlePhoto;
+  //   });
+  // }
   static renderDate(e) {
     e.stopPropagation();
     const imgSection = document.getElementById("img-section");

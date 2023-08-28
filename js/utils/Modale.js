@@ -1,7 +1,10 @@
 class Modale {
   constructor() {
-    // this.$regExNomPrenom = regExNomPrenom;
-    // this.$regExEmail = regExEmail;
+    this.$formData = document.querySelectorAll(".modale_paragraphe");
+    this.$imputPrenom = document.getElementById("prenom-id");
+    this.$imputNom = document.getElementById("nom-id");
+    this.$imputEmail = document.getElementById("mail-id");
+    this.$imputMessage = document.getElementById("textarea-modale-id");
   }
 
   static renderModale(e) {
@@ -33,6 +36,7 @@ class Modale {
 
       const form = document.createElement("form");
       form.classList.add("modale_form");
+      form.setAttribute("name", "form");
       divForm.insertAdjacentElement("afterbegin", form);
 
       const paragraphePrenom = document.createElement("p");
@@ -248,6 +252,7 @@ const validate = (e) => {
   const testNom = regexName.test(imputNom.value);
   const testMail = regexEmail.test(imputEmail.value);
   const testMessage = regExMessage.test(imputMessage.value);
+  console.log(e);
 
   if (!testPrenom) {
     formData[0].dataset.errorVisible = true;
@@ -277,5 +282,10 @@ const validate = (e) => {
     console.log(
       `Prémon: ${imputPrenom.value}\nNom: ${imputNom.value}\nEmail: ${imputEmail.value}\nMessage: ${imputMessage.value}`
     );
+    const sectionModal = e.target.closest("#contact_modal-id");
+    if (sectionModal.classList[0].includes("contact_modal")) {
+      sectionModal.classList.add("conctact_modal_close");
+      document.form.reset();
+    }
   }
 };
