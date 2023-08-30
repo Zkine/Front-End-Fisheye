@@ -94,8 +94,8 @@ class PhotographerTemplate {
 
       const source = document.createElement("source");
       source.id = "source-id";
-      source.setAttribute("alt", `${this._data.MediaTitle}`);
       source.setAttribute("src", `${this._data.MediaItems}`);
+      source.setAttribute("alt", `${this._data.MediaTitle}`);
       source.setAttribute("type", "video/mp4");
       video.appendChild(source);
 
@@ -105,16 +105,16 @@ class PhotographerTemplate {
       figcaptionVideo.id = "figcaption-media-id";
       figurePhoto.appendChild(figcaptionVideo);
     }
-    const pVideo = document.createElement("p");
-    pVideo.classList.add("number-likes");
-    pVideo.id = "number-likes-id";
-    pVideo.textContent = `${this._data.Medialikes}`;
-    figurePhoto.insertAdjacentElement("afterend", pVideo);
+    const mediaLikes = document.createElement("p");
+    mediaLikes.classList.add("number-likes");
+    mediaLikes.id = "number-likes-id";
+    mediaLikes.textContent = `${this._data.Medialikes}`;
+    figurePhoto.insertAdjacentElement("afterend", mediaLikes);
 
     const buttonHeart = document.createElement("button");
     buttonHeart.classList.add("button-heart");
     buttonHeart.id = "button-heart-id";
-    pVideo.insertAdjacentElement("afterend", buttonHeart);
+    mediaLikes.insertAdjacentElement("afterend", buttonHeart);
 
     const iconHeart = document.createElement("i");
     const classesFontAwesome = ["fa-regular", "fa-heart"];
@@ -134,6 +134,7 @@ class PhotographerTemplate {
   }
 }
 
+let replacedNode = [];
 class SortMedia extends PhotographerTemplate {
   // const itemMedia = document.getElementById("item-media-id");
   static LikesUpdate(dataMediaAll) {
@@ -150,7 +151,6 @@ class SortMedia extends PhotographerTemplate {
     }
 
     dataMediaAll = dataMedia;
-
     for (const likesValue of mediaLinked) {
       dataMediaAll.forEach((v) => {
         if (
@@ -172,364 +172,305 @@ class SortMedia extends PhotographerTemplate {
     return [dataMediaAll];
   }
 
-  static renderPopulaire(e) {
-    console.log(this);
-    e.stopPropagation();
-    const imgSection = document.getElementById("img-section");
-    dataMedia.sort(function (a, b) {
-      if (a._MediaLikes < b._MediaLikes) return -1;
-      if (b._MediaLikes > b._MediaLikes) return 1;
-      return 0;
-    });
+  static UpdateMedia(mediaImage) {
+    const [dataMediaAll] = SortMedia.LikesUpdate();
+    mediaImage = document.querySelectorAll("#item-media-id");
+    const figureMedia = document.querySelectorAll("#imgModal");
 
-    imgSection.innerHTML = "";
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    // for (const dataMedia of dataMediaAlls) {
-    // }LikesUpdate(dataMedia, likesfull,dataMediaAll,mediaLinked)
-    dataMediaAll.forEach((w) => {
-      const articlePhoto = document.createElement("article");
-      articlePhoto.classList.add("article-media");
-      articlePhoto.id = "article-media-id";
-      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+    for (let w = 0; w < dataMediaAll.length; w++) {
+      for (let i = 0; i < mediaImage.length; i++) {
+        for (let f = 0; f < figureMedia.length; f++) {
+          const noeudVideo = figureMedia[f].childNodes[0].nodeName === "VIDEO";
+          const noeudImage =
+            figureMedia[f].childNodes[0].alt === mediaImage[i].alt;
 
-      const figurePhoto = document.createElement("figure");
-      figurePhoto.classList.add("figure-media");
-      figurePhoto.id = "imgModal";
-      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-      if (w.MediaItems && w.MediaItems.includes("jpg")) {
-        const Img = document.createElement("img");
-        Img.classList.add("item-media");
-        Img.setAttribute("src", `${w.MediaItems}`);
-        Img.setAttribute("alt", `${w.MediaTitle}`);
-        Img.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", Img);
+          if (
+            dataMediaAll[w].MediaItems.includes("jpg") &&
+            Number([w]) === Number([i]) &&
+            Number([w]) === Number([f])
+          ) {
+            if (mediaImage[i].nodeName === "IMG") {
+              mediaImage[
+                i
+              ].attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
+              mediaImage[
+                i
+              ].attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
 
-        const figcaptionImg = document.createElement("figcaption");
-        figcaptionImg.classList.add("figcaption-media");
-        figcaptionImg.textContent = `${w.MediaTitle}`;
-        figcaptionImg.id = "figcaption-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-      } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-        const video = document.createElement("video");
-        video.classList.add("item-media");
-        video.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("afterbegin", video);
+              mediaImage[
+                i
+              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
 
-        const source = document.createElement("source");
-        source.id = "source-id";
-        source.setAttribute("alt", `${w.MediaTitle}`);
-        source.setAttribute("src", `${w.MediaItems}`);
-        source.setAttribute("type", "video/mp4");
-        video.appendChild(source);
+              mediaImage[
+                i
+              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
+            } else if (
+              mediaImage[i].nodeName === "VIDEO" &&
+              noeudVideo === true &&
+              noeudImage === true
+            ) {
+              mediaImage[
+                i
+              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
 
-        const figcaptionVideo = document.createElement("figcaption");
-        figcaptionVideo.classList.add("figcaption-media");
-        figcaptionVideo.textContent = `${w.MediaTitle}`;
-        figcaptionVideo.id = "figcaption-media-id";
-        figurePhoto.appendChild(figcaptionVideo);
-      }
-      const pVideo = document.createElement("p");
-      pVideo.classList.add("number-likes");
-      pVideo.id = "number-likes-id";
-      pVideo.textContent = `${w.Medialikes}`;
-      figurePhoto.insertAdjacentElement("afterend", pVideo);
+              mediaImage[
+                i
+              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
-      const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("button-heart");
-      buttonHeart.id = "button-heart-id";
-      pVideo.insertAdjacentElement("afterend", buttonHeart);
+              const Img = document.createElement("img");
+              Img.classList.add("item-media");
+              Img.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
+              Img.setAttribute("alt", `${dataMediaAll[w].MediaTitle}`);
+              Img.id = "item-media-id";
 
-      const iconHeart = document.createElement("i");
-      if (!w._MediaHeart) {
-        const classesFontAwesome = ["fa-regular", "fa-heart"];
-        iconHeart.classList.add(...classesFontAwesome);
-      } else if (w._MediaHeart) {
-        if (w._MediaHeart === "fa-regular fa-heart") {
-          const classesFontAwesome = ["fa-regular", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
-        } else {
-          const classesFontAwesome = ["fa-solid", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
+              replacedNode.length !== 0
+                ? figureMedia[f].replaceChild(
+                    replacedNode,
+                    figureMedia[f].childNodes[0]
+                  )
+                : figureMedia[f].replaceChild(
+                    Img,
+                    figureMedia[f].childNodes[0]
+                  );
+
+              // impossible de d'écouter l'événement par l'id
+              Img.addEventListener("click", Lightbox.DomLightbox.bind(this));
+            }
+          } else if (
+            dataMediaAll[w].MediaItems.includes("mp4") &&
+            Number([w]) === Number([i]) &&
+            Number([w]) === Number([f])
+          ) {
+            if (mediaImage[i].nodeName === "VIDEO") {
+              mediaImage[
+                i
+              ].children[0].attributes[2].textContent = `${dataMediaAll[w].MediaItems}`;
+              mediaImage[
+                i
+              ].children[0].attributes[1].textContent = `${dataMediaAll[w].MediaTitle}`;
+            } else if (
+              (mediaImage[i].nodeName === "IMG" &&
+                noeudVideo === true &&
+                noeudImage === true) ||
+              (replacedNode && noeudImage === true)
+            ) {
+              mediaImage[
+                i
+              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
+
+              mediaImage[
+                i
+              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
+
+              const video = document.createElement("video");
+              video.classList.add("item-media");
+              video.id = "item-media-id";
+
+              const source = document.createElement("source");
+              source.id = "source-id";
+              source.setAttribute("alt", `${dataMediaAll[w].MediaTitle}`);
+              source.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
+              source.setAttribute("type", "video/mp4");
+              video.appendChild(source);
+
+              replacedNode.length !== 0
+                ? figureMedia[f].replaceChild(
+                    replacedNode,
+                    figureMedia[f].childNodes[0]
+                  )
+                : figureMedia[f].replaceChild(
+                    video,
+                    figureMedia[f].childNodes[0]
+                  );
+
+              video.addEventListener("click", Lightbox.DomLightbox.bind(this));
+            }
+          }
         }
       }
-      iconHeart.id = "fontawesome-id";
-      buttonHeart.appendChild(iconHeart);
+    }
 
-      const HeartId = document.getElementById("button-heart-id");
-      HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-      const mediaId = document.getElementById("item-media-id");
-      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-
-      return articlePhoto;
-    });
+    return [mediaImage];
   }
 
-  // static renderPopulaire(e) {
-  //   e.stopPropagation();
-  //   console.log(itemMedia);
-  //   const imgSection = document.getElementById("img-section");
-  //   dataMedia.sort(function (a, b) {
-  //     if (a._MediaLikes < b._MediaLikes) return -1;
-  //     if (b._MediaLikes > b._MediaLikes) return 1;
-  //     return 0;
-  //   });
-
-  //   imgSection.innerHTML = "";
-  //   const [dataMediaAll] = SortMedia.LikesUpdate(e);
-
-  //   dataMediaAll.forEach((w) => {
-  //     const articlePhoto = document.createElement("article");
-  //     articlePhoto.classList.add("article-media");
-  //     articlePhoto.id = "article-media-id";
-  //     imgSection.insertAdjacentElement("afterbegin", articlePhoto);
-
-  //     const figurePhoto = document.createElement("figure");
-  //     figurePhoto.classList.add("figure-media");
-  //     figurePhoto.id = "imgModal";
-  //     articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-  //     if (w.MediaItems && w.MediaItems.includes("jpg")) {
-  //       const Img = document.createElement("img");
-  //       Img.classList.add("item-media");
-  //       Img.setAttribute("src", `${w.MediaItems}`);
-  //       Img.setAttribute("alt", `${w.MediaTitle}`);
-  //       Img.id = "item-media-id";
-  //       figurePhoto.insertAdjacentElement("beforeend", Img);
-
-  //       const figcaptionImg = document.createElement("figcaption");
-  //       figcaptionImg.classList.add("figcaption-media");
-  //       figcaptionImg.textContent = `${w.MediaTitle}`;
-  //       figcaptionImg.id = "figcaption-media-id";
-  //       figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-  //     } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-  //       const video = document.createElement("video");
-  //       video.classList.add("item-media");
-  //       video.id = "item-media-id";
-  //       figurePhoto.insertAdjacentElement("afterbegin", video);
-
-  //       const source = document.createElement("source");
-  //       source.id = "source-id";
-  //       source.setAttribute("alt", `${w.MediaTitle}`);
-  //       source.setAttribute("src", `${w.MediaItems}`);
-  //       source.setAttribute("type", "video/mp4");
-  //       video.appendChild(source);
-
-  //       const figcaptionVideo = document.createElement("figcaption");
-  //       figcaptionVideo.classList.add("figcaption-media");
-  //       figcaptionVideo.textContent = `${w.MediaTitle}`;
-  //       figcaptionVideo.id = "figcaption-media-id";
-  //       figurePhoto.appendChild(figcaptionVideo);
-  //     }
-  //     const pVideo = document.createElement("p");
-  //     pVideo.classList.add("number-likes");
-  //     pVideo.id = "number-likes-id";
-  //     pVideo.textContent = `${w.Medialikes}`;
-  //     figurePhoto.insertAdjacentElement("afterend", pVideo);
-
-  //     const buttonHeart = document.createElement("button");
-  //     buttonHeart.classList.add("button-heart");
-  //     buttonHeart.id = "button-heart-id";
-  //     pVideo.insertAdjacentElement("afterend", buttonHeart);
-
-  //     const iconHeart = document.createElement("i");
-  //     if (!w._MediaHeart) {
-  //       const classesFontAwesome = ["fa-regular", "fa-heart"];
-  //       iconHeart.classList.add(...classesFontAwesome);
-  //     } else if (w._MediaHeart) {
-  //       if (w._MediaHeart === "fa-regular fa-heart") {
-  //         const classesFontAwesome = ["fa-regular", "fa-heart"];
-  //         iconHeart.classList.add(...classesFontAwesome);
-  //       } else {
-  //         const classesFontAwesome = ["fa-solid", "fa-heart"];
-  //         iconHeart.classList.add(...classesFontAwesome);
-  //       }
-  //     }
-  //     iconHeart.id = "fontawesome-id";
-  //     buttonHeart.appendChild(iconHeart);
-
-  //     const HeartId = document.getElementById("button-heart-id");
-  //     HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-  //     const mediaId = document.getElementById("item-media-id");
-  //     mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-
-  //     return articlePhoto;
-  //   });
-  // }
+  static renderPopulaire(e) {
+    dataMedia.sort(function (a, b) {
+      return b._MediaLikes - a._MediaLikes;
+    });
+    const [mediaImage] = SortMedia.UpdateMedia(e);
+  }
   static renderDate(e) {
     e.stopPropagation();
-    const imgSection = document.getElementById("img-section");
     dataMedia.sort(function (a, b) {
-      if (a._MediaDate < b._MediaDate) return -1;
+      if (b._MediaDate < a._MediaDate) return -1;
       if (b._MediaDate > b._MediaDate) return 1;
       return 0;
     });
+    const [mediaImage] = SortMedia.UpdateMedia(e);
+    // const [dataMediaAll] = SortMedia.LikesUpdate(e);
+    // dataMediaAll.forEach((w) => {
+    //   const articlePhoto = document.createElement("article");
+    //   articlePhoto.classList.add("article-media");
+    //   articlePhoto.id = "article-media-id";
+    //   imgSection.insertAdjacentElement("afterbegin", articlePhoto);
 
-    imgSection.innerHTML = "";
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    dataMediaAll.forEach((w) => {
-      const articlePhoto = document.createElement("article");
-      articlePhoto.classList.add("article-media");
-      articlePhoto.id = "article-media-id";
-      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+    //   const figurePhoto = document.createElement("figure");
+    //   figurePhoto.classList.add("figure-media");
+    //   figurePhoto.id = "imgModal";
+    //   articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+    //   if (w.MediaItems && w.MediaItems.includes("jpg")) {
+    //     const Img = document.createElement("img");
+    //     Img.classList.add("item-media");
+    //     Img.setAttribute("src", `${w.MediaItems}`);
+    //     Img.setAttribute("alt", `${w.MediaTitle}`);
+    //     Img.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("beforeend", Img);
 
-      const figurePhoto = document.createElement("figure");
-      figurePhoto.classList.add("figure-media");
-      figurePhoto.id = "imgModal";
-      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-      if (w.MediaItems && w.MediaItems.includes("jpg")) {
-        const Img = document.createElement("img");
-        Img.classList.add("item-media");
-        Img.setAttribute("src", `${w.MediaItems}`);
-        Img.setAttribute("alt", `${w.MediaTitle}`);
-        Img.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", Img);
+    //     const figcaptionImg = document.createElement("figcaption");
+    //     figcaptionImg.classList.add("figcaption-media");
+    //     figcaptionImg.textContent = `${w.MediaTitle}`;
+    //     figcaptionImg.id = "figcaption-media-id";
+    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+    //   } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
+    //     const video = document.createElement("video");
+    //     video.classList.add("item-media");
+    //     video.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("afterbegin", video);
 
-        const figcaptionImg = document.createElement("figcaption");
-        figcaptionImg.classList.add("figcaption-media");
-        figcaptionImg.textContent = `${w.MediaTitle}`;
-        figcaptionImg.id = "figcaption-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-      } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-        const video = document.createElement("video");
-        video.classList.add("item-media");
-        video.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("afterbegin", video);
+    //     const source = document.createElement("source");
+    //     source.id = "source-id";
+    //     source.setAttribute("alt", `${w.MediaTitle}`);
+    //     source.setAttribute("src", `${w.MediaItems}`);
+    //     source.setAttribute("type", "video/mp4");
+    //     video.appendChild(source);
 
-        const source = document.createElement("source");
-        source.id = "source-id";
-        source.setAttribute("alt", `${w.MediaTitle}`);
-        source.setAttribute("src", `${w.MediaItems}`);
-        source.setAttribute("type", "video/mp4");
-        video.appendChild(source);
+    //     const figcaptionVideo = document.createElement("figcaption");
+    //     figcaptionVideo.classList.add("figcaption-media");
+    //     figcaptionVideo.textContent = `${w.MediaTitle}`;
+    //     figcaptionVideo.id = "figcaption-media-id";
+    //     figurePhoto.appendChild(figcaptionVideo);
+    //   }
+    //   const pVideo = document.createElement("p");
+    //   pVideo.classList.add("number-likes");
+    //   pVideo.id = "number-likes-id";
+    //   pVideo.textContent = `${w.Medialikes}`;
+    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
 
-        const figcaptionVideo = document.createElement("figcaption");
-        figcaptionVideo.classList.add("figcaption-media");
-        figcaptionVideo.textContent = `${w.MediaTitle}`;
-        figcaptionVideo.id = "figcaption-media-id";
-        figurePhoto.appendChild(figcaptionVideo);
-      }
-      const pVideo = document.createElement("p");
-      pVideo.classList.add("number-likes");
-      pVideo.id = "number-likes-id";
-      pVideo.textContent = `${w.Medialikes}`;
-      figurePhoto.insertAdjacentElement("afterend", pVideo);
+    //   const buttonHeart = document.createElement("button");
+    //   buttonHeart.classList.add("button-heart");
+    //   buttonHeart.id = "button-heart-id";
+    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-      const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("button-heart");
-      buttonHeart.id = "button-heart-id";
-      pVideo.insertAdjacentElement("afterend", buttonHeart);
+    //   const iconHeart = document.createElement("i");
+    //   if (!w._MediaHeart) {
+    //     const classesFontAwesome = ["fa-regular", "fa-heart"];
+    //     iconHeart.classList.add(...classesFontAwesome);
+    //   } else if (w._MediaHeart) {
+    //     if (w._MediaHeart === "fa-regular fa-heart") {
+    //       const classesFontAwesome = ["fa-regular", "fa-heart"];
+    //       iconHeart.classList.add(...classesFontAwesome);
+    //     } else {
+    //       const classesFontAwesome = ["fa-solid", "fa-heart"];
+    //       iconHeart.classList.add(...classesFontAwesome);
+    //     }
+    //   }
+    //   iconHeart.id = "fontawesome-id";
+    //   buttonHeart.appendChild(iconHeart);
 
-      const iconHeart = document.createElement("i");
-      if (!w._MediaHeart) {
-        const classesFontAwesome = ["fa-regular", "fa-heart"];
-        iconHeart.classList.add(...classesFontAwesome);
-      } else if (w._MediaHeart) {
-        if (w._MediaHeart === "fa-regular fa-heart") {
-          const classesFontAwesome = ["fa-regular", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
-        } else {
-          const classesFontAwesome = ["fa-solid", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
-        }
-      }
-      iconHeart.id = "fontawesome-id";
-      buttonHeart.appendChild(iconHeart);
-
-      const HeartId = document.getElementById("button-heart-id");
-      HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-      const mediaId = document.getElementById("item-media-id");
-      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-      return articlePhoto;
-    });
+    //   const HeartId = document.getElementById("button-heart-id");
+    //   HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
+    //   const mediaId = document.getElementById("item-media-id");
+    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+    //   return articlePhoto;
+    // });
   }
 
   static renderTitre(e) {
     e.stopPropagation();
-    const imgSection = document.getElementById("img-section");
     dataMedia.sort(function (a, b) {
-      if (a._MediaTitle > b._MediaTitle) return -1;
+      if (b._MediaTitle > a._MediaTitle) return -1;
       if (b._MediaTitle < b._MediaTitle) return 1;
       return 0;
     });
+    const [mediaImage] = SortMedia.UpdateMedia(e);
+    // const [dataMediaAll] = SortMedia.LikesUpdate(e);
 
-    imgSection.innerHTML = "";
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
+    // dataMediaAll.forEach((w) => {
+    //   const articlePhoto = document.createElement("article");
+    //   articlePhoto.classList.add("article-media");
+    //   articlePhoto.id = "article-media-id";
+    //   imgSection.insertAdjacentElement("afterbegin", articlePhoto);
 
-    dataMediaAll.forEach((w) => {
-      const articlePhoto = document.createElement("article");
-      articlePhoto.classList.add("article-media");
-      articlePhoto.id = "article-media-id";
-      imgSection.insertAdjacentElement("afterbegin", articlePhoto);
+    //   const figurePhoto = document.createElement("figure");
+    //   figurePhoto.classList.add("figure-media");
+    //   figurePhoto.id = "imgModal";
+    //   articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
+    //   if (w.MediaItems && w.MediaItems.includes("jpg")) {
+    //     const Img = document.createElement("img");
+    //     Img.classList.add("item-media");
+    //     Img.setAttribute("src", `${w.MediaItems}`);
+    //     Img.setAttribute("alt", `${w.MediaTitle}`);
+    //     Img.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("beforeend", Img);
 
-      const figurePhoto = document.createElement("figure");
-      figurePhoto.classList.add("figure-media");
-      figurePhoto.id = "imgModal";
-      articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-      if (w.MediaItems && w.MediaItems.includes("jpg")) {
-        const Img = document.createElement("img");
-        Img.classList.add("item-media");
-        Img.setAttribute("src", `${w.MediaItems}`);
-        Img.setAttribute("alt", `${w.MediaTitle}`);
-        Img.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", Img);
+    //     const figcaptionImg = document.createElement("figcaption");
+    //     figcaptionImg.classList.add("figcaption-media");
+    //     figcaptionImg.textContent = `${w.MediaTitle}`;
+    //     figcaptionImg.id = "figcaption-media-id";
+    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
+    //   } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
+    //     const video = document.createElement("video");
+    //     video.classList.add("item-media");
+    //     video.id = "item-media-id";
+    //     figurePhoto.insertAdjacentElement("afterbegin", video);
 
-        const figcaptionImg = document.createElement("figcaption");
-        figcaptionImg.classList.add("figcaption-media");
-        figcaptionImg.textContent = `${w.MediaTitle}`;
-        figcaptionImg.id = "figcaption-media-id";
-        figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-      } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-        const video = document.createElement("video");
-        video.classList.add("item-media");
-        video.id = "item-media-id";
-        figurePhoto.insertAdjacentElement("afterbegin", video);
+    //     const source = document.createElement("source");
+    //     source.id = "source-id";
+    //     source.setAttribute("alt", `${w.MediaTitle}`);
+    //     source.setAttribute("src", `${w.MediaItems}`);
+    //     source.setAttribute("type", "video/mp4");
+    //     video.appendChild(source);
 
-        const source = document.createElement("source");
-        source.id = "source-id";
-        source.setAttribute("alt", `${w.MediaTitle}`);
-        source.setAttribute("src", `${w.MediaItems}`);
-        source.setAttribute("type", "video/mp4");
-        video.appendChild(source);
+    //     const figcaptionVideo = document.createElement("figcaption");
+    //     figcaptionVideo.classList.add("figcaption-media");
+    //     figcaptionVideo.textContent = `${w.MediaTitle}`;
+    //     figcaptionVideo.id = "figcaption-media-id";
+    //     figurePhoto.appendChild(figcaptionVideo);
+    //   }
+    //   const pVideo = document.createElement("p");
+    //   pVideo.classList.add("number-likes");
+    //   pVideo.id = "number-likes-id";
+    //   pVideo.textContent = `${w.Medialikes}`;
+    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
 
-        const figcaptionVideo = document.createElement("figcaption");
-        figcaptionVideo.classList.add("figcaption-media");
-        figcaptionVideo.textContent = `${w.MediaTitle}`;
-        figcaptionVideo.id = "figcaption-media-id";
-        figurePhoto.appendChild(figcaptionVideo);
-      }
-      const pVideo = document.createElement("p");
-      pVideo.classList.add("number-likes");
-      pVideo.id = "number-likes-id";
-      pVideo.textContent = `${w.Medialikes}`;
-      figurePhoto.insertAdjacentElement("afterend", pVideo);
+    //   const buttonHeart = document.createElement("button");
+    //   buttonHeart.classList.add("button-heart");
+    //   buttonHeart.id = "button-heart-id";
+    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
 
-      const buttonHeart = document.createElement("button");
-      buttonHeart.classList.add("button-heart");
-      buttonHeart.id = "button-heart-id";
-      pVideo.insertAdjacentElement("afterend", buttonHeart);
+    //   const iconHeart = document.createElement("i");
+    //   if (!w._MediaHeart) {
+    //     const classesFontAwesome = ["fa-regular", "fa-heart"];
+    //     iconHeart.classList.add(...classesFontAwesome);
+    //   } else if (w._MediaHeart) {
+    //     if (w._MediaHeart === "fa-regular fa-heart") {
+    //       const classesFontAwesome = ["fa-regular", "fa-heart"];
+    //       iconHeart.classList.add(...classesFontAwesome);
+    //     } else {
+    //       const classesFontAwesome = ["fa-solid", "fa-heart"];
+    //       iconHeart.classList.add(...classesFontAwesome);
+    //     }
+    //   }
+    //   iconHeart.id = "fontawesome-id";
+    //   buttonHeart.appendChild(iconHeart);
 
-      const iconHeart = document.createElement("i");
-      if (!w._MediaHeart) {
-        const classesFontAwesome = ["fa-regular", "fa-heart"];
-        iconHeart.classList.add(...classesFontAwesome);
-      } else if (w._MediaHeart) {
-        if (w._MediaHeart === "fa-regular fa-heart") {
-          const classesFontAwesome = ["fa-regular", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
-        } else {
-          const classesFontAwesome = ["fa-solid", "fa-heart"];
-          iconHeart.classList.add(...classesFontAwesome);
-        }
-      }
-      iconHeart.id = "fontawesome-id";
-      buttonHeart.appendChild(iconHeart);
+    //   const HeartId = document.getElementById("button-heart-id");
+    //   HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
+    //   const mediaId = document.getElementById("item-media-id");
+    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
 
-      const HeartId = document.getElementById("button-heart-id");
-      HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-      const mediaId = document.getElementById("item-media-id");
-      mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-
-      return articlePhoto;
-    });
+    //   return articlePhoto;
+    // });
   }
 }
 // écoute du boutton popularité et appel à la fonction renderPopulaire()
@@ -546,11 +487,9 @@ btnTitre.addEventListener("click", SortMedia.renderTitre.bind(this));
 
 let mediaLinked = [];
 class LikesMedia extends SortMedia {
-  constructor(data) {
-    super(data);
-    this._data = data;
-  }
   static gestionLikes(e) {
+    e.stopPropagation();
+
     const likesFull = document.getElementById("calcul-like-id");
     const articleMedia = e.target.closest("#article-media-id");
     const media = articleMedia.querySelector("#figcaption-media-id");
@@ -561,21 +500,16 @@ class LikesMedia extends SortMedia {
       classHeart.classList.remove("fa-regular");
       classHeart.classList.add("fa-solid");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
-      if (this._data !== undefined) {
-        likesMedia.textContent =
-          Number(parseInt(`${this._data.Medialikes}`)) + 1;
-      } else {
-        likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
-      }
+
+      return (likesMedia.textContent =
+        Number(parseInt(likesMedia.textContent)) + 1);
     } else if (classHeart.classList.contains("fa-solid")) {
       classHeart.classList.remove("fa-solid");
       classHeart.classList.add("fa-regular");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
-      if (this._data !== undefined) {
-        likesMedia.textContent = Number(parseInt(`${this._data.Medialikes}`));
-      } else {
-        likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
-      }
+
+      return (likesMedia.textContent =
+        Number(parseInt(likesMedia.textContent)) - 1);
     }
 
     function LikesTrue(media, likesMedia, mediaHearts) {

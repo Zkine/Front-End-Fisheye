@@ -1,7 +1,7 @@
 class Lightbox {
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
-    const linkMedia = document.querySelector("#media-lightbox-id");
-    const mediaAll = [...document.querySelectorAll("#item-media-id")];
+    const linkMedia = document.querySelector("section #media-lightbox-id");
+    const mediaAll = [...document.querySelectorAll("article #item-media-id")];
     Media = mediaAll.map(
       (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
     );
@@ -12,11 +12,9 @@ class Lightbox {
     MediaItems = Media.findIndex(
       (element) => element === linkMedia.attributes[1].textContent
     );
-
     MediaTitle = MediaTitleMap.findIndex(
       (element) => element === linkMedia.attributes[2].textContent
     );
-
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
   }
 
@@ -49,9 +47,9 @@ class Lightbox {
       figcaption.classList.add("figcaption-lightbox");
       figcaption.textContent = `${imgAlt}`;
       figureLightbox.insertAdjacentElement("beforeend", figcaption);
-    } else if (e.target.children[0].attributes[2].textContent.includes("mp4")) {
-      const videoClick = e.target.children[0].attributes[2].textContent;
-      const videoAlt = e.target.children[0].attributes[1].textContent;
+    } else if (e.target.children[0].attributes[1].textContent.includes("mp4")) {
+      const videoClick = e.target.children[0].attributes[1].textContent;
+      const videoAlt = e.target.children[0].attributes[2].textContent;
 
       const video = document.createElement("video");
       video.classList.add("media-lightbox");
@@ -130,12 +128,47 @@ class Lightbox {
     const sectionLightbox = document.getElementById("lightbox-modal");
     return sectionLightbox.removeChild(section);
   }
+
+  static constanteInit(
+    cloneVideo,
+    sourceVideo,
+    neaudImage,
+    lightboxImage,
+    lightboxVideo,
+    figureItem
+  ) {
+    const neaudVideo = document.querySelector("video");
+    cloneVideo = neaudVideo.cloneNode(true);
+    sourceVideo = cloneVideo.querySelector("#source-id");
+    neaudImage = document.querySelector("figure img");
+    lightboxImage = document.querySelector("#figure-lightbox-id img");
+    lightboxVideo = document.querySelector("#figure-lightbox-id video");
+    figureItem = document.querySelector("#figure-lightbox-id");
+    return [
+      cloneVideo,
+      sourceVideo,
+      neaudImage,
+      lightboxImage,
+      lightboxVideo,
+      figureItem,
+    ];
+  }
+
   // image suivante
   static nextImg(e) {
     e.preventDefault();
     e.stopPropagation();
-    // récupération du lien de l'image affichée dans la constante linkMedia
     const sectionLithtbox = e.target.closest("#section-lightbox-id");
+    const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
+    const previousLink = sectionLithtbox.querySelector("#previous-link-id");
+    const [
+      cloneVideo,
+      sourceVideo,
+      neaudImage,
+      lightboxImage,
+      lightboxVideo,
+      figureItem,
+    ] = Lightbox.constanteInit(e);
     const [media, mediaTitleMap, MediaItems, MediaTitle] =
       Lightbox.MediaAllSetect(e);
     let mediaItems = MediaItems;
@@ -147,100 +180,78 @@ class Lightbox {
       mediaItems = -1;
       mediaTitle = -1;
     }
+    if (media[mediaItems + 1].includes("jpg") && lightboxImage) {
+      if (itemsMedia.nodeName === "IMG") {
+        itemsMedia.attributes[1].textContent = `${media[mediaItems + 1]}`;
+        itemsMedia.attributes[2].textContent = `${
+          mediaTitleMap[mediaTitle + 1]
+        }`;
 
-    sectionLithtbox.innerHTML = "";
-    const figureLightbox = document.createElement("figure");
-    figureLightbox.classList.add("figure-lightbox");
-    figureLightbox.id = "figure-lightbox-id";
-    sectionLithtbox.appendChild(figureLightbox);
-    if (media[mediaItems + 1].includes("jpg")) {
-      const newImg = document.createElement("img");
-      newImg.classList.add("media-lightbox");
-      newImg.setAttribute("src", `${media[mediaItems + 1]}`);
-      newImg.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
-      newImg.id = "media-lightbox-id";
-      figureLightbox.insertAdjacentElement("afterbegin", newImg);
-
-      const newfigcaption = document.createElement("figcaption");
-      newfigcaption.classList.add("figcaption-lightbox");
-      newfigcaption.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
-      figureLightbox.appendChild(newfigcaption);
-    } else if (media[mediaItems + 1].includes("mp4")) {
-      const video = document.createElement("video");
-      video.classList.add("media-lightbox");
-      video.setAttribute("controls", "");
-      figureLightbox.insertAdjacentElement("afterbegin", video);
-
-      const source = document.createElement("source");
-      source.id = "media-lightbox-id";
-      source.setAttribute("src", `${media[mediaItems + 1]}`);
-      source.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
-      source.setAttribute("type", "video/mp4");
-      video.appendChild(source);
-
-      const figcaptionVideo = document.createElement("figcaption");
-      figcaptionVideo.classList.add("figcaption-lightbox");
-      figcaptionVideo.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
-      figureLightbox.appendChild(figcaptionVideo);
+        itemsMedia.nextElementSibling.textContent = `${
+          mediaTitleMap[mediaTitle + 1]
+        }`;
+      }
+    } else if (media[mediaItems + 1].includes("jpg") && !lightboxImage) {
+      const cloneImage = neaudImage.cloneNode(true);
+      cloneImage.attributes[1].textContent = `${media[mediaItems + 1]}`;
+      cloneImage.attributes[2].textContent = `${media[mediaTitle + 1]}`;
+      cloneImage.attributes[3].textContent = "media-lightbox-id";
+      cloneImage.classList.remove("item-media");
+      cloneImage.classList.add("media-lightbox");
+      figureItem.replaceChild(cloneImage, lightboxVideo);
+    } else if (media[mediaItems + 1].includes("mp4") && lightboxVideo) {
+      itemsMedia.attributes[1].textContent = `${media[mediaItems + 1]}`;
+      itemsMedia.attributes[2].textContent = `${mediaTitleMap[mediaTitle + 1]}`;
+      itemsMedia.parentElement.nextElementSibling.textContent = `${
+        mediaTitleMap[mediaTitle + 1]
+      }`;
+    } else if (media[mediaItems + 1].includes("mp4") && !lightboxVideo) {
+      // console.log(sourceVide.oattributes[0].textContent);
+      sourceVideo.attributes[0].textContent = "media-lightbox-id";
+      cloneVideo.classList.remove("item-media");
+      cloneVideo.classList.add("media-lightbox");
+      figureItem.replaceChild(cloneVideo, lightboxImage);
     }
-    const previousLink = document.createElement("a");
-    previousLink.setAttribute("type", "button");
     if (media[mediaItems - 0]) {
-      previousLink.setAttribute("href", `${media[mediaItems - 0]}`);
+      previousLink.attributes[1].textContent = `${media[mediaItems - 0]}`;
     } else if (media[mediaItems - 0] === undefined && media.length - 2) {
       mediaItems = media.length;
-      previousLink.setAttribute("href", `${media[mediaItems - 1]}`);
+      previousLink.attributes[1].textContent = `${media[mediaItems - 1]}`;
     }
 
-    previousLink.classList.add("previous-link");
-    previousLink.id = "previous-link-id";
-    sectionLithtbox.appendChild(previousLink);
-
-    const nextLink = document.createElement("a");
-    nextLink.setAttribute("type", "button");
     if (media[mediaItems + 2]) {
-      nextLink.setAttribute("href", `${media[mediaItems + 2]}`);
+      e.srcElement.attributes[1].textContent = `${media[mediaItems + 2]}`;
     } else if (
       media[mediaItems + 2] === undefined &&
       mediaItems == media.length - 2
     ) {
       mediaItems = -1;
-      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
+      e.srcElement.attributes[1].textContent = `${media[mediaItems + 1]}`;
     } else if (
       media[mediaItems + 2] === undefined &&
       mediaItems === media.length
     ) {
       mediaItems = -1;
-      nextLink.setAttribute("href", `${media[mediaItems + 2]}`);
+      e.srcElement.attributes[1].textContent = `${media[mediaItems + 2]}`;
     }
-    nextLink.classList.add("next-link");
-    nextLink.id = "next-link-id";
-    sectionLithtbox.appendChild(nextLink);
-
-    const buttonModal = document.createElement("button");
-    buttonModal.classList.add("button-modal");
-    sectionLithtbox.appendChild(buttonModal);
-
-    const fontAwesomeCross = document.createElement("i");
-    const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
-    classesFontAwesomeCross.forEach(() => {
-      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
-    });
-    buttonModal.appendChild(fontAwesomeCross);
-
-    buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
-    nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
-    previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
-
-    return sectionLithtbox;
   }
 
   // image précédente
   static prevImg(e) {
     e.preventDefault();
     e.stopPropagation();
-    //récupération du lien de l'image affichée dans la constante linkMedia
+
     const sectionLithtbox = e.target.closest("#section-lightbox-id");
+    const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
+    const previousLink = sectionLithtbox.querySelector("#previous-link-id");
+    const [
+      cloneVideo,
+      sourceVideo,
+      neaudImage,
+      lightboxImage,
+      lightboxVideo,
+      figureItem,
+    ] = Lightbox.constanteInit(e);
     const [media, mediaTitleMap, MediaItems, MediaTitle] =
       Lightbox.MediaAllSetect(e);
     let mediaItems = MediaItems;
@@ -249,44 +260,27 @@ class Lightbox {
       mediaItems = media.length;
       mediaTitle = mediaTitleMap.length;
     }
+    if (media[mediaItems - 1].includes("jpg") && lightboxImage !== null) {
+      itemsMedia.attributes[1].textContent = `${media[mediaItems - 1]}`;
+      itemsMedia.attributes[2].textContent = `${mediaTitleMap[mediaTitle - 1]}`;
 
-    sectionLithtbox.innerHTML = "";
-    const figureLightbox = document.createElement("figure");
-    figureLightbox.classList.add("figure-lightbox");
-    figureLightbox.id = "figure-lightbox-id";
-    sectionLithtbox.appendChild(figureLightbox);
-    if (media[mediaItems - 1].includes("jpg")) {
-      const newImg = document.createElement("img");
-      newImg.classList.add("media-lightbox");
-      newImg.setAttribute("src", `${media[mediaItems - 1]}`);
-      newImg.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
-      newImg.id = "media-lightbox-id";
-      figureLightbox.insertAdjacentElement("afterbegin", newImg);
-
-      const newfigcaption = document.createElement("figcaption");
-      newfigcaption.classList.add("figcaption-lightbox");
-      newfigcaption.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
-      figureLightbox.insertAdjacentElement("beforeend", newfigcaption);
-    } else if (media[mediaItems - 1].includes("mp4")) {
-      const video = document.createElement("video");
-      video.classList.add("media-lightbox");
-      video.setAttribute("controls", "");
-      figureLightbox.insertAdjacentElement("afterbegin", video);
-
-      const source = document.createElement("source");
-      source.id = "media-lightbox-id";
-      source.setAttribute("src", `${media[mediaItems - 1]}`);
-      source.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
-      source.setAttribute("type", "video/mp4");
-      video.appendChild(source);
-
-      const figcaptionVideo = document.createElement("figcaption");
-      figcaptionVideo.classList.add("figcaption-lightbox");
-      figcaptionVideo.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
-      figureLightbox.appendChild(figcaptionVideo);
+      itemsMedia.nextElementSibling.textContent = `${
+        mediaTitleMap[mediaTitle - 1]
+      }`;
+    } else if (media[mediaItems - 1].includes("jpg") && !lightboxImage) {
+      const cloneImage = neaudImage.cloneNode(true);
+      cloneImage.attributes[1].textContent = `${media[mediaItems - 1]}`;
+      cloneImage.attributes[2].textContent = `${mediaTitleMap[mediaTitle - 1]}`;
+      cloneImage.attributes[3].textContent = "media-lightbox-id";
+      cloneImage.classList.remove("item-media");
+      cloneImage.classList.add("media-lightbox");
+      figureItem.replaceChild(cloneImage, lightboxVideo);
+    } else if (media[mediaItems - 1].includes("mp4") && !lightboxVideo) {
+      sourceVideo.attributes[0].textContent = "media-lightbox-id";
+      cloneVideo.classList.remove("item-media");
+      cloneVideo.classList.add("media-lightbox");
+      figureItem.replaceChild(cloneVideo, lightboxImage);
     }
-    const previousLink = document.createElement("a");
-    previousLink.setAttribute("type", "button");
     if (media[mediaItems - 2]) {
       previousLink.setAttribute("href", `${media[mediaItems - 2]}`);
     } else if (media[mediaItems - 2] === undefined && mediaItems === 1) {
@@ -294,45 +288,20 @@ class Lightbox {
       previousLink.setAttribute("href", `${media[mediaItems - 1]}`);
       mediaItems = 1;
     }
-    previousLink.classList.add("previous-link");
-    previousLink.id = "previous-link-id";
-    sectionLithtbox.appendChild(previousLink);
 
-    const nextLink = document.createElement("a");
-    nextLink.setAttribute("type", "button");
     if (media[mediaItems + 0]) {
-      nextLink.setAttribute("href", `${media[mediaItems + 0]}`);
+      previousLink.attributes[1].textContent = `${media[mediaItems + 0]}`;
     } else if (
       media[mediaItems + 0] === undefined &&
       mediaItems === media.length
     ) {
       mediaItems = -1;
-      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
+      previousLink.attributes[1].textContent = `${media[mediaItems + 1]}`;
     } else if (
       media[mediaItems + 0] === undefined &&
       mediaItems === media.length - 1
     ) {
-      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
+      previousLink.attributes[1].textContent = `${media[mediaItems + 1]}`;
     }
-    nextLink.classList.add("next-link");
-    nextLink.id = "next-link-id";
-    sectionLithtbox.appendChild(nextLink);
-
-    const buttonModal = document.createElement("button");
-    buttonModal.classList.add("button-modal");
-    sectionLithtbox.appendChild(buttonModal);
-
-    const fontAwesomeCross = document.createElement("i");
-    const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
-    classesFontAwesomeCross.forEach(() => {
-      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
-    });
-    buttonModal.appendChild(fontAwesomeCross);
-
-    buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
-    nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
-    previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
-
-    return sectionLithtbox;
   }
 }

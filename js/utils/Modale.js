@@ -195,7 +195,6 @@ const regexEmail = new RegExp(
 );
 const regExMessage = new RegExp("^([a-zA-Z0-9.-_,:) \n]){65,}$");
 
-// vérification du prénom
 const inputControl = (e) => {
   e.stopPropagation();
   const formData = document.querySelectorAll(".modale_paragraphe");
