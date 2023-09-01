@@ -104,7 +104,14 @@ class PhotographerTemplate {
       figcaptionVideo.textContent = `${this._data.MediaTitle}`;
       figcaptionVideo.id = "figcaption-media-id";
       figurePhoto.appendChild(figcaptionVideo);
+
+      // const fontawesomePlay = document.createElement("i");
+      // const classesFontAwesome = ["fa-regular", "fa-circle-play"];
+      // fontawesomePlay.classList.add(...classesFontAwesome);
+      // fontawesomePlay.id = "item-media-id";
+      // figcaptionVideo.appendChild(fontawesomePlay);
     }
+
     const mediaLikes = document.createElement("p");
     mediaLikes.classList.add("number-likes");
     mediaLikes.id = "number-likes-id";
@@ -118,9 +125,7 @@ class PhotographerTemplate {
 
     const iconHeart = document.createElement("i");
     const classesFontAwesome = ["fa-regular", "fa-heart"];
-    classesFontAwesome.forEach(() => {
-      iconHeart.classList.add(...classesFontAwesome);
-    });
+    iconHeart.classList.add(...classesFontAwesome);
     iconHeart.id = "fontawesome-id";
     buttonHeart.appendChild(iconHeart);
 
@@ -176,6 +181,11 @@ class SortMedia extends PhotographerTemplate {
     const [dataMediaAll] = SortMedia.LikesUpdate();
     mediaImage = document.querySelectorAll("#item-media-id");
     const figureMedia = document.querySelectorAll("#imgModal");
+    const neaudVideo = document.querySelector("video");
+    const cloneVideo = neaudVideo.cloneNode(true);
+
+    const neaudImage = document.querySelector("figure img");
+    const cloneImage = neaudImage.cloneNode(true);
 
     for (let w = 0; w < dataMediaAll.length; w++) {
       for (let i = 0; i < mediaImage.length; i++) {
@@ -204,6 +214,45 @@ class SortMedia extends PhotographerTemplate {
               mediaImage[
                 i
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
+
+              if (!dataMediaAll[w]._MediaHeart) {
+                const classesFontAwesome = ["fa-heart", "fa-regular"];
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  "";
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ...classesFontAwesome
+                );
+              } else if (dataMediaAll[w]._MediaHeart) {
+                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
+                  const classesFontAwesome = ["fa-regular", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                } else {
+                  const classesFontAwesome = ["fa-solid", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                }
+              }
             } else if (
               mediaImage[i].nodeName === "VIDEO" &&
               noeudVideo === true &&
@@ -217,24 +266,56 @@ class SortMedia extends PhotographerTemplate {
                 i
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
-              const Img = document.createElement("img");
-              Img.classList.add("item-media");
-              Img.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
-              Img.setAttribute("alt", `${dataMediaAll[w].MediaTitle}`);
-              Img.id = "item-media-id";
-
-              replacedNode.length !== 0
-                ? figureMedia[f].replaceChild(
-                    replacedNode,
-                    figureMedia[f].childNodes[0]
-                  )
-                : figureMedia[f].replaceChild(
-                    Img,
-                    figureMedia[f].childNodes[0]
+              if (!dataMediaAll[w]._MediaHeart) {
+                const classesFontAwesome = ["fa-regular", "fa-heart"];
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  "";
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ...classesFontAwesome
+                );
+              } else if (dataMediaAll[w]._MediaHeart) {
+                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
+                  const classesFontAwesome = ["fa-regular", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
                   );
+                } else {
+                  const classesFontAwesome = ["fa-solid", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                }
+              }
 
-              // impossible de d'écouter l'événement par l'id
-              Img.addEventListener("click", Lightbox.DomLightbox.bind(this));
+              cloneImage.attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
+
+              cloneImage.attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
+
+              figureMedia[f].replaceChild(
+                cloneImage,
+                figureMedia[f].childNodes[0]
+              );
+
+              cloneImage.addEventListener(
+                "click",
+                Lightbox.DomLightbox.bind(this)
+              );
             }
           } else if (
             dataMediaAll[w].MediaItems.includes("mp4") &&
@@ -244,10 +325,50 @@ class SortMedia extends PhotographerTemplate {
             if (mediaImage[i].nodeName === "VIDEO") {
               mediaImage[
                 i
-              ].children[0].attributes[2].textContent = `${dataMediaAll[w].MediaItems}`;
+              ].children[0].attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
               mediaImage[
                 i
-              ].children[0].attributes[1].textContent = `${dataMediaAll[w].MediaTitle}`;
+              ].children[0].attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
+
+              if (!dataMediaAll[w]._MediaHeart) {
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  "";
+                const classesFontAwesome = ["fa-regular", "fa-heart"];
+
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ...classesFontAwesome
+                );
+              } else if (dataMediaAll[w]._MediaHeart) {
+                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+                  const classesFontAwesome = ["fa-regular", "fa-heart"];
+
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                } else {
+                  const classesFontAwesome = ["fa-solid", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                }
+              }
             } else if (
               (mediaImage[i].nodeName === "IMG" &&
                 noeudVideo === true &&
@@ -262,34 +383,58 @@ class SortMedia extends PhotographerTemplate {
                 i
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
-              const video = document.createElement("video");
-              video.classList.add("item-media");
-              video.id = "item-media-id";
-
-              const source = document.createElement("source");
-              source.id = "source-id";
-              source.setAttribute("alt", `${dataMediaAll[w].MediaTitle}`);
-              source.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
-              source.setAttribute("type", "video/mp4");
-              video.appendChild(source);
-
-              replacedNode.length !== 0
-                ? figureMedia[f].replaceChild(
-                    replacedNode,
-                    figureMedia[f].childNodes[0]
-                  )
-                : figureMedia[f].replaceChild(
-                    video,
-                    figureMedia[f].childNodes[0]
+              if (!dataMediaAll[w]._MediaHeart) {
+                const classesFontAwesome = ["fa-regular", "fa-heart"];
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  "";
+                mediaImage[
+                  i
+                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ...classesFontAwesome
+                );
+              } else if (dataMediaAll[w]._MediaHeart) {
+                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
+                  const classesFontAwesome = ["fa-regular", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
                   );
+                } else {
+                  const classesFontAwesome = ["fa-solid", "fa-heart"];
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                    "";
 
-              video.addEventListener("click", Lightbox.DomLightbox.bind(this));
+                  mediaImage[
+                    i
+                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                    ...classesFontAwesome
+                  );
+                }
+              }
+
+              figureMedia[f].replaceChild(
+                cloneVideo,
+                figureMedia[f].childNodes[0]
+              );
+
+              cloneVideo.addEventListener(
+                "click",
+                Lightbox.DomLightbox.bind(this)
+              );
             }
           }
         }
       }
     }
-
     return [mediaImage];
   }
 
@@ -307,82 +452,6 @@ class SortMedia extends PhotographerTemplate {
       return 0;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
-    // const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    // dataMediaAll.forEach((w) => {
-    //   const articlePhoto = document.createElement("article");
-    //   articlePhoto.classList.add("article-media");
-    //   articlePhoto.id = "article-media-id";
-    //   imgSection.insertAdjacentElement("afterbegin", articlePhoto);
-
-    //   const figurePhoto = document.createElement("figure");
-    //   figurePhoto.classList.add("figure-media");
-    //   figurePhoto.id = "imgModal";
-    //   articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-    //   if (w.MediaItems && w.MediaItems.includes("jpg")) {
-    //     const Img = document.createElement("img");
-    //     Img.classList.add("item-media");
-    //     Img.setAttribute("src", `${w.MediaItems}`);
-    //     Img.setAttribute("alt", `${w.MediaTitle}`);
-    //     Img.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("beforeend", Img);
-
-    //     const figcaptionImg = document.createElement("figcaption");
-    //     figcaptionImg.classList.add("figcaption-media");
-    //     figcaptionImg.textContent = `${w.MediaTitle}`;
-    //     figcaptionImg.id = "figcaption-media-id";
-    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-    //   } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-    //     const video = document.createElement("video");
-    //     video.classList.add("item-media");
-    //     video.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("afterbegin", video);
-
-    //     const source = document.createElement("source");
-    //     source.id = "source-id";
-    //     source.setAttribute("alt", `${w.MediaTitle}`);
-    //     source.setAttribute("src", `${w.MediaItems}`);
-    //     source.setAttribute("type", "video/mp4");
-    //     video.appendChild(source);
-
-    //     const figcaptionVideo = document.createElement("figcaption");
-    //     figcaptionVideo.classList.add("figcaption-media");
-    //     figcaptionVideo.textContent = `${w.MediaTitle}`;
-    //     figcaptionVideo.id = "figcaption-media-id";
-    //     figurePhoto.appendChild(figcaptionVideo);
-    //   }
-    //   const pVideo = document.createElement("p");
-    //   pVideo.classList.add("number-likes");
-    //   pVideo.id = "number-likes-id";
-    //   pVideo.textContent = `${w.Medialikes}`;
-    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
-
-    //   const buttonHeart = document.createElement("button");
-    //   buttonHeart.classList.add("button-heart");
-    //   buttonHeart.id = "button-heart-id";
-    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
-
-    //   const iconHeart = document.createElement("i");
-    //   if (!w._MediaHeart) {
-    //     const classesFontAwesome = ["fa-regular", "fa-heart"];
-    //     iconHeart.classList.add(...classesFontAwesome);
-    //   } else if (w._MediaHeart) {
-    //     if (w._MediaHeart === "fa-regular fa-heart") {
-    //       const classesFontAwesome = ["fa-regular", "fa-heart"];
-    //       iconHeart.classList.add(...classesFontAwesome);
-    //     } else {
-    //       const classesFontAwesome = ["fa-solid", "fa-heart"];
-    //       iconHeart.classList.add(...classesFontAwesome);
-    //     }
-    //   }
-    //   iconHeart.id = "fontawesome-id";
-    //   buttonHeart.appendChild(iconHeart);
-
-    //   const HeartId = document.getElementById("button-heart-id");
-    //   HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-    //   const mediaId = document.getElementById("item-media-id");
-    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-    //   return articlePhoto;
-    // });
   }
 
   static renderTitre(e) {
@@ -393,84 +462,6 @@ class SortMedia extends PhotographerTemplate {
       return 0;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
-    // const [dataMediaAll] = SortMedia.LikesUpdate(e);
-
-    // dataMediaAll.forEach((w) => {
-    //   const articlePhoto = document.createElement("article");
-    //   articlePhoto.classList.add("article-media");
-    //   articlePhoto.id = "article-media-id";
-    //   imgSection.insertAdjacentElement("afterbegin", articlePhoto);
-
-    //   const figurePhoto = document.createElement("figure");
-    //   figurePhoto.classList.add("figure-media");
-    //   figurePhoto.id = "imgModal";
-    //   articlePhoto.insertAdjacentElement("afterbegin", figurePhoto);
-    //   if (w.MediaItems && w.MediaItems.includes("jpg")) {
-    //     const Img = document.createElement("img");
-    //     Img.classList.add("item-media");
-    //     Img.setAttribute("src", `${w.MediaItems}`);
-    //     Img.setAttribute("alt", `${w.MediaTitle}`);
-    //     Img.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("beforeend", Img);
-
-    //     const figcaptionImg = document.createElement("figcaption");
-    //     figcaptionImg.classList.add("figcaption-media");
-    //     figcaptionImg.textContent = `${w.MediaTitle}`;
-    //     figcaptionImg.id = "figcaption-media-id";
-    //     figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
-    //   } else if (w.MediaItems && w.MediaItems.includes("mp4")) {
-    //     const video = document.createElement("video");
-    //     video.classList.add("item-media");
-    //     video.id = "item-media-id";
-    //     figurePhoto.insertAdjacentElement("afterbegin", video);
-
-    //     const source = document.createElement("source");
-    //     source.id = "source-id";
-    //     source.setAttribute("alt", `${w.MediaTitle}`);
-    //     source.setAttribute("src", `${w.MediaItems}`);
-    //     source.setAttribute("type", "video/mp4");
-    //     video.appendChild(source);
-
-    //     const figcaptionVideo = document.createElement("figcaption");
-    //     figcaptionVideo.classList.add("figcaption-media");
-    //     figcaptionVideo.textContent = `${w.MediaTitle}`;
-    //     figcaptionVideo.id = "figcaption-media-id";
-    //     figurePhoto.appendChild(figcaptionVideo);
-    //   }
-    //   const pVideo = document.createElement("p");
-    //   pVideo.classList.add("number-likes");
-    //   pVideo.id = "number-likes-id";
-    //   pVideo.textContent = `${w.Medialikes}`;
-    //   figurePhoto.insertAdjacentElement("afterend", pVideo);
-
-    //   const buttonHeart = document.createElement("button");
-    //   buttonHeart.classList.add("button-heart");
-    //   buttonHeart.id = "button-heart-id";
-    //   pVideo.insertAdjacentElement("afterend", buttonHeart);
-
-    //   const iconHeart = document.createElement("i");
-    //   if (!w._MediaHeart) {
-    //     const classesFontAwesome = ["fa-regular", "fa-heart"];
-    //     iconHeart.classList.add(...classesFontAwesome);
-    //   } else if (w._MediaHeart) {
-    //     if (w._MediaHeart === "fa-regular fa-heart") {
-    //       const classesFontAwesome = ["fa-regular", "fa-heart"];
-    //       iconHeart.classList.add(...classesFontAwesome);
-    //     } else {
-    //       const classesFontAwesome = ["fa-solid", "fa-heart"];
-    //       iconHeart.classList.add(...classesFontAwesome);
-    //     }
-    //   }
-    //   iconHeart.id = "fontawesome-id";
-    //   buttonHeart.appendChild(iconHeart);
-
-    //   const HeartId = document.getElementById("button-heart-id");
-    //   HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
-    //   const mediaId = document.getElementById("item-media-id");
-    //   mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
-
-    //   return articlePhoto;
-    // });
   }
 }
 // écoute du boutton popularité et appel à la fonction renderPopulaire()
@@ -487,6 +478,10 @@ btnTitre.addEventListener("click", SortMedia.renderTitre.bind(this));
 
 let mediaLinked = [];
 class LikesMedia extends SortMedia {
+  constructor(data) {
+    super(data);
+    this._data = data;
+  }
   static gestionLikes(e) {
     e.stopPropagation();
 
@@ -501,15 +496,13 @@ class LikesMedia extends SortMedia {
       classHeart.classList.add("fa-solid");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
 
-      return (likesMedia.textContent =
-        Number(parseInt(likesMedia.textContent)) + 1);
+      likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
     } else if (classHeart.classList.contains("fa-solid")) {
       classHeart.classList.remove("fa-solid");
       classHeart.classList.add("fa-regular");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
 
-      return (likesMedia.textContent =
-        Number(parseInt(likesMedia.textContent)) - 1);
+      likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
     }
 
     function LikesTrue(media, likesMedia, mediaHearts) {

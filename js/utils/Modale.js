@@ -1,12 +1,4 @@
 class Modale {
-  constructor() {
-    this.$formData = document.querySelectorAll(".modale_paragraphe");
-    this.$imputPrenom = document.getElementById("prenom-id");
-    this.$imputNom = document.getElementById("nom-id");
-    this.$imputEmail = document.getElementById("mail-id");
-    this.$imputMessage = document.getElementById("textarea-modale-id");
-  }
-
   static renderModale(e) {
     e.stopPropagation();
 
@@ -58,7 +50,7 @@ class Modale {
       inputPrenom.setAttribute("type", "text");
       inputPrenom.setAttribute("name", "prenom");
       inputPrenom.classList.add("input-modale");
-      inputPrenom.id = "prenom-id";
+      inputPrenom.id = "prenom";
       paragraphePrenom.insertAdjacentElement("beforeend", inputPrenom);
 
       const paragrapheNom = document.createElement("p");
@@ -80,7 +72,7 @@ class Modale {
       inputNom.setAttribute("type", "text");
       inputNom.setAttribute("name", "nom");
       inputNom.classList.add("input-modale");
-      inputNom.id = "nom-id";
+      inputNom.id = "nom";
       paragrapheNom.insertAdjacentElement("beforeend", inputNom);
 
       const paragrapheMail = document.createElement("p");
@@ -102,7 +94,7 @@ class Modale {
       inputmail.setAttribute("type", "text");
       inputmail.setAttribute("name", "mail");
       inputmail.classList.add("input-modale");
-      inputmail.id = "mail-id";
+      inputmail.id = "mail";
       paragrapheMail.insertAdjacentElement("beforeend", inputmail);
 
       const paragrapheMessage = document.createElement("p");
@@ -121,9 +113,9 @@ class Modale {
       paragrapheMessage.insertAdjacentElement("afterbegin", lableMessage);
 
       const textareaMessage = document.createElement("textarea");
-      textareaMessage.setAttribute("name", "mail");
+      textareaMessage.setAttribute("name", "message");
       textareaMessage.classList.add("textarea-modale");
-      textareaMessage.id = "textarea-modale-id";
+      textareaMessage.id = "message";
       paragrapheMessage.insertAdjacentElement("beforeend", textareaMessage);
 
       const buttonEnvoi = document.createElement("button");
@@ -139,24 +131,22 @@ class Modale {
 
       const fontawesomeCross = document.createElement("i");
       const classesFontAwesome = ["fa-solid", "fa-xmark"];
-      classesFontAwesome.forEach(() => {
-        fontawesomeCross.classList.add(...classesFontAwesome);
-      });
+      fontawesomeCross.classList.add(...classesFontAwesome);
       buttonClose.appendChild(fontawesomeCross);
 
       const closeModal = document.getElementById("button-close-id");
       closeModal.addEventListener("click", Modale.modalClose.bind(this));
 
-      const imputPrenom = document.getElementById("prenom-id");
+      const imputPrenom = document.getElementById("prenom");
       imputPrenom.addEventListener("input", (e) => inputControl(e));
 
-      const imputNom = document.getElementById("nom-id");
+      const imputNom = document.getElementById("nom");
       imputNom.addEventListener("input", (e) => inputControl(e));
 
-      const imputEmail = document.getElementById("mail-id");
+      const imputEmail = document.getElementById("mail");
       imputEmail.addEventListener("input", (e) => inputControl(e));
 
-      const imputMessage = document.getElementById("textarea-modale-id");
+      const imputMessage = document.getElementById("message");
       imputMessage.addEventListener("input", (e) => inputControl(e));
 
       const btnValidate = document.getElementById("button-envoi-id");
@@ -181,13 +171,15 @@ class Modale {
   }
 }
 
-const asynsEcoute = async () => {
+const asynsEcouteModal = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
     buttonContact.addEventListener("click", Modale.renderModale.bind(this));
   }, 1000);
 };
-asynsEcoute();
+
+asynsEcouteModal();
+
 // regex permettant de valider les données inscrites par l'utilisateur
 const regexName = new RegExp("^[a-zA-Z]{0,10}[ -]{0,1}[a-zA-Z]{2,10}$");
 const regexEmail = new RegExp(
@@ -242,16 +234,15 @@ const validate = (e) => {
   e.stopPropagation();
 
   const formData = document.querySelectorAll(".modale_paragraphe");
-  const imputPrenom = document.getElementById("prenom-id");
-  const imputNom = document.getElementById("nom-id");
-  const imputEmail = document.getElementById("mail-id");
-  const imputMessage = document.getElementById("textarea-modale-id");
+  const imputPrenom = document.getElementById("prenom");
+  const imputNom = document.getElementById("nom");
+  const imputEmail = document.getElementById("mail");
+  const imputMessage = document.getElementById("message");
 
   const testPrenom = regexName.test(imputPrenom.value);
   const testNom = regexName.test(imputNom.value);
   const testMail = regexEmail.test(imputEmail.value);
   const testMessage = regExMessage.test(imputMessage.value);
-  console.log(e);
 
   if (!testPrenom) {
     formData[0].dataset.errorVisible = true;

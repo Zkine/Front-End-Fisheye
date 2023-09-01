@@ -53,6 +53,7 @@ class Lightbox {
 
       const video = document.createElement("video");
       video.classList.add("media-lightbox");
+      video.setAttribute("autoplay", "");
       video.setAttribute("controls", "");
       figureLightbox.insertAdjacentElement("afterbegin", video);
 
@@ -193,11 +194,11 @@ class Lightbox {
       }
     } else if (media[mediaItems + 1].includes("jpg") && !lightboxImage) {
       const cloneImage = neaudImage.cloneNode(true);
+      cloneImage.classList.remove("item-media");
+      cloneImage.classList.add("media-lightbox");
       cloneImage.attributes[1].textContent = `${media[mediaItems + 1]}`;
       cloneImage.attributes[2].textContent = `${media[mediaTitle + 1]}`;
       cloneImage.attributes[3].textContent = "media-lightbox-id";
-      cloneImage.classList.remove("item-media");
-      cloneImage.classList.add("media-lightbox");
       figureItem.replaceChild(cloneImage, lightboxVideo);
     } else if (media[mediaItems + 1].includes("mp4") && lightboxVideo) {
       itemsMedia.attributes[1].textContent = `${media[mediaItems + 1]}`;
@@ -210,6 +211,8 @@ class Lightbox {
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
+      cloneVideo.setAttribute("controls", "");
+      cloneVideo.setAttribute("autoplay", "");
       figureItem.replaceChild(cloneVideo, lightboxImage);
     }
     if (media[mediaItems - 0]) {
@@ -279,6 +282,9 @@ class Lightbox {
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
+
+      cloneVideo.setAttribute("controls", "");
+      cloneVideo.setAttribute("autoplay", "");
       figureItem.replaceChild(cloneVideo, lightboxImage);
     }
     if (media[mediaItems - 2]) {

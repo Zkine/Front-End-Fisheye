@@ -283,11 +283,21 @@ header {
     border-radius: 5px;
     object-fit: cover;
     cursor: pointer;
+    position: relative;
 }
 
 .figcaption-media {
     position: relative;
     width: 290px;
+}
+
+.fa-circle-play {
+    color: #000000;
+    position: absolute;
+    top: 0%;
+    margin: -229px 0px 0 -24px;
+    font-size: 160px;
+    cursor: pointer;
 }
 
 .number-likes {
