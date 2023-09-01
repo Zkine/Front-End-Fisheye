@@ -445,7 +445,6 @@ class SortMedia extends PhotographerTemplate {
     const [mediaImage] = SortMedia.UpdateMedia(e);
   }
   static renderDate(e) {
-    e.stopPropagation();
     dataMedia.sort(function (a, b) {
       if (b._MediaDate < a._MediaDate) return -1;
       if (b._MediaDate > b._MediaDate) return 1;
@@ -455,7 +454,6 @@ class SortMedia extends PhotographerTemplate {
   }
 
   static renderTitre(e) {
-    e.stopPropagation();
     dataMedia.sort(function (a, b) {
       if (b._MediaTitle > a._MediaTitle) return -1;
       if (b._MediaTitle < b._MediaTitle) return 1;
@@ -464,17 +462,52 @@ class SortMedia extends PhotographerTemplate {
     const [mediaImage] = SortMedia.UpdateMedia(e);
   }
 }
-// écoute du boutton popularité et appel à la fonction renderPopulaire()
-const btnPopulaire = document.getElementById("button-populaire-id");
-btnPopulaire.addEventListener("click", SortMedia.renderPopulaire.bind(this));
 
-// écoute du boutton popularité et appel à la fonction renderPopulaire()
-const btnDate = document.getElementById("button-date-id");
-btnDate.addEventListener("click", SortMedia.renderDate.bind(this));
+const divTris = document.getElementById("div-btn-tris-id");
+divTris.addEventListener("click", (event) => {
+  if (
+    Number(event.detail) === Number(1) &&
+    !divTris.classList.contains("div-btn-tris-click")
+  ) {
+    divTris.classList.add("div-btn-tris-click");
+  } else if (divTris.classList.contains("div-btn-tris-click")) {
+    if (event.target.textContent === "Popularité") {
+      const btnPopulaire = document.getElementById("button-populaire-id");
 
-// écoute du boutton popularité et appel à la fonction renderTitre()
-const btnTitre = document.getElementById("button-titre-id");
-btnTitre.addEventListener("click", SortMedia.renderTitre.bind(this));
+      divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
+
+      btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
+      btnPopulaire.removeEventListener(
+        "click",
+        SortMedia.renderPopulaire(this)
+      );
+    } else if (event.target.textContent === "Date") {
+      const btnDate = document.getElementById("button-date-id");
+
+      divTris.insertBefore(btnDate, divTris.firstElementChild);
+
+      btnDate.addEventListener("click", SortMedia.renderDate);
+
+      btnDate.removeEventListener("click", SortMedia.renderDate(this));
+    } else if (event.target.textContent === "Titre") {
+      const btnTitre = document.getElementById("button-titre-id");
+
+      divTris.insertBefore(btnTitre, divTris.firstElementChild);
+
+      btnTitre.addEventListener("click", SortMedia.renderTitre);
+
+      btnTitre.removeEventListener("click", SortMedia.renderTitre(this));
+    } else {
+      console.log(`Sorry, we are out of ${expr}.`);
+    }
+  }
+});
+
+divTris.addEventListener("mouseleave", () => {
+  if (divTris.classList.contains("div-btn-tris-click")) {
+    divTris.classList.remove("div-btn-tris-click");
+  }
+});
 
 let mediaLinked = [];
 class LikesMedia extends SortMedia {

@@ -137,15 +137,6 @@ header {
     margin-left: 15px;
 }
 
-/* .photographer-like::after {
-    font: var(--fa-font-solid);
-    content: "\f004";
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    font-size: 24px;
-} */
-
 .photographer-price {
     display: flex;
     justify-content: center;
@@ -162,9 +153,10 @@ header {
     font-weight: 700;
     margin-top: 5px;
     height: 69px;
+    border-radius: 5px;
 }
 
-.div-button {
+.div-btn-tris {
     display: flex;
     flex-direction: column;
     width: 170px;
@@ -174,9 +166,24 @@ header {
     z-index: 1;
 }
 
-.div-button:hover {
+.div-btn-tris::after {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 67px;
+    right: 0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.div-btn-tris-click:hover {
     height: 207px;
     box-shadow: 0px 6px 4px -2px rgba(0, 0, 0, 0.38);
+}
+
+.div-btn-tris .div-btn-tris::after:hover {
+    height: 207px;
+    z-index: 2;
 }
 
 .buttonTri {
@@ -200,10 +207,6 @@ header {
     padding-right: 15px;
 }
 
-.div-button:hover .fa-angle-down {
-    transform: rotate(180deg);
-}
-
 .buttonTri:nth-child(1):after {
     content: "";
     width: 90%;
@@ -215,12 +218,13 @@ header {
     opacity: 0;
 }
 
-.div-button:hover .buttonTri:nth-child(1):after {
+.div-btn-tris-click:hover .buttonTri:nth-child(1):after {
     opacity: 1;
 }
 
-.div-button:hover .buttonTri:nth-child(1) {
+.div-btn-tris-click:hover .buttonTri:nth-child(1) {
     border-radius: 5px 5px 0 0;
+    z-index: 1;
 }
 
 .buttonTri:nth-child(2) {
@@ -237,8 +241,8 @@ header {
     background-color: #ffffff;
 }
 
-.div-button:hover .buttonTri:nth-child(2) {
-    display: block;
+.div-btn-tris-click:hover .buttonTri:nth-child(2) {
+    display: inline-block;
 }
 
 .buttonTri:nth-child(3) {
@@ -246,8 +250,20 @@ header {
     display: none;
 }
 
-.div-button:hover .buttonTri:nth-child(3) {
-    display: block;
+.div-btn-tris-click:hover .buttonTri:nth-child(3) {
+    display: inline-block;
+}
+
+.fa-angle-down {
+    position: absolute;
+    top: 25.5px;
+    right: 15px;
+    color: #ffffff;
+}
+
+.div-btn-tris-click:hover .fa-angle-down {
+    transform: rotate(180deg);
+    z-index: 1;
 }
 
 /* Style media */
