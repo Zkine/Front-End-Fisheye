@@ -1,19 +1,22 @@
 class Lightbox {
+  constructor() {}
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("section #media-lightbox-id");
+
+    const linkTitre = document.querySelector("section #figcaption-lightbox-id");
     const mediaAll = [...document.querySelectorAll("article #item-media-id")];
+    const mediaTitre = [...document.querySelectorAll("#figcaption-media-id")];
+
     Media = mediaAll.map(
       (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
     );
-    MediaTitleMap = mediaAll.map(
-      (e) => e.getAttribute("alt") || e.children[0].getAttribute("alt")
-    );
 
+    MediaTitleMap = mediaTitre.map((e) => e.textContent);
     MediaItems = Media.findIndex(
       (element) => element === linkMedia.attributes[1].textContent
     );
     MediaTitle = MediaTitleMap.findIndex(
-      (element) => element === linkMedia.attributes[2].textContent
+      (element) => element === linkTitre.textContent
     );
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
   }
@@ -45,6 +48,7 @@ class Lightbox {
 
       const figcaption = document.createElement("figcaption");
       figcaption.classList.add("figcaption-lightbox");
+      figcaption.id = "figcaption-lightbox-id";
       figcaption.textContent = `${imgAlt}`;
       figureLightbox.insertAdjacentElement("beforeend", figcaption);
     } else if (e.target.children[0].attributes[1].textContent.includes("mp4")) {
@@ -60,12 +64,12 @@ class Lightbox {
       const source = document.createElement("source");
       source.id = "media-lightbox-id";
       source.setAttribute("src", `${videoClick}`);
-      source.setAttribute("alt", `${videoAlt}`);
       source.setAttribute("type", "video/mp4");
       video.appendChild(source);
 
       const figcaptionVideo = document.createElement("figcaption");
       figcaptionVideo.classList.add("figcaption-lightbox");
+      figcaptionVideo.id = "figcaption-lightbox-id";
       figcaptionVideo.textContent = `${videoAlt}`;
       figureLightbox.appendChild(figcaptionVideo);
     }
@@ -110,9 +114,7 @@ class Lightbox {
 
     const fontAwesomeCross = document.createElement("i");
     const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
-    classesFontAwesomeCross.forEach(() => {
-      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
-    });
+    fontAwesomeCross.classList.add(...classesFontAwesomeCross);
     buttonModal.appendChild(fontAwesomeCross);
 
     buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
@@ -162,6 +164,10 @@ class Lightbox {
     const sectionLithtbox = e.target.closest("#section-lightbox-id");
     const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
     const previousLink = sectionLithtbox.querySelector("#previous-link-id");
+    const nextLink = sectionLithtbox.querySelector("#next-link-id");
+    const figcaptionMedia = sectionLithtbox.querySelector(
+      "#figcaption-lightbox-id"
+    );
     const [
       cloneVideo,
       sourceVideo,
@@ -183,29 +189,23 @@ class Lightbox {
     }
     if (media[mediaItems + 1].includes("jpg") && lightboxImage) {
       if (itemsMedia.nodeName === "IMG") {
-        itemsMedia.attributes[1].textContent = `${media[mediaItems + 1]}`;
-        itemsMedia.attributes[2].textContent = `${
-          mediaTitleMap[mediaTitle + 1]
-        }`;
+        itemsMedia.setAttribute("src", `${media[mediaItems + 1]}`);
+        itemsMedia.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
 
-        itemsMedia.nextElementSibling.textContent = `${
-          mediaTitleMap[mediaTitle + 1]
-        }`;
+        figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
       }
     } else if (media[mediaItems + 1].includes("jpg") && !lightboxImage) {
       const cloneImage = neaudImage.cloneNode(true);
       cloneImage.classList.remove("item-media");
       cloneImage.classList.add("media-lightbox");
-      cloneImage.attributes[1].textContent = `${media[mediaItems + 1]}`;
-      cloneImage.attributes[2].textContent = `${media[mediaTitle + 1]}`;
-      cloneImage.attributes[3].textContent = "media-lightbox-id";
+      cloneImage.setAttribute("src", `${media[mediaItems + 1]}`);
+      cloneImage.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
+      cloneImage.id = "media-lightbox-id";
       figureItem.replaceChild(cloneImage, lightboxVideo);
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
     } else if (media[mediaItems + 1].includes("mp4") && lightboxVideo) {
-      itemsMedia.attributes[1].textContent = `${media[mediaItems + 1]}`;
-      itemsMedia.attributes[2].textContent = `${mediaTitleMap[mediaTitle + 1]}`;
-      itemsMedia.parentElement.nextElementSibling.textContent = `${
-        mediaTitleMap[mediaTitle + 1]
-      }`;
+      itemsMedia.setAttribute("src", `${media[mediaItems + 1]}`);
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
     } else if (media[mediaItems + 1].includes("mp4") && !lightboxVideo) {
       // console.log(sourceVide.oattributes[0].textContent);
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
@@ -214,28 +214,29 @@ class Lightbox {
       cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
       figureItem.replaceChild(cloneVideo, lightboxImage);
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
     }
     if (media[mediaItems - 0]) {
-      previousLink.attributes[1].textContent = `${media[mediaItems - 0]}`;
+      previousLink.setAttribute("href", `${media[mediaItems - 0]}`);
     } else if (media[mediaItems - 0] === undefined && media.length - 2) {
       mediaItems = media.length;
-      previousLink.attributes[1].textContent = `${media[mediaItems - 1]}`;
+      previousLink.setAttribute("href", `${media[mediaItems - 1]}`);
     }
 
     if (media[mediaItems + 2]) {
-      e.srcElement.attributes[1].textContent = `${media[mediaItems + 2]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 2]}`);
     } else if (
       media[mediaItems + 2] === undefined &&
       mediaItems == media.length - 2
     ) {
       mediaItems = -1;
-      e.srcElement.attributes[1].textContent = `${media[mediaItems + 1]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
     } else if (
       media[mediaItems + 2] === undefined &&
       mediaItems === media.length
     ) {
       mediaItems = -1;
-      e.srcElement.attributes[1].textContent = `${media[mediaItems + 2]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 2]}`);
     }
   }
 
@@ -247,6 +248,11 @@ class Lightbox {
     const sectionLithtbox = e.target.closest("#section-lightbox-id");
     const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
     const previousLink = sectionLithtbox.querySelector("#previous-link-id");
+    const nextLink = sectionLithtbox.querySelector("#next-link-id");
+    const figcaptionMedia = sectionLithtbox.querySelector(
+      "#figcaption-lightbox-id"
+    );
+    console.log(figcaptionMedia);
     const [
       cloneVideo,
       sourceVideo,
@@ -264,28 +270,28 @@ class Lightbox {
       mediaTitle = mediaTitleMap.length;
     }
     if (media[mediaItems - 1].includes("jpg") && lightboxImage !== null) {
-      itemsMedia.attributes[1].textContent = `${media[mediaItems - 1]}`;
-      itemsMedia.attributes[2].textContent = `${mediaTitleMap[mediaTitle - 1]}`;
+      itemsMedia.setAttribute("src", `${media[mediaItems - 1]}`);
+      itemsMedia.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
 
-      itemsMedia.nextElementSibling.textContent = `${
-        mediaTitleMap[mediaTitle - 1]
-      }`;
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
     } else if (media[mediaItems - 1].includes("jpg") && !lightboxImage) {
       const cloneImage = neaudImage.cloneNode(true);
-      cloneImage.attributes[1].textContent = `${media[mediaItems - 1]}`;
-      cloneImage.attributes[2].textContent = `${mediaTitleMap[mediaTitle - 1]}`;
-      cloneImage.attributes[3].textContent = "media-lightbox-id";
       cloneImage.classList.remove("item-media");
       cloneImage.classList.add("media-lightbox");
+      cloneImage.setAttribute("src", `${media[mediaItems - 1]}`);
+      cloneImage.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
+      cloneImage.id = "media-lightbox-id";
       figureItem.replaceChild(cloneImage, lightboxVideo);
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
     } else if (media[mediaItems - 1].includes("mp4") && !lightboxVideo) {
-      sourceVideo.attributes[0].textContent = "media-lightbox-id";
+      sourceVideo.id = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
 
       cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
       figureItem.replaceChild(cloneVideo, lightboxImage);
+      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
     }
     if (media[mediaItems - 2]) {
       previousLink.setAttribute("href", `${media[mediaItems - 2]}`);
@@ -296,18 +302,18 @@ class Lightbox {
     }
 
     if (media[mediaItems + 0]) {
-      previousLink.attributes[1].textContent = `${media[mediaItems + 0]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 0]}`);
     } else if (
       media[mediaItems + 0] === undefined &&
       mediaItems === media.length
     ) {
       mediaItems = -1;
-      previousLink.attributes[1].textContent = `${media[mediaItems + 1]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
     } else if (
       media[mediaItems + 0] === undefined &&
       mediaItems === media.length - 1
     ) {
-      previousLink.attributes[1].textContent = `${media[mediaItems + 1]}`;
+      nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
     }
   }
 }

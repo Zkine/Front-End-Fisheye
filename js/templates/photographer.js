@@ -95,7 +95,6 @@ class PhotographerTemplate {
       const source = document.createElement("source");
       source.id = "source-id";
       source.setAttribute("src", `${this._data.MediaItems}`);
-      source.setAttribute("alt", `${this._data.MediaTitle}`);
       source.setAttribute("type", "video/mp4");
       video.appendChild(source);
 
@@ -483,19 +482,13 @@ divTris.addEventListener("click", (event) => {
       );
     } else if (event.target.textContent === "Date") {
       const btnDate = document.getElementById("button-date-id");
-
       divTris.insertBefore(btnDate, divTris.firstElementChild);
-
       btnDate.addEventListener("click", SortMedia.renderDate);
-
       btnDate.removeEventListener("click", SortMedia.renderDate(this));
     } else if (event.target.textContent === "Titre") {
       const btnTitre = document.getElementById("button-titre-id");
-
       divTris.insertBefore(btnTitre, divTris.firstElementChild);
-
       btnTitre.addEventListener("click", SortMedia.renderTitre);
-
       btnTitre.removeEventListener("click", SortMedia.renderTitre(this));
     } else {
       console.log(`Sorry, we are out of ${expr}.`);

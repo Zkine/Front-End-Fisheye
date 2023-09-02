@@ -174,7 +174,7 @@ class Modale {
 const asynsEcouteModal = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
-    buttonContact.addEventListener("click", Modale.renderModale.bind(this));
+    buttonContact.addEventListener("click", Modale.renderModale);
   }, 1000);
 };
 
