@@ -457,48 +457,46 @@ class SortMedia extends PhotographerTemplate {
   }
 }
 
+let arrayBtmTris = [];
 const divTris = document.getElementById("div-btn-tris-id");
+const btnPopulaire = document.getElementById("button-populaire-id");
+const btnDate = document.getElementById("button-date-id");
+const btnTitre = document.getElementById("button-titre-id");
 divTris.addEventListener("click", (event) => {
   if (
     Number(event.detail) === Number(1) &&
     !divTris.classList.contains("div-btn-tris-click")
   ) {
     divTris.classList.add("div-btn-tris-click");
+    divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
+    divTris.insertBefore(btnDate, btnTitre);
   } else if (divTris.classList.contains("div-btn-tris-click")) {
     if (event.target.textContent === "Popularité") {
-      const btnPopulaire = document.getElementById("button-populaire-id");
-
-      divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
-
+      arrayBtmTris.shift();
+      arrayBtmTris.push(btnPopulaire);
+      console.log(arrayBtmTris);
       btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
       btnPopulaire.removeEventListener(
         "click",
         SortMedia.renderPopulaire(this)
       );
     } else if (event.target.textContent === "Date") {
-      const btnDate = document.getElementById("button-date-id");
-      divTris.insertBefore(btnDate, divTris.firstElementChild);
+      arrayBtmTris.shift();
+      arrayBtmTris.push(btnDate);
       btnDate.addEventListener("click", SortMedia.renderDate);
       btnDate.removeEventListener("click", SortMedia.renderDate(this));
     } else if (event.target.textContent === "Titre") {
-      const btnTitre = document.getElementById("button-titre-id");
-      divTris.insertBefore(btnTitre, divTris.firstElementChild);
+      arrayBtmTris.shift();
+      arrayBtmTris.push(btnTitre);
       btnTitre.addEventListener("click", SortMedia.renderTitre);
       btnTitre.removeEventListener("click", SortMedia.renderTitre(this));
-    } else {
-      console.log(`Sorry, we are out of ${expr}.`);
     }
   }
 });
 
 divTris.addEventListener("mouseleave", () => {
   if (divTris.classList.contains("div-btn-tris-click")) {
-    divTris.classList.remove("div-btn-tris-click");
-  }
-});
-
-divTris.addEventListener("mouseleave", () => {
-  if (divTris.classList.contains("div-btn-tris-click")) {
+    divTris.insertBefore(arrayBtmTris[0], divTris.firstElementChild);
     divTris.classList.remove("div-btn-tris-click");
   }
 });
