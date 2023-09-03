@@ -199,12 +199,14 @@ class SortMedia extends PhotographerTemplate {
             Number([w]) === Number([f])
           ) {
             if (mediaImage[i].nodeName === "IMG") {
-              mediaImage[
-                i
-              ].attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
-              mediaImage[
-                i
-              ].attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
+              mediaImage[i].setAttribute(
+                "src",
+                `${dataMediaAll[w].MediaItems}`
+              );
+              mediaImage[i].setAttribute(
+                "alt",
+                `${dataMediaAll[w].MediaTitle}`
+              );
 
               mediaImage[
                 i
@@ -322,13 +324,6 @@ class SortMedia extends PhotographerTemplate {
             Number([w]) === Number([f])
           ) {
             if (mediaImage[i].nodeName === "VIDEO") {
-              mediaImage[
-                i
-              ].children[0].attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
-              mediaImage[
-                i
-              ].children[0].attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
-
               if (!dataMediaAll[w]._MediaHeart) {
                 mediaImage[
                   i
@@ -493,6 +488,12 @@ divTris.addEventListener("click", (event) => {
     } else {
       console.log(`Sorry, we are out of ${expr}.`);
     }
+  }
+});
+
+divTris.addEventListener("mouseleave", () => {
+  if (divTris.classList.contains("div-btn-tris-click")) {
+    divTris.classList.remove("div-btn-tris-click");
   }
 });
 

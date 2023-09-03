@@ -436,6 +436,9 @@ header {
     font-size: 42px;
 }
 
+.lightbox-modal-close {
+    display: none;
+}
 
 /* style modale */
 
@@ -449,7 +452,7 @@ header {
     background-color: #C4C4C466;
 }
 
-.conctact_modal_close {
+.contact_modal_close {
     display: none;
 }
 

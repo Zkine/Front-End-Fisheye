@@ -127,6 +127,8 @@ class Modale {
       const buttonClose = document.createElement("button");
       buttonClose.classList.add("button-close");
       buttonClose.id = "button-close-id";
+      buttonClose.setAttribute("aria-label", "Formulaire de contact");
+      buttonClose.setAttribute("aria-pressed", "false");
       divForm.insertAdjacentElement("beforeend", buttonClose);
 
       const fontawesomeCross = document.createElement("i");
@@ -156,8 +158,8 @@ class Modale {
 
       //sinon si le dom est créé en controlant si la classe contact_modal_close est présente,
       //on remove la class retournée par la fonction modaleClose pour réouvrir la modale
-    } else if (aside.classList[1].includes("conctact_modal_close")) {
-      aside.classList.remove("conctact_modal_close");
+    } else if (aside.classList[1].includes("contact_modal_close")) {
+      aside.classList.remove("contact_modal_close");
     }
   }
 
@@ -166,7 +168,8 @@ class Modale {
     e.stopPropagation();
     const sectionModal = e.target.closest("#contact_modal-id");
     if (sectionModal.classList[0].includes("contact_modal")) {
-      sectionModal.classList.add("conctact_modal_close");
+      sectionModal.classList.add("contact_modal_close");
+      document.form.reset();
     }
   }
 }
@@ -274,7 +277,7 @@ const validate = (e) => {
     );
     const sectionModal = e.target.closest("#contact_modal-id");
     if (sectionModal.classList[0].includes("contact_modal")) {
-      sectionModal.classList.add("conctact_modal_close");
+      sectionModal.classList.add("contact_modal_close");
       document.form.reset();
     }
   }
