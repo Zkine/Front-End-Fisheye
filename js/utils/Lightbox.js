@@ -134,7 +134,6 @@ class Lightbox {
     } else if (asideLightbox.classList[0].includes("lightbox-modal-close")) {
       asideLightbox.classList.remove("lightbox-modal-close");
       const figcaptionMedia = document.querySelector("#figcaption-lightbox-id");
-      console.log(e);
       const [
         cloneVideo,
         sourceVideo,
@@ -145,7 +144,6 @@ class Lightbox {
       ] = Lightbox.constanteInit(e);
 
       if (e.target.nodeName === "IMG") {
-        console.log(e);
         const cloneImage = neaudImage.cloneNode(true);
         cloneImage.classList.remove("item-media");
         cloneImage.classList.add("media-lightbox");
@@ -327,7 +325,6 @@ class Lightbox {
     const figcaptionMedia = sectionLithtbox.querySelector(
       "#figcaption-lightbox-id"
     );
-    console.log(figcaptionMedia);
     const [
       cloneVideo,
       sourceVideo,

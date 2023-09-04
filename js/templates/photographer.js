@@ -433,13 +433,15 @@ class SortMedia extends PhotographerTemplate {
   }
 
   static renderPopulaire(e) {
-    dataMedia.sort(function (a, b) {
+    const [dataMediaAll] = SortMedia.LikesUpdate(e);
+    dataMediaAll.sort(function (a, b) {
       return b._MediaLikes - a._MediaLikes;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
   }
   static renderDate(e) {
-    dataMedia.sort(function (a, b) {
+    const [dataMediaAll] = SortMedia.LikesUpdate(e);
+    dataMediaAll.sort(function (a, b) {
       if (b._MediaDate < a._MediaDate) return -1;
       if (b._MediaDate > b._MediaDate) return 1;
       return 0;
@@ -448,7 +450,8 @@ class SortMedia extends PhotographerTemplate {
   }
 
   static renderTitre(e) {
-    dataMedia.sort(function (a, b) {
+    const [dataMediaAll] = SortMedia.LikesUpdate(e);
+    dataMediaAll.sort(function (a, b) {
       if (b._MediaTitle > a._MediaTitle) return -1;
       if (b._MediaTitle < b._MediaTitle) return 1;
       return 0;
@@ -474,7 +477,6 @@ divTris.addEventListener("click", (event) => {
     if (event.target.textContent === "Popularité") {
       arrayBtmTris.shift();
       arrayBtmTris.push(btnPopulaire);
-      console.log(arrayBtmTris);
       btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
       btnPopulaire.removeEventListener(
         "click",

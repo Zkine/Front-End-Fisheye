@@ -202,6 +202,8 @@ header {
     position: relative;
 }
 
+
+
 .buttonTri:nth-child(1) {
     border-radius: 5px;
     position: relative;
@@ -220,6 +222,18 @@ header {
     left: 7px;
     background-color: #ffffff;
     opacity: 0;
+}
+
+.buttonTri:nth-child(1)::before {
+    content: "";
+    position: absolute;
+    width: 170px;
+    height: 69px;
+    left: 0;
+}
+
+.div-btn-tris-click:hover .buttonTri:nth-child(1)::before {
+    z-index: 3;
 }
 
 .div-btn-tris-click:hover .buttonTri:nth-child(1):after {
