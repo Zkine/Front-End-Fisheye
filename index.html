@@ -12,16 +12,15 @@
 
 <body>
   <header class="banner">
-    <a href="index.html">
-      <img src="assets/images/logo.png" class="logo" alt="fisheye logo" id="logo-fisheye-id" />
+    <a aria-label="Page index des photographes" href="index.html">
+      <img src="assets/images/logo.png" role="Image link" class="logo" alt="Fisheye Home page" id="logo-fisheye-id" />
     </a>
     <h1 class="h1-titre">Nos photographes</h1>
   </header>
-  <main id="main">
-    <div class="photographer_section"></div>
+  <main id="main" role="contenu principal de la page">
+    <section class="photographer_section" id="photographer_section-id"></section>
   </main>
   <script src="js/templates/Index.js"></script>
-
   <script src="js/models/PhotographersModel.js"></script>
   <script src="js/factories/DataFactorie.js"></script>
   <script src="js/api/Api.js"></script>

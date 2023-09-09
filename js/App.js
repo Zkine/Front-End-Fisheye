@@ -4,11 +4,11 @@ class App {
     this.$bannerPhotograph = document.getElementById("photograph-banner");
     this.$imgSection = document.getElementById("img-section");
     this.photographeApi = new PhotographeApi("/data/photographers.json");
-    this.url = new URL(window.location.href);
+    this.params = new URL(document.location).searchParams;
   }
 
   async main() {
-    if (this.url.pathname === "/index.html") {
+    if (!this.params.has("id")) {
       // création de deux constantes qui fait appel à l'api.js pour récupérer les données du dossier data - photographers.json
       const photographeData = await this.photographeApi.getPhotographe();
       // constante qui fait appel à la DataFactorie nous permettant de récupérer les données et créer le ou les objets pour construire les pages index.html et photographer.html
@@ -21,7 +21,7 @@ class App {
         const Template = new AccueilTemplate(data);
         this.photographeSection.appendChild(Template.render());
       });
-    } else if (this.url.pathname === "/photographer.html") {
+    } else if (this.params.has("id")) {
       const photographeData = await this.photographeApi.getPhotographe();
       const mediaData = await this.photographeApi.getMedia();
 

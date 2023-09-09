@@ -19,6 +19,7 @@ class Modale {
 
       const h2 = document.createElement("h2");
       h2.classList.add("modale_titre");
+      h2.id = "modale_titre-id";
       h2.textContent = `Contactez-moi ${name.textContent}`;
       article.appendChild(h2);
 
@@ -43,6 +44,7 @@ class Modale {
       const lablePrenom = document.createElement("label");
       lablePrenom.setAttribute("for", "prenom");
       lablePrenom.classList.add("label-modale");
+      lablePrenom.id = "label-prenom-id";
       lablePrenom.textContent = "Prénom";
       paragraphePrenom.insertAdjacentElement("afterbegin", lablePrenom);
 
@@ -51,6 +53,7 @@ class Modale {
       inputPrenom.setAttribute("name", "prenom");
       inputPrenom.classList.add("input-modale");
       inputPrenom.id = "prenom";
+      inputPrenom.setAttribute("aria-labelledby", "label-prenom-id");
       paragraphePrenom.insertAdjacentElement("beforeend", inputPrenom);
 
       const paragrapheNom = document.createElement("p");
@@ -65,6 +68,7 @@ class Modale {
       const lableNom = document.createElement("label");
       lableNom.setAttribute("for", "nom");
       lableNom.classList.add("label-modale");
+      lableNom.id = "label-nom-id";
       lableNom.textContent = "Nom";
       paragrapheNom.insertAdjacentElement("afterbegin", lableNom);
 
@@ -73,6 +77,7 @@ class Modale {
       inputNom.setAttribute("name", "nom");
       inputNom.classList.add("input-modale");
       inputNom.id = "nom";
+      inputNom.setAttribute("aria-labelledby", "label-nom-id");
       paragrapheNom.insertAdjacentElement("beforeend", inputNom);
 
       const paragrapheMail = document.createElement("p");
@@ -87,6 +92,7 @@ class Modale {
       const lableMail = document.createElement("label");
       lableMail.setAttribute("for", "mail");
       lableMail.classList.add("label-modale");
+      lableMail.id = "label-mail-id";
       lableMail.textContent = "Email";
       paragrapheMail.insertAdjacentElement("afterbegin", lableMail);
 
@@ -95,6 +101,7 @@ class Modale {
       inputmail.setAttribute("name", "mail");
       inputmail.classList.add("input-modale");
       inputmail.id = "mail";
+      inputmail.setAttribute("aria-labelledby", "label-mail-id");
       paragrapheMail.insertAdjacentElement("beforeend", inputmail);
 
       const paragrapheMessage = document.createElement("p");
@@ -109,6 +116,7 @@ class Modale {
       const lableMessage = document.createElement("label");
       lableMessage.setAttribute("for", "message");
       lableMessage.classList.add("label-modale");
+      lableMessage.id = "label-message-id";
       lableMessage.textContent = "Votre message";
       paragrapheMessage.insertAdjacentElement("afterbegin", lableMessage);
 
@@ -116,28 +124,31 @@ class Modale {
       textareaMessage.setAttribute("name", "message");
       textareaMessage.classList.add("textarea-modale");
       textareaMessage.id = "message";
+      textareaMessage.setAttribute("aria-labelledby", "label-message-id");
       paragrapheMessage.insertAdjacentElement("beforeend", textareaMessage);
 
       const buttonEnvoi = document.createElement("button");
+      buttonEnvoi.setAttribute("type", "submit");
       buttonEnvoi.classList.add("button-envoi");
       buttonEnvoi.id = "button-envoi-id";
+      buttonEnvoi.setAttribute("aria-label", "send");
       buttonEnvoi.textContent = "Envoyer";
       form.appendChild(buttonEnvoi);
 
       const buttonClose = document.createElement("button");
+      buttonClose.setAttribute("type", "button");
       buttonClose.classList.add("button-close");
       buttonClose.id = "button-close-id";
-      buttonClose.setAttribute("aria-label", "Formulaire de contact");
+      buttonClose.setAttribute("aria-label", "Close Contact form");
       buttonClose.setAttribute("aria-pressed", "false");
       divForm.insertAdjacentElement("beforeend", buttonClose);
 
       const fontawesomeCross = document.createElement("i");
-      const classesFontAwesome = ["fa-solid", "fa-xmark"];
-      fontawesomeCross.classList.add(...classesFontAwesome);
+      fontawesomeCross.classList.add(...["fa-solid", "fa-xmark"]);
       buttonClose.appendChild(fontawesomeCross);
 
       const closeModal = document.getElementById("button-close-id");
-      closeModal.addEventListener("click", Modale.modalClose.bind(this));
+      closeModal.addEventListener("click", Modale.modalClose);
 
       const imputPrenom = document.getElementById("prenom");
       imputPrenom.addEventListener("input", (e) => inputControl(e));
@@ -159,6 +170,8 @@ class Modale {
       //sinon si le dom est créé en controlant si la classe contact_modal_close est présente,
       //on remove la class retournée par la fonction modaleClose pour réouvrir la modale
     } else if (aside.classList[1].includes("contact_modal_close")) {
+      const btnClose = document.getElementById("button-close-id");
+      btnClose.setAttribute("aria-pressed", "false");
       aside.classList.remove("contact_modal_close");
     }
   }
@@ -168,6 +181,7 @@ class Modale {
     e.stopPropagation();
     const sectionModal = e.target.closest("#contact_modal-id");
     if (sectionModal.classList[0].includes("contact_modal")) {
+      e.target.parentElement.setAttribute("aria-pressed", "true");
       sectionModal.classList.add("contact_modal_close");
       document.form.reset();
     }

@@ -19,29 +19,34 @@ class PhotographerTemplate {
     const divBanner = document.createElement("div");
     divBanner.classList.add("photograph-banner");
 
-    const divTiltle = document.createElement("div");
-    divTiltle.classList.add("div-title");
-    divBanner.insertAdjacentElement("afterbegin", divTiltle);
+    const divTritre = document.createElement("div");
+    divTritre.classList.add("div-title");
+    divBanner.insertAdjacentElement("afterbegin", divTritre);
+
+    const groupeTitre = document.createElement("hgroup");
+    divTritre.insertAdjacentElement("afterbegin", groupeTitre);
 
     const h1 = document.createElement("h1");
     h1.classList.add("photographer-h1");
     h1.id = "photographer-h1-id";
     h1.textContent = `${this._data.name}`;
-    divTiltle.insertAdjacentElement("afterbegin", h1);
+    groupeTitre.insertAdjacentElement("afterbegin", h1);
 
     const city = document.createElement("p");
     city.classList.add("photographer-city");
     city.textContent = `${this._data.city}, ${this._data.country}`;
-    divTiltle.insertAdjacentElement("beforeend", city);
+    groupeTitre.insertAdjacentElement("beforeend", city);
 
     const citation = document.createElement("q");
     citation.classList.add("photographer-citation");
     citation.textContent = `${this._data.tagline}`;
-    divTiltle.insertAdjacentElement("beforeend", citation);
+    divTritre.insertAdjacentElement("beforeend", citation);
 
     const button = document.createElement("button");
+    button.setAttribute("type", "button");
     button.classList.add("contact_button");
     button.id = "displayModal";
+    button.setAttribute("aria-labelledby", "contact_modal-id");
     button.textContent = "Contactez-moi";
     divBanner.insertAdjacentElement("beforeend", button);
 
@@ -63,6 +68,7 @@ class PhotographerTemplate {
 
   renderMedia() {
     // /création des médias de la page photographer.html
+    const namePhotographer = document.getElementById("photographer-h1-id");
     const articlePhoto = document.createElement("article");
     articlePhoto.classList.add("article-media");
     articlePhoto.id = "article-media-id";
@@ -77,8 +83,10 @@ class PhotographerTemplate {
       const Img = document.createElement("img");
       Img.classList.add("item-media");
       Img.setAttribute("src", `${this._data.MediaItems}`);
-      Img.setAttribute("alt", `${this._data.MediaTitle}`);
+      Img.setAttribute("alt", "");
       Img.id = "item-media-id";
+      Img.setAttribute("aria-label", `${this._data.MediaTitle}, closeup view`);
+      Img.setAttribute("aria-labelledby", "lightbox-modal");
       figurePhoto.insertAdjacentElement("beforeend", Img);
 
       const figcaptionImg = document.createElement("figcaption");
@@ -87,28 +95,29 @@ class PhotographerTemplate {
       figcaptionImg.id = "figcaption-media-id";
       figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
     } else if (this._data.MediaItems.includes("mp4")) {
+      figurePhoto.classList.add(...["figure-media", "figure-media-video"]);
+
       const video = document.createElement("video");
       video.classList.add("item-media");
       video.id = "item-media-id";
+      video.setAttribute(
+        "aria-label",
+        `${this._data.MediaTitle}, closeup view`
+      );
+      video.setAttribute("aria-labelledby", "lightbox-modal");
       figurePhoto.insertAdjacentElement("afterbegin", video);
 
       const source = document.createElement("source");
       source.id = "source-id";
       source.setAttribute("src", `${this._data.MediaItems}`);
       source.setAttribute("type", "video/mp4");
-      video.appendChild(source);
+      video.insertAdjacentElement("afterbegin", source);
 
       const figcaptionVideo = document.createElement("figcaption");
       figcaptionVideo.classList.add("figcaption-media");
       figcaptionVideo.textContent = `${this._data.MediaTitle}`;
       figcaptionVideo.id = "figcaption-media-id";
       figurePhoto.appendChild(figcaptionVideo);
-
-      // const fontawesomePlay = document.createElement("i");
-      // const classesFontAwesome = ["fa-regular", "fa-circle-play"];
-      // fontawesomePlay.classList.add(...classesFontAwesome);
-      // fontawesomePlay.id = "item-media-id";
-      // figcaptionVideo.appendChild(fontawesomePlay);
     }
 
     const mediaLikes = document.createElement("p");
@@ -118,21 +127,29 @@ class PhotographerTemplate {
     figurePhoto.insertAdjacentElement("afterend", mediaLikes);
 
     const buttonHeart = document.createElement("button");
+    buttonHeart.setAttribute("type", "button");
     buttonHeart.classList.add("button-heart");
     buttonHeart.id = "button-heart-id";
+    buttonHeart.setAttribute("aria-label", "likes");
+    buttonHeart.setAttribute("aria-pressed", "false");
     mediaLikes.insertAdjacentElement("afterend", buttonHeart);
 
     const iconHeart = document.createElement("i");
-    const classesFontAwesome = ["fa-regular", "fa-heart"];
-    iconHeart.classList.add(...classesFontAwesome);
+    iconHeart.classList.add(...["fa-regular", "fa-heart"]);
     iconHeart.id = "fontawesome-id";
-    buttonHeart.appendChild(iconHeart);
+    iconHeart.setAttribute("aria-hidden", "true");
+    buttonHeart.insertAdjacentElement("afterbegin", iconHeart);
+
+    const spanBtn = document.createElement("span");
+    spanBtn.classList.add("screenreader-text");
+    spanBtn.textContent = `cliquer sur le bouton pour ajouter un like ou retirer un like que vous avez ajouté à ${namePhotographer.textContent}`;
+    buttonHeart.insertAdjacentElement("afterend", spanBtn);
 
     const HeartId = document.getElementById("button-heart-id");
-    HeartId.addEventListener("click", LikesMedia.gestionLikes.bind(this));
+    HeartId.addEventListener("click", LikesMedia.gestionLikes);
 
     const mediaId = document.getElementById("item-media-id");
-    mediaId.addEventListener("click", Lightbox.DomLightbox.bind(this));
+    mediaId.addEventListener("click", Lightbox.DomLightbox);
 
     return articlePhoto;
   }
@@ -192,7 +209,6 @@ class SortMedia extends PhotographerTemplate {
           const noeudVideo = figureMedia[f].childNodes[0].nodeName === "VIDEO";
           const noeudImage =
             figureMedia[f].childNodes[0].alt === mediaImage[i].alt;
-
           if (
             dataMediaAll[w].MediaItems.includes("jpg") &&
             Number([w]) === Number([i]) &&
@@ -204,8 +220,8 @@ class SortMedia extends PhotographerTemplate {
                 `${dataMediaAll[w].MediaItems}`
               );
               mediaImage[i].setAttribute(
-                "alt",
-                `${dataMediaAll[w].MediaTitle}`
+                "aria-label",
+                `${dataMediaAll[w].MediaTitle}, closeup view`
               );
 
               mediaImage[
@@ -217,7 +233,6 @@ class SortMedia extends PhotographerTemplate {
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
               if (!dataMediaAll[w]._MediaHeart) {
-                const classesFontAwesome = ["fa-heart", "fa-regular"];
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -225,11 +240,10 @@ class SortMedia extends PhotographerTemplate {
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...classesFontAwesome
+                  ...["fa-heart", "fa-regular"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  const classesFontAwesome = ["fa-regular", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -238,10 +252,9 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-regular", "fa-heart"]
                   );
                 } else {
-                  const classesFontAwesome = ["fa-solid", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -250,7 +263,7 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-solid", "fa-heart"]
                   );
                 }
               }
@@ -268,7 +281,6 @@ class SortMedia extends PhotographerTemplate {
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
               if (!dataMediaAll[w]._MediaHeart) {
-                const classesFontAwesome = ["fa-regular", "fa-heart"];
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -276,11 +288,10 @@ class SortMedia extends PhotographerTemplate {
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...classesFontAwesome
+                  ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  const classesFontAwesome = ["fa-regular", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -288,10 +299,9 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-regular", "fa-heart"]
                   );
                 } else {
-                  const classesFontAwesome = ["fa-solid", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -299,24 +309,21 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-solid", "fa-heart"]
                   );
                 }
               }
-
-              cloneImage.attributes[1].textContent = `${dataMediaAll[w].MediaItems}`;
-
-              cloneImage.attributes[2].textContent = `${dataMediaAll[w].MediaTitle}`;
+              mediaImage[i].parentElement.classList.remove(
+                "figure-media-video"
+              );
+              cloneImage.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
 
               figureMedia[f].replaceChild(
                 cloneImage,
                 figureMedia[f].childNodes[0]
               );
 
-              cloneImage.addEventListener(
-                "click",
-                Lightbox.DomLightbox.bind(this)
-              );
+              cloneImage.addEventListener("click", Lightbox.DomLightbox);
             }
           } else if (
             dataMediaAll[w].MediaItems.includes("mp4") &&
@@ -329,12 +336,11 @@ class SortMedia extends PhotographerTemplate {
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
                   "";
-                const classesFontAwesome = ["fa-regular", "fa-heart"];
 
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...classesFontAwesome
+                  ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
@@ -342,24 +348,21 @@ class SortMedia extends PhotographerTemplate {
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
                     "";
-                  const classesFontAwesome = ["fa-regular", "fa-heart"];
 
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-regular", "fa-heart"]
                   );
                 } else {
-                  const classesFontAwesome = ["fa-solid", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
                     "";
-
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-solid", "fa-heart"]
                   );
                 }
               }
@@ -378,7 +381,6 @@ class SortMedia extends PhotographerTemplate {
               ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
 
               if (!dataMediaAll[w]._MediaHeart) {
-                const classesFontAwesome = ["fa-regular", "fa-heart"];
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -386,11 +388,10 @@ class SortMedia extends PhotographerTemplate {
                 mediaImage[
                   i
                 ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...classesFontAwesome
+                  ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  const classesFontAwesome = ["fa-regular", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -398,10 +399,9 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-regular", "fa-heart"]
                   );
                 } else {
-                  const classesFontAwesome = ["fa-solid", "fa-heart"];
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
@@ -410,20 +410,18 @@ class SortMedia extends PhotographerTemplate {
                   mediaImage[
                     i
                   ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...classesFontAwesome
+                    ...["fa-solid", "fa-heart"]
                   );
                 }
               }
+
+              mediaImage[i].parentElement.classList.add("figure-media-video");
 
               figureMedia[f].replaceChild(
                 cloneVideo,
                 figureMedia[f].childNodes[0]
               );
-
-              cloneVideo.addEventListener(
-                "click",
-                Lightbox.DomLightbox.bind(this)
-              );
+              cloneVideo.addEventListener("click", Lightbox.DomLightbox);
             }
           }
         }
@@ -438,6 +436,7 @@ class SortMedia extends PhotographerTemplate {
       return b._MediaLikes - a._MediaLikes;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
+    return mediaImage;
   }
   static renderDate(e) {
     const [dataMediaAll] = SortMedia.LikesUpdate(e);
@@ -447,8 +446,8 @@ class SortMedia extends PhotographerTemplate {
       return 0;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
+    return mediaImage;
   }
-
   static renderTitre(e) {
     const [dataMediaAll] = SortMedia.LikesUpdate(e);
     dataMediaAll.sort(function (a, b) {
@@ -457,10 +456,11 @@ class SortMedia extends PhotographerTemplate {
       return 0;
     });
     const [mediaImage] = SortMedia.UpdateMedia(e);
+    return mediaImage;
   }
 }
 
-let arrayBtmTris = [];
+let arrayBtnTris = [];
 const divTris = document.getElementById("div-btn-tris-id");
 const btnPopulaire = document.getElementById("button-populaire-id");
 const btnDate = document.getElementById("button-date-id");
@@ -471,25 +471,26 @@ divTris.addEventListener("click", (event) => {
     !divTris.classList.contains("div-btn-tris-click")
   ) {
     divTris.classList.add("div-btn-tris-click");
+    divTris.setAttribute("aria-expanded", "true");
     divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
     divTris.insertBefore(btnDate, btnTitre);
   } else if (divTris.classList.contains("div-btn-tris-click")) {
     if (event.target.textContent === "Popularité") {
-      arrayBtmTris.shift();
-      arrayBtmTris.push(btnPopulaire);
+      arrayBtnTris.shift();
+      arrayBtnTris.push(btnPopulaire);
       btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
       btnPopulaire.removeEventListener(
         "click",
         SortMedia.renderPopulaire(this)
       );
     } else if (event.target.textContent === "Date") {
-      arrayBtmTris.shift();
-      arrayBtmTris.push(btnDate);
+      arrayBtnTris.shift();
+      arrayBtnTris.push(btnDate);
       btnDate.addEventListener("click", SortMedia.renderDate);
       btnDate.removeEventListener("click", SortMedia.renderDate(this));
     } else if (event.target.textContent === "Titre") {
-      arrayBtmTris.shift();
-      arrayBtmTris.push(btnTitre);
+      arrayBtnTris.shift();
+      arrayBtnTris.push(btnTitre);
       btnTitre.addEventListener("click", SortMedia.renderTitre);
       btnTitre.removeEventListener("click", SortMedia.renderTitre(this));
     }
@@ -498,8 +499,10 @@ divTris.addEventListener("click", (event) => {
 
 divTris.addEventListener("mouseleave", () => {
   if (divTris.classList.contains("div-btn-tris-click")) {
-    divTris.insertBefore(arrayBtmTris[0], divTris.firstElementChild);
+    divTris.setAttribute("aria-expanded", "false");
     divTris.classList.remove("div-btn-tris-click");
+    arrayBtnTris[0] &&
+      divTris.insertBefore(arrayBtnTris[0], divTris.firstElementChild);
   }
 });
 
@@ -515,20 +518,20 @@ class LikesMedia extends SortMedia {
     const likesFull = document.getElementById("calcul-like-id");
     const articleMedia = e.target.closest("#article-media-id");
     const media = articleMedia.querySelector("#figcaption-media-id");
+    const btnHeart = articleMedia.querySelector("#button-heart-id");
     const likesMedia = articleMedia.querySelector("#number-likes-id");
-    const classHeart = e.target;
-
-    if (classHeart.classList.contains("fa-regular")) {
-      classHeart.classList.remove("fa-regular");
-      classHeart.classList.add("fa-solid");
+    const iconHeart = e.target;
+    if (iconHeart.classList.contains("fa-regular")) {
+      iconHeart.classList.remove("fa-regular");
+      iconHeart.classList.add("fa-solid");
+      btnHeart.setAttribute("aria-pressed", "true");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
-
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
-    } else if (classHeart.classList.contains("fa-solid")) {
-      classHeart.classList.remove("fa-solid");
-      classHeart.classList.add("fa-regular");
+    } else if (iconHeart.classList.contains("fa-solid")) {
+      iconHeart.classList.remove("fa-solid");
+      iconHeart.classList.add("fa-regular");
+      btnHeart.setAttribute("aria-pressed", "false");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
-
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
     }
 
@@ -540,7 +543,7 @@ class LikesMedia extends SortMedia {
     let likesTrue = new LikesTrue(
       media.textContent,
       likesMedia.textContent,
-      classHeart.classList.value
+      iconHeart.classList.value
     );
 
     if (!mediaLinked.length) {
@@ -555,7 +558,7 @@ class LikesMedia extends SortMedia {
         mediaLinked.forEach((z) => {
           if (
             z.media === mediaLinkeName.media &&
-            classHeart.classList.contains("fa-solid")
+            iconHeart.classList.contains("fa-solid")
           ) {
             const keymedialike = mediaLinked.indexOf(mediaLinkeName);
             mediaLinked.splice(keymedialike, 1);
@@ -563,7 +566,7 @@ class LikesMedia extends SortMedia {
             mediaLinked.push(likesTrue);
           } else if (
             z.media === mediaLinkeName.media &&
-            classHeart.classList.contains("fa-regular")
+            iconHeart.classList.contains("fa-regular")
           ) {
             const keymedialike = mediaLinked.indexOf(mediaLinkeName);
             likesTrue.likesMedia = likesTrue.likesMedia;

@@ -1,6 +1,4 @@
 class Lightbox {
-  constructor() {}
-
   static constanteInit(
     cloneVideo,
     sourceVideo,
@@ -30,6 +28,10 @@ class Lightbox {
   static DomLightbox(e) {
     e.stopPropagation();
     const asideLightbox = document.getElementById("lightbox-modal");
+    const MediaLightbox = e.target.getAttribute("src")
+      ? e.target.getAttribute("src")
+      : e.target.children[0].getAttribute("src");
+    const nameMedia = e.target.nextElementSibling.textContent;
     if (!asideLightbox.hasAttribute("class")) {
       const selectDomLightbox = document.getElementById("lightbox-modal");
       const section = document.createElement("section");
@@ -42,44 +44,38 @@ class Lightbox {
       figureLightbox.id = "figure-lightbox-id";
       section.appendChild(figureLightbox);
 
-      if (e.target.attributes[1].textContent.includes("jpg")) {
-        const imgClick = e.target.attributes[1].textContent;
-        const imgAlt = e.target.attributes[2].textContent;
-
+      if (e.target.getAttribute("src")) {
         const imgLightbox = document.createElement("img");
         imgLightbox.classList.add("media-lightbox");
-        imgLightbox.setAttribute("src", imgClick);
-        imgLightbox.setAttribute("alt", imgAlt);
+        imgLightbox.setAttribute("src", MediaLightbox);
+        imgLightbox.setAttribute("alt", nameMedia);
         imgLightbox.id = "media-lightbox-id";
+        imgLightbox.setAttribute("aria-label", `${nameMedia}`);
         figureLightbox.insertAdjacentElement("afterbegin", imgLightbox);
 
         const figcaption = document.createElement("figcaption");
         figcaption.classList.add("figcaption-lightbox");
         figcaption.id = "figcaption-lightbox-id";
-        figcaption.textContent = `${imgAlt}`;
+        figcaption.textContent = `${nameMedia}`;
         figureLightbox.insertAdjacentElement("beforeend", figcaption);
-      } else if (
-        e.target.children[0].attributes[1].textContent.includes("mp4")
-      ) {
-        const videoClick = e.target.children[0].attributes[1].textContent;
-        const videoAlt = e.target.nextElementSibling.textContent;
-
+      } else {
         const video = document.createElement("video");
         video.classList.add("media-lightbox");
         video.setAttribute("autoplay", "");
         video.setAttribute("controls", "");
+        video.setAttribute("aria-label", `${nameMedia}`);
         figureLightbox.insertAdjacentElement("afterbegin", video);
 
         const source = document.createElement("source");
         source.id = "media-lightbox-id";
-        source.setAttribute("src", `${videoClick}`);
+        source.setAttribute("src", `${MediaLightbox}`);
         source.setAttribute("type", "video/mp4");
         video.appendChild(source);
 
         const figcaptionVideo = document.createElement("figcaption");
         figcaptionVideo.classList.add("figcaption-lightbox");
         figcaptionVideo.id = "figcaption-lightbox-id";
-        figcaptionVideo.textContent = `${videoAlt}`;
+        figcaptionVideo.textContent = `${nameMedia}`;
         figureLightbox.appendChild(figcaptionVideo);
       }
       const [media, mediaTitleMap, MediaItems, MediaTitle] =
@@ -108,6 +104,7 @@ class Lightbox {
       }
       previousLink.classList.add("previous-link");
       previousLink.id = "previous-link-id";
+      previousLink.setAttribute("aria-label", "Next image");
       section.appendChild(previousLink);
 
       const nextLink = document.createElement("a");
@@ -115,20 +112,24 @@ class Lightbox {
       nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
       nextLink.classList.add("next-link");
       nextLink.id = "next-link-id";
+      nextLink.setAttribute("aria-label", "Next image");
       section.appendChild(nextLink);
 
       const buttonModal = document.createElement("button");
+      buttonModal.setAttribute("type", "button");
       buttonModal.classList.add("button-modal");
+      buttonModal.id = "button-modal-id";
+      buttonModal.setAttribute("aria-label", "Close dialog");
+      buttonModal.setAttribute("aria-pressed", "false");
       section.appendChild(buttonModal);
 
       const fontAwesomeCross = document.createElement("i");
-      const classesFontAwesomeCross = ["fa-solid", "fa-xmark"];
-      fontAwesomeCross.classList.add(...classesFontAwesomeCross);
+      fontAwesomeCross.classList.add(...["fa-solid", "fa-xmark"]);
       buttonModal.appendChild(fontAwesomeCross);
 
-      buttonModal.addEventListener("click", Lightbox.lightboxClose.bind(this));
-      nextLink.addEventListener("click", Lightbox.nextImg.bind(this));
-      previousLink.addEventListener("click", Lightbox.prevImg.bind(this));
+      buttonModal.addEventListener("click", Lightbox.lightboxClose);
+      nextLink.addEventListener("click", Lightbox.nextImg);
+      previousLink.addEventListener("click", Lightbox.prevImg);
 
       return section;
     } else if (asideLightbox.classList[0].includes("lightbox-modal-close")) {
@@ -142,18 +143,18 @@ class Lightbox {
         lightboxVideo,
         figureItem,
       ] = Lightbox.constanteInit(e);
-
       if (e.target.nodeName === "IMG") {
         const cloneImage = neaudImage.cloneNode(true);
         cloneImage.classList.remove("item-media");
         cloneImage.classList.add("media-lightbox");
-        cloneImage.setAttribute("src", `${e.target.attributes[1].textContent}`);
-        cloneImage.setAttribute("alt", `${e.target.attributes[2].textContent}`);
+        cloneImage.setAttribute("src", `${MediaLightbox}`);
+        cloneImage.setAttribute("alt", `${nameMedia}`);
+        cloneImage.setAttribute("aria-label", `${nameMedia}`);
         cloneImage.id = "media-lightbox-id";
         lightboxVideo
           ? figureItem.replaceChild(cloneImage, lightboxVideo)
           : figureItem.replaceChild(cloneImage, lightboxImage);
-        figcaptionMedia.textContent = `${e.target.nextElementSibling.textContent}`;
+        figcaptionMedia.textContent = `${nameMedia}`;
       } else if (e.target.nodeName === "VIDEO") {
         sourceVideo.id = "media-lightbox-id";
         cloneVideo.classList.remove("item-media");
@@ -161,10 +162,11 @@ class Lightbox {
 
         cloneVideo.setAttribute("controls", "");
         cloneVideo.setAttribute("autoplay", "");
+        cloneVideo.setAttribute("aria-label", `${nameMedia}`);
         lightboxImage
           ? figureItem.replaceChild(cloneVideo, lightboxImage)
           : figureItem.replaceChild(cloneVideo, lightboxVideo);
-        figcaptionMedia.textContent = `${e.target.nextElementSibling.textContent}`;
+        figcaptionMedia.textContent = `${nameMedia}`;
       }
       const [media, mediaTitleMap, MediaItems, MediaTitle] =
         Lightbox.MediaAllSetect(e);
@@ -193,6 +195,8 @@ class Lightbox {
       }
 
       nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
+      const btnClaoseLightbox = document.getElementById("button-modal-id");
+      btnClaoseLightbox.setAttribute("aria-pressed", "false");
     }
   }
 
@@ -202,7 +206,6 @@ class Lightbox {
     const linkTitre = document.querySelector("section #figcaption-lightbox-id");
     const mediaAll = [...document.querySelectorAll("article #item-media-id")];
     const mediaTitre = [...document.querySelectorAll("#figcaption-media-id")];
-
     Media = mediaAll.map(
       (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
     );
@@ -222,6 +225,7 @@ class Lightbox {
     e.stopPropagation();
     const asideLightbox = e.target.closest("#lightbox-modal");
     if (!asideLightbox.classList.contains("lightbox-modal-close")) {
+      e.target.parentElement.setAttribute("aria-pressed", "true");
       asideLightbox.classList.add("lightbox-modal-close");
     }
   }
@@ -260,6 +264,10 @@ class Lightbox {
       if (itemsMedia.nodeName === "IMG") {
         itemsMedia.setAttribute("src", `${media[mediaItems + 1]}`);
         itemsMedia.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
+        itemsMedia.setAttribute(
+          "aria-label",
+          `${mediaTitleMap[mediaTitle + 1]}`
+        );
 
         figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
       }
@@ -269,6 +277,7 @@ class Lightbox {
       cloneImage.classList.add("media-lightbox");
       cloneImage.setAttribute("src", `${media[mediaItems + 1]}`);
       cloneImage.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
+      cloneImage.setAttribute("aria-label", `${mediaTitleMap[mediaTitle + 1]}`);
       cloneImage.id = "media-lightbox-id";
       lightboxImage
         ? figureItem.replaceChild(cloneImage, lightboxImage)
@@ -278,12 +287,12 @@ class Lightbox {
       itemsMedia.setAttribute("src", `${media[mediaItems + 1]}`);
       figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
     } else if (media[mediaItems + 1].includes("mp4") && !lightboxVideo) {
-      // console.log(sourceVide.oattributes[0].textContent);
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
       cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
+      cloneVideo.setAttribute("aria-label", `${mediaTitleMap[mediaTitle + 1]}`);
       lightboxVideo
         ? figureItem.replaceChild(cloneVideo, lightboxVideo)
         : figureItem.replaceChild(cloneVideo, lightboxImage);
@@ -344,6 +353,7 @@ class Lightbox {
     if (media[mediaItems - 1].includes("jpg") && lightboxImage !== null) {
       itemsMedia.setAttribute("src", `${media[mediaItems - 1]}`);
       itemsMedia.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
+      itemsMedia.setAttribute("aria-label", `${mediaTitleMap[mediaTitle - 1]}`);
 
       figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
     } else if (media[mediaItems - 1].includes("jpg") && !lightboxImage) {
@@ -352,6 +362,7 @@ class Lightbox {
       cloneImage.classList.add("media-lightbox");
       cloneImage.setAttribute("src", `${media[mediaItems - 1]}`);
       cloneImage.setAttribute("alt", `${mediaTitleMap[mediaTitle - 1]}`);
+      cloneImage.setAttribute("aria-label", `${mediaTitleMap[mediaTitle - 1]}`);
       cloneImage.id = "media-lightbox-id";
       figureItem.replaceChild(cloneImage, lightboxVideo);
       figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
@@ -359,9 +370,9 @@ class Lightbox {
       sourceVideo.id = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
-
       cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
+      cloneVideo.setAttribute("aria-label", `${mediaTitleMap[mediaTitle - 1]}`);
       figureItem.replaceChild(cloneVideo, lightboxImage);
       figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle - 1]}`;
     }
