@@ -18,18 +18,19 @@ class AccueilTemplate {
     article.insertAdjacentElement("afterbegin", figureIndex);
 
     const link = document.createElement("a");
-    link.setAttribute("href", `./photographer.html?id=${this._data._id}`);
     link.classList.add("link");
+    link.setAttribute("href", `./photographer.html?id=${this._data._id}`);
     link.setAttribute("role", "Link image + titre");
     figureIndex.insertAdjacentElement("afterbegin", link);
 
     const img = document.createElement("img");
+    img.setAttribute("tabindex", "0");
+    img.classList.add("section_img");
     img.setAttribute(
       "src",
       `../../assets/photographers/${this._data.portrait}`
     );
     img.setAttribute("alt", "");
-    img.classList.add("section_img");
     link.insertAdjacentElement("afterbegin", img);
 
     const figcaption = document.createElement("figcaption");
@@ -37,23 +38,27 @@ class AccueilTemplate {
     link.insertAdjacentElement("beforeend", figcaption);
 
     const h2 = document.createElement("h2");
-    h2.textContent = `${this._data.name}`;
+    h2.setAttribute("tabindex", "0");
     h2.classList.add("section_titre");
+    h2.textContent = `${this._data.name}`;
     figcaption.insertAdjacentElement("afterbegin", h2);
 
     const city = document.createElement("p");
-    city.textContent = `${this._data.city}, ${this._data.country}`;
+    city.setAttribute("tabindex", "0");
     city.classList.add("section_ville");
+    city.textContent = `${this._data.city}, ${this._data.country}`;
     figureIndex.insertAdjacentElement("beforeend", city);
 
     const citation = document.createElement("q");
-    citation.textContent = `${this._data.tagline}`;
+    citation.setAttribute("tabindex", "0");
     citation.classList.add("section_citation");
+    citation.textContent = `${this._data.tagline}`;
     figureIndex.insertAdjacentElement("beforeend", citation);
 
     const price = document.createElement("p");
-    price.textContent = `${this._data.price}€/jours`;
+    price.setAttribute("tabindex", "0");
     price.classList.add("section_prix");
+    price.textContent = `${this._data.price}€/jours`;
     figureIndex.insertAdjacentElement("beforeend", price);
 
     return article;

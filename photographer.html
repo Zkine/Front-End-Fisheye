@@ -12,12 +12,12 @@
 </head>
 
 <body>
-  <header role="entête de la page">
+  <header role="banner">
     <a aria-label="Page index des photographes" href="index.html">
       <img src="assets/images/logo.png" class="logo" alt="Fisheye Home page" />
     </a>
   </header>
-  <main role="contenu principal de la page">
+  <main role="main">
     <article id="photograph-banner">
 
     </article>
@@ -49,8 +49,9 @@
     <section class="img-section" id="img-section"></section>
   </main>
 
-  <aside aria-label="image closeup view" id="lightbox-modal"></aside>
-  <aside aria-label="Formulaire de contact" id="contact_modal-id" aria-labelledby="modale_titre-id"></aside>
+  <aside role="dialog" aria-hidden="true" aria-label="image closeup view" id="lightbox-modal"></aside>
+  <aside role="dialog" aria-hidden="true" aria-label="Formulaire de contact" id="contact_modal-id">
+  </aside>
 
 
   <script src="js/utils/Lightbox.js"></script>

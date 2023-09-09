@@ -132,18 +132,18 @@ header {
 }
 
 .calcul-like {
-    width: 38px;
+    width: 45px;
+    text-align: center;
 }
 
 .calcul-like+.fa-heart {
     color: #000000;
     font-size: 1em;
-    margin-left: 15px;
+    margin-left: 4px;
 }
 
 .screenreader-text {
     border: 0;
-    clip: rect(0 0 0 0);
     height: 1px;
     margin: -1px;
     overflow: hidden;
@@ -286,7 +286,7 @@ header {
     gap: 10px 326px;
     color: #901C1C;
     font-size: 1.5em;
-    margin: 45px 0 58px 0;
+    margin: 45px 0 100px 0;
 }
 
 .article-media {
@@ -328,7 +328,7 @@ header {
 
 .figcaption-media {
     position: relative;
-    width: 290px;
+    width: 270px;
 }
 
 .fa-circle-play {
@@ -344,8 +344,9 @@ header {
 .number-likes {
     width: 40px;
     position: absolute;
-    right: 1.2em;
+    right: 1.1em;
     bottom: -0.01em;
+    text-align: center;
 }
 
 .button-heart {
@@ -408,6 +409,15 @@ header {
     margin-top: 12px;
 }
 
+.ul-link {
+    margin: 0;
+    padding: 0;
+}
+
+.li-link {
+    list-style: none;
+}
+
 .previous-link {
     color: #901C1C;
     position: absolute;
@@ -452,7 +462,13 @@ header {
     cursor: pointer;
 }
 
-.button-modal .fa-xmark {
+.button-modal::after {
+    font: var(--fa-font-solid);
+    content: "\f00d";
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
     color: #901C1C;
     font-size: 2.625em;
 }
@@ -460,6 +476,8 @@ header {
 .lightbox-modal-close {
     display: none;
 }
+
+
 
 /* style modale */
 
@@ -489,7 +507,7 @@ header {
 
 .modale_article {
     font-size: 2.125em;
-    width: 75%;
+    width: 90%;
 }
 
 .modale_titre {
@@ -580,10 +598,15 @@ header {
     right: 25px;
 }
 
-.fa-xmark {
-    font-size: 2.5em;
+.button-close::after {
+    font: var(--fa-font-solid);
+    content: "\f00d";
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
     color: #ffffff;
     cursor: pointer;
+    font-size: 2.5em;
 }
 
 .contact_modal_close {

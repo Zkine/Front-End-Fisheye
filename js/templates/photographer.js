@@ -3,6 +3,8 @@ class PhotographerTemplate {
   constructor(data) {
     // renvoi les données data pour la création du DOM - photographer.html
     this._data = data;
+    dataMedia.push(data);
+
     this.$imgSection = document.getElementById("img-section");
     // affichage des likes
     this.$claculLikes = document.getElementById("calcul-like-id");
@@ -10,8 +12,6 @@ class PhotographerTemplate {
     // affichage du prix
     this.$claculPrice = document.getElementById("calcul-price-id");
     this.$claculPrice.textContent = MediaModel.MediaFullprice();
-
-    dataMedia.push(data);
   }
 
   renderBanner() {
@@ -23,26 +23,27 @@ class PhotographerTemplate {
     divTritre.classList.add("div-title");
     divBanner.insertAdjacentElement("afterbegin", divTritre);
 
-    const groupeTitre = document.createElement("hgroup");
-    divTritre.insertAdjacentElement("afterbegin", groupeTitre);
-
     const h1 = document.createElement("h1");
+    h1.setAttribute("tabindex", "0");
     h1.classList.add("photographer-h1");
     h1.id = "photographer-h1-id";
     h1.textContent = `${this._data.name}`;
-    groupeTitre.insertAdjacentElement("afterbegin", h1);
+    divTritre.insertAdjacentElement("afterbegin", h1);
 
     const city = document.createElement("p");
+    city.setAttribute("tabindex", "0");
     city.classList.add("photographer-city");
     city.textContent = `${this._data.city}, ${this._data.country}`;
-    groupeTitre.insertAdjacentElement("beforeend", city);
+    divTritre.insertAdjacentElement("beforeend", city);
 
     const citation = document.createElement("q");
+    citation.setAttribute("tabindex", "0");
     citation.classList.add("photographer-citation");
     citation.textContent = `${this._data.tagline}`;
     divTritre.insertAdjacentElement("beforeend", citation);
 
     const button = document.createElement("button");
+    button.setAttribute("tabindex", "0");
     button.setAttribute("type", "button");
     button.classList.add("contact_button");
     button.id = "displayModal";
@@ -55,6 +56,7 @@ class PhotographerTemplate {
     divBanner.insertAdjacentElement("beforeend", divImg);
 
     const portrait = document.createElement("img");
+    portrait.setAttribute("tabindex", "0");
     portrait.setAttribute(
       "src",
       `../../assets/photographers/${this._data.portrait}`
@@ -462,6 +464,7 @@ class SortMedia extends PhotographerTemplate {
 
 let arrayBtnTris = [];
 const divTris = document.getElementById("div-btn-tris-id");
+
 const btnPopulaire = document.getElementById("button-populaire-id");
 const btnDate = document.getElementById("button-date-id");
 const btnTitre = document.getElementById("button-titre-id");

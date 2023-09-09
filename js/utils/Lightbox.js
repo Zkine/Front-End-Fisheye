@@ -28,6 +28,7 @@ class Lightbox {
   static DomLightbox(e) {
     e.stopPropagation();
     const asideLightbox = document.getElementById("lightbox-modal");
+    asideLightbox.setAttribute("aria-hidden", "false");
     const MediaLightbox = e.target.getAttribute("src")
       ? e.target.getAttribute("src")
       : e.target.children[0].getAttribute("src");
@@ -89,6 +90,17 @@ class Lightbox {
         mediaItems = -1;
         mediaTitle = -1;
       }
+
+      const navLink = document.createElement("nav");
+      section.appendChild(navLink);
+
+      const ulLink = document.createElement("ul");
+      ulLink.classList.add("ul-link");
+      navLink.insertAdjacentElement("afterbegin", ulLink);
+
+      const liPrevious = document.createElement("li");
+      liPrevious.classList.add("li-link");
+      ulLink.insertAdjacentElement("afterbegin", liPrevious);
       const previousLink = document.createElement("a");
       previousLink.setAttribute("type", "button");
       if (media[mediaItems - 1]) {
@@ -105,7 +117,11 @@ class Lightbox {
       previousLink.classList.add("previous-link");
       previousLink.id = "previous-link-id";
       previousLink.setAttribute("aria-label", "Next image");
-      section.appendChild(previousLink);
+      liPrevious.insertAdjacentElement("afterbegin", previousLink);
+
+      const liNext = document.createElement("li");
+      liNext.classList.add("li-link");
+      ulLink.insertAdjacentElement("beforeend", liNext);
 
       const nextLink = document.createElement("a");
       nextLink.setAttribute("type", "button");
@@ -113,7 +129,7 @@ class Lightbox {
       nextLink.classList.add("next-link");
       nextLink.id = "next-link-id";
       nextLink.setAttribute("aria-label", "Next image");
-      section.appendChild(nextLink);
+      liNext.insertAdjacentElement("afterbegin", nextLink);
 
       const buttonModal = document.createElement("button");
       buttonModal.setAttribute("type", "button");
@@ -123,13 +139,14 @@ class Lightbox {
       buttonModal.setAttribute("aria-pressed", "false");
       section.appendChild(buttonModal);
 
-      const fontAwesomeCross = document.createElement("i");
-      fontAwesomeCross.classList.add(...["fa-solid", "fa-xmark"]);
-      buttonModal.appendChild(fontAwesomeCross);
+      const previousLinkId = document.getElementById("previous-link-id");
+      previousLinkId.addEventListener("click", Lightbox.prevImg);
 
-      buttonModal.addEventListener("click", Lightbox.lightboxClose);
-      nextLink.addEventListener("click", Lightbox.nextImg);
-      previousLink.addEventListener("click", Lightbox.prevImg);
+      const nextLinkId = document.getElementById("next-link-id");
+      nextLinkId.addEventListener("click", Lightbox.nextImg);
+
+      const buttonModalId = document.getElementById("button-modal-id");
+      buttonModalId.addEventListener("click", Lightbox.lightboxClose);
 
       return section;
     } else if (asideLightbox.classList[0].includes("lightbox-modal-close")) {
@@ -200,6 +217,17 @@ class Lightbox {
     }
   }
 
+  // fermeture de la lightbox
+  static lightboxClose(e) {
+    e.stopPropagation();
+    const asideLightbox = e.target.closest("#lightbox-modal");
+    if (!asideLightbox.classList.contains("lightbox-modal-close")) {
+      e.target.setAttribute("aria-pressed", "true");
+      asideLightbox.setAttribute("aria-hidden", "true");
+      asideLightbox.classList.add("lightbox-modal-close");
+    }
+  }
+
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("section #media-lightbox-id");
 
@@ -218,16 +246,6 @@ class Lightbox {
       (element) => element === linkTitre.textContent
     );
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
-  }
-
-  // fermeture de la lightbox
-  static lightboxClose(e) {
-    e.stopPropagation();
-    const asideLightbox = e.target.closest("#lightbox-modal");
-    if (!asideLightbox.classList.contains("lightbox-modal-close")) {
-      e.target.parentElement.setAttribute("aria-pressed", "true");
-      asideLightbox.classList.add("lightbox-modal-close");
-    }
   }
 
   // image suivante

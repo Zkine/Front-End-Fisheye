@@ -1,9 +1,6 @@
 class Api {
   constructor(url) {
     this._urlData = url;
-    //  Deux propriétés ci-dessous permettent de récupèrer l'url de la page internet et l'ID du protographe
-    this.url = new URL(window.location.href);
-    this.id = this.url.searchParams.get("id");
     this.params = new URL(document.location).searchParams;
   }
   async getportait() {
@@ -14,7 +11,7 @@ class Api {
           return res.photographers;
         } else if (this.params.has("id")) {
           const Photographers = res.photographers.find(
-            (element) => element.id === Number(this.id)
+            (element) => element.id === Number(this.params.get("id"))
           );
           return [Photographers];
         }
@@ -28,7 +25,8 @@ class Api {
       .then((res) => {
         if (this.params.has("id")) {
           const Media = res.media.filter(
-            (element) => element.photographerId === Number(this.id)
+            (element) =>
+              element.photographerId === Number(this.params.get("id"))
           );
           return Media;
         }

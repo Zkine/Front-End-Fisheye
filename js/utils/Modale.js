@@ -1,11 +1,12 @@
 class Modale {
   static renderModale(e) {
     e.stopPropagation();
-
     const name = document.getElementById("photographer-h1-id");
 
     const aside = document.getElementById("contact_modal-id");
     aside.classList.add("contact_modal");
+    aside.setAttribute("aria-labelledby", "modale_titre-id");
+    aside.setAttribute("aria-hidden", false);
     // si le dom n'est pas créé en controlant que la class de fermeture est absente, nous créons le dom
     if (!aside.classList[1]) {
       const divModale = document.createElement("div");
@@ -54,6 +55,8 @@ class Modale {
       inputPrenom.classList.add("input-modale");
       inputPrenom.id = "prenom";
       inputPrenom.setAttribute("aria-labelledby", "label-prenom-id");
+      inputPrenom.setAttribute("aria-invalid", "true");
+      inputPrenom.setAttribute("aria-required", "true");
       paragraphePrenom.insertAdjacentElement("beforeend", inputPrenom);
 
       const paragrapheNom = document.createElement("p");
@@ -78,6 +81,8 @@ class Modale {
       inputNom.classList.add("input-modale");
       inputNom.id = "nom";
       inputNom.setAttribute("aria-labelledby", "label-nom-id");
+      inputNom.setAttribute("aria-invalid", "true");
+      inputNom.setAttribute("aria-required", "true");
       paragrapheNom.insertAdjacentElement("beforeend", inputNom);
 
       const paragrapheMail = document.createElement("p");
@@ -102,6 +107,8 @@ class Modale {
       inputmail.classList.add("input-modale");
       inputmail.id = "mail";
       inputmail.setAttribute("aria-labelledby", "label-mail-id");
+      inputmail.setAttribute("aria-invalid", "true");
+      inputmail.setAttribute("aria-required", "true");
       paragrapheMail.insertAdjacentElement("beforeend", inputmail);
 
       const paragrapheMessage = document.createElement("p");
@@ -125,6 +132,8 @@ class Modale {
       textareaMessage.classList.add("textarea-modale");
       textareaMessage.id = "message";
       textareaMessage.setAttribute("aria-labelledby", "label-message-id");
+      textareaMessage.setAttribute("aria-invalid", "true");
+      textareaMessage.setAttribute("aria-required", "true");
       paragrapheMessage.insertAdjacentElement("beforeend", textareaMessage);
 
       const buttonEnvoi = document.createElement("button");
@@ -142,10 +151,6 @@ class Modale {
       buttonClose.setAttribute("aria-label", "Close Contact form");
       buttonClose.setAttribute("aria-pressed", "false");
       divForm.insertAdjacentElement("beforeend", buttonClose);
-
-      const fontawesomeCross = document.createElement("i");
-      fontawesomeCross.classList.add(...["fa-solid", "fa-xmark"]);
-      buttonClose.appendChild(fontawesomeCross);
 
       const closeModal = document.getElementById("button-close-id");
       closeModal.addEventListener("click", Modale.modalClose);
@@ -181,7 +186,8 @@ class Modale {
     e.stopPropagation();
     const sectionModal = e.target.closest("#contact_modal-id");
     if (sectionModal.classList[0].includes("contact_modal")) {
-      e.target.parentElement.setAttribute("aria-pressed", "true");
+      sectionModal.setAttribute("aria-hidden", "true");
+      e.target.setAttribute("aria-pressed", "true");
       sectionModal.classList.add("contact_modal_close");
       document.form.reset();
     }
@@ -216,29 +222,37 @@ const inputControl = (e) => {
     case "prenom":
       if (testPrenomNom) {
         formData[0].dataset.errorVisible = false;
+        e.target.setAttribute("aria-invalid", "false");
       } else {
         formData[0].dataset.errorVisible = true;
+        e.target.setAttribute("aria-invalid", "true");
       }
       break;
     case "nom":
       if (testPrenomNom) {
         formData[1].dataset.errorVisible = false;
+        e.target.setAttribute("aria-invalid", "false");
       } else {
         formData[1].dataset.errorVisible = true;
+        e.target.setAttribute("aria-invalid", "true");
       }
       break;
     case "mail":
       if (testEmail) {
         formData[2].dataset.errorVisible = false;
+        e.target.setAttribute("aria-invalid", "false");
       } else {
         formData[2].dataset.errorVisible = true;
+        e.target.setAttribute("aria-invalid", "true");
       }
       break;
     case "textarea-modale":
       if (testMessage) {
         formData[3].dataset.errorVisible = false;
+        e.target.setAttribute("aria-invalid", "false");
       } else {
         formData[3].dataset.errorVisible = true;
+        e.target.setAttribute("aria-invalid", "true");
       }
       break;
     default:
