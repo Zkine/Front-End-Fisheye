@@ -2,8 +2,8 @@ class App {
   constructor() {
     this.photographeSection = document.querySelector(".photographer_section");
     this.$bannerPhotograph = document.getElementById("photograph-banner");
-    this.$imgSection = document.getElementById("img-section");
-    this.photographeApi = new PhotographeApi("/data/photographers.json");
+    this.$imgSection = document.getElementById("img-section-id");
+    this.photographeApi = new PhotographeApi("data/photographers.json");
     this.params = new URL(document.location).searchParams;
   }
 

@@ -28,6 +28,8 @@ class Lightbox {
   static DomLightbox(e) {
     e.stopPropagation();
     const asideLightbox = document.getElementById("lightbox-modal");
+    const mainDocument = document.getElementById("main-id");
+    mainDocument.classList.add("no-scroll");
     asideLightbox.setAttribute("aria-hidden", "false");
     const MediaLightbox = e.target.getAttribute("src")
       ? e.target.getAttribute("src")
@@ -220,9 +222,11 @@ class Lightbox {
   // fermeture de la lightbox
   static lightboxClose(e) {
     e.stopPropagation();
+    const mainDocument = document.getElementById("main-id");
     const asideLightbox = e.target.closest("#lightbox-modal");
     if (!asideLightbox.classList.contains("lightbox-modal-close")) {
       e.target.setAttribute("aria-pressed", "true");
+      mainDocument.classList.remove("no-scroll");
       asideLightbox.setAttribute("aria-hidden", "true");
       asideLightbox.classList.add("lightbox-modal-close");
     }

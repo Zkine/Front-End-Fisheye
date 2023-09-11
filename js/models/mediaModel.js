@@ -58,25 +58,6 @@ class MediaModel {
     }
   }
 
-  // get Mediavideo() {
-  //   switch (this._MediaPhotographerId) {
-  //     case 243:
-  //       return `../../assets/images/Mimi/${this._Mediavideo}`;
-  //     case 930:
-  //       return `../../assets/images/Ellie Rose/${this._Mediavideo}`;
-  //     case 82:
-  //       return `../../assets/images/Tracy/${this._Mediavideo}`;
-  //     case 527:
-  //       return `../../assets/images/Nabeel/${this._Mediavideo}`;
-  //     case 925:
-  //       return `../../assets/images/Rhode/${this._Mediavideo}`;
-  //     case 195:
-  //       return `../../assets/images/Marcel/${this._Mediavideo}`;
-  //     default:
-  //       throw "Vérifier le chemin des images avec l'id de l'utilisateur";
-  //   }
-  // }
-
   static MediaFullLickes() {
     const initialValue = 0;
     const somme = arrayLikes.reduce(

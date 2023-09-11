@@ -7,6 +7,11 @@ class Modale {
     aside.classList.add("contact_modal");
     aside.setAttribute("aria-labelledby", "modale_titre-id");
     aside.setAttribute("aria-hidden", false);
+    const bannerDocument = document.getElementById("banner-id");
+    bannerDocument.setAttribute("aria-hidden", "true");
+    const mainDocument = document.getElementById("main-id");
+    mainDocument.classList.add("no-scroll");
+    mainDocument.setAttribute("aria-hidden", "true");
     // si le dom n'est pas créé en controlant que la class de fermeture est absente, nous créons le dom
     if (!aside.classList[1]) {
       const divModale = document.createElement("div");
@@ -21,6 +26,7 @@ class Modale {
       const h2 = document.createElement("h2");
       h2.classList.add("modale_titre");
       h2.id = "modale_titre-id";
+      h2.setAttribute("tabindex", "0");
       h2.textContent = `Contactez-moi ${name.textContent}`;
       article.appendChild(h2);
 
@@ -170,6 +176,9 @@ class Modale {
       const btnValidate = document.getElementById("button-envoi-id");
       btnValidate.addEventListener("click", (e) => validate(e));
 
+      const h2Id = document.getElementById("modale_titre-id");
+      h2Id.focus();
+
       return divModale;
 
       //sinon si le dom est créé en controlant si la classe contact_modal_close est présente,
@@ -178,14 +187,21 @@ class Modale {
       const btnClose = document.getElementById("button-close-id");
       btnClose.setAttribute("aria-pressed", "false");
       aside.classList.remove("contact_modal_close");
+      const h2Id = document.getElementById("modale_titre-id");
+      h2Id.focus();
     }
   }
 
   // fermeture de la modale
   static modalClose(e) {
     e.stopPropagation();
+    const mainDocument = document.getElementById("main-id");
     const sectionModal = e.target.closest("#contact_modal-id");
+    const bannerDocument = document.getElementById("banner-id");
     if (sectionModal.classList[0].includes("contact_modal")) {
+      bannerDocument.setAttribute("aria-hidden", "false");
+      mainDocument.classList.remove("no-scroll");
+      mainDocument.setAttribute("aria-hidden", "false");
       sectionModal.setAttribute("aria-hidden", "true");
       e.target.setAttribute("aria-pressed", "true");
       sectionModal.classList.add("contact_modal_close");
@@ -198,7 +214,7 @@ const asynsEcouteModal = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
     buttonContact.addEventListener("click", Modale.renderModale);
-  }, 1000);
+  }, 1800);
 };
 
 asynsEcouteModal();

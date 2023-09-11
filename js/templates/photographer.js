@@ -5,7 +5,7 @@ class PhotographerTemplate {
     this._data = data;
     dataMedia.push(data);
 
-    this.$imgSection = document.getElementById("img-section");
+    this.$imgSection = document.getElementById("img-section-id");
     // affichage des likes
     this.$claculLikes = document.getElementById("calcul-like-id");
     this.$claculLikes.textContent = MediaModel.MediaFullLickes();
@@ -89,12 +89,14 @@ class PhotographerTemplate {
       Img.id = "item-media-id";
       Img.setAttribute("aria-label", `${this._data.MediaTitle}, closeup view`);
       Img.setAttribute("aria-labelledby", "lightbox-modal");
+      Img.setAttribute("tabindex", "0");
       figurePhoto.insertAdjacentElement("beforeend", Img);
 
       const figcaptionImg = document.createElement("figcaption");
       figcaptionImg.classList.add("figcaption-media");
-      figcaptionImg.textContent = `${this._data.MediaTitle}`;
       figcaptionImg.id = "figcaption-media-id";
+      figcaptionImg.setAttribute("tabindex", "0");
+      figcaptionImg.textContent = `${this._data.MediaTitle}`;
       figurePhoto.insertAdjacentElement("beforeend", figcaptionImg);
     } else if (this._data.MediaItems.includes("mp4")) {
       figurePhoto.classList.add(...["figure-media", "figure-media-video"]);
@@ -107,6 +109,7 @@ class PhotographerTemplate {
         `${this._data.MediaTitle}, closeup view`
       );
       video.setAttribute("aria-labelledby", "lightbox-modal");
+      video.setAttribute("tabindex", "0");
       figurePhoto.insertAdjacentElement("afterbegin", video);
 
       const source = document.createElement("source");
@@ -117,14 +120,16 @@ class PhotographerTemplate {
 
       const figcaptionVideo = document.createElement("figcaption");
       figcaptionVideo.classList.add("figcaption-media");
-      figcaptionVideo.textContent = `${this._data.MediaTitle}`;
       figcaptionVideo.id = "figcaption-media-id";
+      figcaptionVideo.setAttribute("tabindex", "0");
+      figcaptionVideo.textContent = `${this._data.MediaTitle}`;
       figurePhoto.appendChild(figcaptionVideo);
     }
 
     const mediaLikes = document.createElement("p");
     mediaLikes.classList.add("number-likes");
     mediaLikes.id = "number-likes-id";
+    mediaLikes.setAttribute("tabindex", "0");
     mediaLikes.textContent = `${this._data.Medialikes}`;
     figurePhoto.insertAdjacentElement("afterend", mediaLikes);
 
@@ -140,11 +145,12 @@ class PhotographerTemplate {
     iconHeart.classList.add(...["fa-regular", "fa-heart"]);
     iconHeart.id = "fontawesome-id";
     iconHeart.setAttribute("aria-hidden", "true");
+    iconHeart.setAttribute("tabindex", "0");
     buttonHeart.insertAdjacentElement("afterbegin", iconHeart);
 
     const spanBtn = document.createElement("span");
     spanBtn.classList.add("screenreader-text");
-    spanBtn.textContent = `cliquer sur le bouton pour ajouter un like ou retirer un like que vous avez ajouté à ${namePhotographer.textContent}`;
+    spanBtn.textContent = `Ajouter un like ou retirer un like que vous avez ajouté à ${namePhotographer.textContent}`;
     buttonHeart.insertAdjacentElement("afterend", spanBtn);
 
     const HeartId = document.getElementById("button-heart-id");
@@ -434,9 +440,7 @@ class SortMedia extends PhotographerTemplate {
 
   static renderPopulaire(e) {
     const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    dataMediaAll.sort(function (a, b) {
-      return b._MediaLikes - a._MediaLikes;
-    });
+    dataMediaAll.sort((a, b) => b._MediaLikes - a._MediaLikes);
     const [mediaImage] = SortMedia.UpdateMedia(e);
     return mediaImage;
   }
@@ -466,8 +470,11 @@ let arrayBtnTris = [];
 const divTris = document.getElementById("div-btn-tris-id");
 
 const btnPopulaire = document.getElementById("button-populaire-id");
+btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
 const btnDate = document.getElementById("button-date-id");
+btnDate.addEventListener("click", SortMedia.renderDate);
 const btnTitre = document.getElementById("button-titre-id");
+btnTitre.addEventListener("click", SortMedia.renderTitre);
 divTris.addEventListener("click", (event) => {
   if (
     Number(event.detail) === Number(1) &&
@@ -477,25 +484,19 @@ divTris.addEventListener("click", (event) => {
     divTris.setAttribute("aria-expanded", "true");
     divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
     divTris.insertBefore(btnDate, btnTitre);
-  } else if (divTris.classList.contains("div-btn-tris-click")) {
+  } else if (
+    Number(event.detail) >= Number(1) &&
+    divTris.classList.contains("div-btn-tris-click")
+  ) {
     if (event.target.textContent === "Popularité") {
       arrayBtnTris.shift();
       arrayBtnTris.push(btnPopulaire);
-      btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
-      btnPopulaire.removeEventListener(
-        "click",
-        SortMedia.renderPopulaire(this)
-      );
     } else if (event.target.textContent === "Date") {
       arrayBtnTris.shift();
       arrayBtnTris.push(btnDate);
-      btnDate.addEventListener("click", SortMedia.renderDate);
-      btnDate.removeEventListener("click", SortMedia.renderDate(this));
     } else if (event.target.textContent === "Titre") {
       arrayBtnTris.shift();
       arrayBtnTris.push(btnTitre);
-      btnTitre.addEventListener("click", SortMedia.renderTitre);
-      btnTitre.removeEventListener("click", SortMedia.renderTitre(this));
     }
   }
 });
