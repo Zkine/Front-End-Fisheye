@@ -19,7 +19,7 @@ body {
 header {
     display: flex;
     align-items: center;
-    height: 90px;
+    height: 9.66702470461869vh;
 }
 
 .logo {
@@ -37,7 +37,7 @@ header {
     justify-content: space-between;
     align-items: center;
     background-color: #FAFAFA;
-    height: 300px;
+    height: 32.223415682062296vh;
     margin: 0 100px;
     border-radius: 5px;
     padding: 0 50px 0 50px;
@@ -81,11 +81,8 @@ header {
     cursor: pointer;
 }
 
-.contact_button:hover {
-    background-color: #DB8876
-}
-
-.contact_button:active {
+.contact_button:hover,
+.contact_button:focus {
     background-color: #DB8876
 }
 
@@ -195,15 +192,6 @@ header {
     z-index: 0;
 }
 
-.div-btn-tris-click:hover {
-    height: 207px;
-    box-shadow: 0px 6px 4px -2px rgba(0, 0, 0, 0.38);
-}
-
-.div-btn-tris-click:hover .div-btn-tris::after {
-    z-index: 0;
-}
-
 .buttonTri {
     width: 170px;
     height: 69px;
@@ -216,7 +204,8 @@ header {
     position: relative;
 }
 
-.buttonTri:nth-child(1) {
+.buttonTri:nth-child(1),
+.buttonTri:nth-child(1):focus {
     border-radius: 5px;
     position: relative;
     display: flex;
@@ -225,7 +214,8 @@ header {
     padding-right: 15px;
 }
 
-.buttonTri:nth-child(1)::before {
+.buttonTri:nth-child(1):before,
+.buttonTri:nth-child(1):focus:before {
     content: "";
     position: absolute;
     width: 170px;
@@ -233,7 +223,8 @@ header {
     left: 0;
 }
 
-.buttonTri:nth-child(1):after {
+.buttonTri:nth-child(1):after,
+.buttonTri:nth-child(1):focus:after {
     content: "";
     width: 90%;
     height: 1px;
@@ -242,19 +233,6 @@ header {
     left: 7px;
     background-color: #ffffff;
     opacity: 0;
-}
-
-.div-btn-tris-click:hover .buttonTri:nth-child(1):after {
-    opacity: 1;
-}
-
-
-.div-btn-tris-click:hover .buttonTri:nth-child(1)::before {
-    z-index: 2;
-}
-
-.div-btn-tris-click:hover .buttonTri:nth-child(1) {
-    border-radius: 5px 5px 0 0;
 }
 
 .buttonTri:nth-child(2) {
@@ -271,16 +249,39 @@ header {
     background-color: #ffffff;
 }
 
-.div-btn-tris-click:hover .buttonTri:nth-child(2) {
-    display: inline-block;
-}
-
 .buttonTri:nth-child(3) {
     border-radius: 0 0 5px 5px;
     display: none;
 }
 
-.div-btn-tris-click:hover .buttonTri:nth-child(3) {
+.div-btn-tris-click {
+    height: 207px;
+    box-shadow: 0px 6px 4px -2px rgba(0, 0, 0, 0.38);
+}
+
+.div-btn-tris-click:hover .div-btn-tris::after,
+.div-btn-tris-click .div-btn-tris::after {
+    z-index: 0;
+}
+
+.div-btn-tris-click:hover .buttonTri:nth-child(1):after,
+.div-btn-tris-click:focus .buttonTri:nth-child(1):after,
+.div-btn-tris-click .buttonTri:nth-child(1)::after {
+    opacity: 1;
+}
+
+.div-btn-tris-click:hover .buttonTri:nth-child(1)::before,
+.div-btn-tris-click .buttonTri:nth-child(1)::before {
+    z-index: 2;
+}
+
+.div-btn-tris-click:hover .buttonTri:nth-child(1),
+.div-btn-tris-click .buttonTri:nth-child(1) {
+    border-radius: 5px 5px 0 0;
+}
+
+.div-btn-tris-click .buttonTri:nth-child(2),
+.div-btn-tris-click .buttonTri:nth-child(3) {
     display: inline-block;
 }
 
@@ -292,7 +293,7 @@ header {
     cursor: pointer;
 }
 
-.div-btn-tris-click:hover .fa-angle-down {
+.div-btn-tris-click .fa-angle-down {
     transform: rotate(180deg);
     z-index: 1;
 }
@@ -399,8 +400,8 @@ header {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
+    height: 100%;
     top: 0;
     background-color: #ffffff;
     z-index: 1;
@@ -418,13 +419,16 @@ header {
 
 .media-lightbox {
     width: 1050px;
+    max-width: calc(100vw - 757px);
     height: 850px;
+    max-height: calc(100vh - 100px);
     border-radius: 5px;
     object-fit: cover;
 }
 
 .figcaption-lightbox {
     width: 83.805%;
+    max-width: calc(100vw - 757px);
     height: 40px;
     color: #901C1C;
     font-size: 1.5em;

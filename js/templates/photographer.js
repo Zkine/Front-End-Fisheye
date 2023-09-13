@@ -467,47 +467,115 @@ class SortMedia extends PhotographerTemplate {
 }
 
 let arrayBtnTris = [];
-const divTris = document.getElementById("div-btn-tris-id");
 
 const btnPopulaire = document.getElementById("button-populaire-id");
 btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
+
 const btnDate = document.getElementById("button-date-id");
 btnDate.addEventListener("click", SortMedia.renderDate);
+
 const btnTitre = document.getElementById("button-titre-id");
 btnTitre.addEventListener("click", SortMedia.renderTitre);
-divTris.addEventListener("click", (event) => {
+
+const expandedTris = (event) => {
+  event.preventDefault();
   if (
-    Number(event.detail) === Number(1) &&
-    !divTris.classList.contains("div-btn-tris-click")
+    (Number(event.detail) === Number(1) &&
+      !divTris.classList.contains("div-btn-tris-click")) ||
+    (event.code === "Enter" && event.target.nodeName === "DIV")
   ) {
     divTris.classList.add("div-btn-tris-click");
     divTris.setAttribute("aria-expanded", "true");
     divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
     divTris.insertBefore(btnDate, btnTitre);
+    event.type === "keydown" &&
+      btnPopulaire.focus() &&
+      btnPopulaire.setAttribute("tabindex=", "0");
   } else if (
-    Number(event.detail) >= Number(1) &&
-    divTris.classList.contains("div-btn-tris-click")
+    (Number(event.detail) >= Number(2) &&
+      divTris.classList.contains("div-btn-tris-click")) ||
+    (event.code === "Enter" && event.target.nodeName === "BUTTON")
   ) {
-    if (event.target.textContent === "Popularité") {
-      arrayBtnTris.shift();
-      arrayBtnTris.push(btnPopulaire);
-    } else if (event.target.textContent === "Date") {
-      arrayBtnTris.shift();
-      arrayBtnTris.push(btnDate);
-    } else if (event.target.textContent === "Titre") {
-      arrayBtnTris.shift();
-      arrayBtnTris.push(btnTitre);
+    switch (event.target.textContent) {
+      case "Popularité":
+        arrayBtnTris.shift();
+        arrayBtnTris.push(btnPopulaire);
+        break;
+      case "Date":
+        arrayBtnTris.shift();
+        arrayBtnTris.push(btnDate);
+        break;
+      case "Titre":
+        arrayBtnTris.shift();
+        arrayBtnTris.push(btnTitre);
+        break;
+      default:
+        console.log("Debbuger la gestion des buttons.");
     }
+  }
+};
+
+const focusBtns = (e) => {
+  e.preventDefault();
+  let indexBtn = arrayBtnstris.findIndex(
+    (b) => b === divTris.querySelector(":focus")
+  );
+  console.log(e);
+  if (e.shiftKey === true) {
+    indexBtn--;
+  } else {
+    indexBtn++;
+  }
+
+  if (indexBtn >= arrayBtnstris.length) {
+    indexBtn = 0;
+  } else if (indexBtn < 0) {
+    indexBtn = arrayBtnstris.length - 1;
+  }
+  return arrayBtnstris[indexBtn].focus();
+};
+
+let arrayBtnstris = [];
+const btsTris = document.querySelectorAll(".buttonTri");
+btsTris.forEach((b) => {
+  b.addEventListener("keydown", (e) => {
+    if (e.code === "Escape") {
+      return leaveTris(e);
+    } else if (e.code === "Tab") {
+      arrayBtnstris = [...document.querySelectorAll(".buttonTri")];
+      return focusBtns(e);
+    } else if (e.code === "Enter" && e.target.textContent === "Popularité") {
+      return SortMedia.renderPopulaire(e);
+    } else if (e.code === "Enter" && e.target.textContent === "Date") {
+      return SortMedia.renderDate(e);
+    } else if (e.code === "Enter" && e.target.textContent === "Titre") {
+      return SortMedia.renderTitre(e);
+    }
+  });
+});
+
+const leaveTris = (e) => {
+  e.cancelable;
+  console.log(e);
+  divTris.setAttribute("aria-expanded", "false");
+  divTris.classList.remove("div-btn-tris-click");
+  arrayBtnTris[0] &&
+    divTris.insertBefore(arrayBtnTris[0], divTris.firstElementChild);
+  e.type === "keydown" &&
+    divTris.focus() &&
+    btnPopulaire.setAttribute("tabindex=", "-1");
+};
+
+const divTris = document.getElementById("div-btn-tris-id");
+divTris.addEventListener("click", expandedTris);
+divTris.addEventListener("keydown", (e) => {
+  if (e.code === "Enter") {
+    return expandedTris(e);
   }
 });
 
-divTris.addEventListener("mouseleave", () => {
-  if (divTris.classList.contains("div-btn-tris-click")) {
-    divTris.setAttribute("aria-expanded", "false");
-    divTris.classList.remove("div-btn-tris-click");
-    arrayBtnTris[0] &&
-      divTris.insertBefore(arrayBtnTris[0], divTris.firstElementChild);
-  }
+divTris.addEventListener("mouseleave", (e) => {
+  return leaveTris(e);
 });
 
 let mediaLinked = [];
