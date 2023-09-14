@@ -1,8 +1,17 @@
 class Modale {
+  static focusInput(arrayInput, ImputModal, aside) {
+    arrayInput = [];
+    aside = document.getElementById("contact_modal-id");
+    const inputModalInit =
+      "#modale_titre-id, #label-prenom-id, #prenom, #label-nom-id, #nom,#label-mail-id, #mail, #label-message-id, #message, #button-envoi-id, #button-close-id";
+    ImputModal = document.querySelectorAll(inputModalInit);
+    arrayInput = [...ImputModal];
+    return [arrayInput, ImputModal, aside];
+  }
+
   static renderModale(e) {
     e.stopPropagation();
     const name = document.getElementById("photographer-h1-id");
-
     const aside = document.getElementById("contact_modal-id");
     aside.classList.add("contact_modal");
     aside.setAttribute("aria-labelledby", "modale_titre-id");
@@ -52,6 +61,7 @@ class Modale {
       lablePrenom.setAttribute("for", "prenom");
       lablePrenom.classList.add("label-modale");
       lablePrenom.id = "label-prenom-id";
+      lablePrenom.setAttribute("tabindex", "0");
       lablePrenom.textContent = "Prénom";
       paragraphePrenom.insertAdjacentElement("afterbegin", lablePrenom);
 
@@ -78,6 +88,7 @@ class Modale {
       lableNom.setAttribute("for", "nom");
       lableNom.classList.add("label-modale");
       lableNom.id = "label-nom-id";
+      lableNom.setAttribute("tabindex", "0");
       lableNom.textContent = "Nom";
       paragrapheNom.insertAdjacentElement("afterbegin", lableNom);
 
@@ -104,6 +115,7 @@ class Modale {
       lableMail.setAttribute("for", "mail");
       lableMail.classList.add("label-modale");
       lableMail.id = "label-mail-id";
+      lableMail.setAttribute("tabindex", "0");
       lableMail.textContent = "Email";
       paragrapheMail.insertAdjacentElement("afterbegin", lableMail);
 
@@ -130,6 +142,7 @@ class Modale {
       lableMessage.setAttribute("for", "message");
       lableMessage.classList.add("label-modale");
       lableMessage.id = "label-message-id";
+      lableMessage.setAttribute("tabindex", "0");
       lableMessage.textContent = "Votre message";
       paragrapheMessage.insertAdjacentElement("afterbegin", lableMessage);
 
@@ -160,6 +173,11 @@ class Modale {
 
       const closeModal = document.getElementById("button-close-id");
       closeModal.addEventListener("click", Modale.modalClose);
+      closeModal.addEventListener("keydown", (e) => {
+        if (e.code === "Enter") {
+          return Modale.modalClose(e);
+        }
+      });
 
       const imputPrenom = document.getElementById("prenom");
       imputPrenom.addEventListener("input", (e) => inputControl(e));
@@ -175,6 +193,17 @@ class Modale {
 
       const btnValidate = document.getElementById("button-envoi-id");
       btnValidate.addEventListener("click", (e) => validate(e));
+
+      const [ImputModal] = Modale.focusInput(e);
+      ImputModal.forEach((i) =>
+        i.addEventListener("keydown", (e) => {
+          if (e.code === "Escape") {
+            return Modale.modalClose(e);
+          } else if (e.code === "Tab") {
+            return Modale.focusInputModal(e);
+          }
+        })
+      );
 
       const h2Id = document.getElementById("modale_titre-id");
       h2Id.focus();
@@ -195,9 +224,11 @@ class Modale {
   // fermeture de la modale
   static modalClose(e) {
     e.stopPropagation();
+    e.preventDefault();
     const mainDocument = document.getElementById("main-id");
     const sectionModal = e.target.closest("#contact_modal-id");
     const bannerDocument = document.getElementById("banner-id");
+    const BtnModalOpen = document.getElementById("displayModal");
     if (sectionModal.classList[0].includes("contact_modal")) {
       bannerDocument.setAttribute("aria-hidden", "false");
       mainDocument.classList.remove("no-scroll");
@@ -206,9 +237,58 @@ class Modale {
       e.target.setAttribute("aria-pressed", "true");
       sectionModal.classList.add("contact_modal_close");
       document.form.reset();
+      e.type === "keydown" && BtnModalOpen.focus();
     }
   }
+
+  static focusInputModal = (e) => {
+    e.preventDefault();
+    let [arrayInput, ImputModal, aside] = Modale.focusInput(e);
+    e.preventDefault();
+    let indexBtn = arrayInput.findIndex(
+      (b) => b === aside.querySelector(":focus")
+    );
+    console.log(indexBtn);
+    if (e.shiftKey === true) {
+      indexBtn--;
+    } else {
+      indexBtn++;
+    }
+
+    if (indexBtn >= arrayInput.length) {
+      indexBtn = 0;
+    } else if (indexBtn < 0) {
+      indexBtn = arrayInput.length - 1;
+    }
+    return arrayInput[indexBtn].focus();
+  };
 }
+
+// let arrayInput = [];
+// const focusInputModal = (e) => {
+//   e.preventDefault();
+//   const inputModalInit =
+//     "#modale_titre-id, #label-prenom-id, #prenom, #label-nom-id, #nom,#label-mail-id, #mail, #label-message-id, #message, #button-envoi-id, #button-close-id";
+//   arrayInput = [...document.querySelectorAll(inputModalInit)];
+//   console.log(arrayInput);
+//   e.preventDefault();
+//   let indexBtn = arrayInput.findIndex(
+//     (b) => b === divTris.querySelector(":focus")
+//   );
+//   console.log(indexBtn);
+//   if (e.shiftKey === true) {
+//     indexBtn--;
+//   } else {
+//     indexBtn++;
+//   }
+
+//   if (indexBtn >= arrayInput.length) {
+//     indexBtn = 0;
+//   } else if (indexBtn < 0) {
+//     indexBtn = arrayInput.length - 1;
+//   }
+//   return arrayInput[indexBtn].focus();
+// };
 
 const asynsEcouteModal = async () => {
   setTimeout(() => {

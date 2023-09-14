@@ -133,28 +133,27 @@ class PhotographerTemplate {
     mediaLikes.textContent = `${this._data.Medialikes}`;
     figurePhoto.insertAdjacentElement("afterend", mediaLikes);
 
-    const buttonHeart = document.createElement("button");
-    buttonHeart.setAttribute("type", "button");
-    buttonHeart.classList.add("button-heart");
-    buttonHeart.id = "button-heart-id";
-    buttonHeart.setAttribute("aria-label", "likes");
-    buttonHeart.setAttribute("aria-pressed", "false");
-    mediaLikes.insertAdjacentElement("afterend", buttonHeart);
-
     const iconHeart = document.createElement("i");
     iconHeart.classList.add(...["fa-regular", "fa-heart"]);
     iconHeart.id = "fontawesome-id";
+    iconHeart.setAttribute("aria-pressed", "false");
+    iconHeart.setAttribute("aria-label", "likes");
     iconHeart.setAttribute("aria-hidden", "true");
     iconHeart.setAttribute("tabindex", "0");
-    buttonHeart.insertAdjacentElement("afterbegin", iconHeart);
+    mediaLikes.insertAdjacentElement("afterend", iconHeart);
 
     const spanBtn = document.createElement("span");
     spanBtn.classList.add("screenreader-text");
     spanBtn.textContent = `Ajouter un like ou retirer un like que vous avez ajouté à ${namePhotographer.textContent}`;
-    buttonHeart.insertAdjacentElement("afterend", spanBtn);
+    iconHeart.insertAdjacentElement("afterend", spanBtn);
 
-    const HeartId = document.getElementById("button-heart-id");
+    const HeartId = document.getElementById("fontawesome-id");
     HeartId.addEventListener("click", LikesMedia.gestionLikes);
+    HeartId.addEventListener("keydown", (e) => {
+      if (e.code === "Enter") {
+        LikesMedia.gestionLikes(e);
+      }
+    });
 
     const mediaId = document.getElementById("item-media-id");
     mediaId.addEventListener("click", Lightbox.DomLightbox);
@@ -165,7 +164,6 @@ class PhotographerTemplate {
 
 let replacedNode = [];
 class SortMedia extends PhotographerTemplate {
-  // const itemMedia = document.getElementById("item-media-id");
   static LikesUpdate(dataMediaAll) {
     if (dataMedia[0]._name) {
       dataMedia.shift();
@@ -243,34 +241,34 @@ class SortMedia extends PhotographerTemplate {
               if (!dataMediaAll[w]._MediaHeart) {
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                   "";
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                   ...["fa-heart", "fa-regular"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
 
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-regular", "fa-heart"]
                   );
                 } else {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
 
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-solid", "fa-heart"]
                   );
                 }
@@ -291,32 +289,32 @@ class SortMedia extends PhotographerTemplate {
               if (!dataMediaAll[w]._MediaHeart) {
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                   "";
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                   ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-regular", "fa-heart"]
                   );
                 } else {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-solid", "fa-heart"]
                   );
                 }
@@ -342,34 +340,34 @@ class SortMedia extends PhotographerTemplate {
               if (!dataMediaAll[w]._MediaHeart) {
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                   "";
 
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                   ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
 
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-regular", "fa-heart"]
                   );
                 } else {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-solid", "fa-heart"]
                   );
                 }
@@ -391,33 +389,33 @@ class SortMedia extends PhotographerTemplate {
               if (!dataMediaAll[w]._MediaHeart) {
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                   "";
                 mediaImage[
                   i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                   ...["fa-regular", "fa-heart"]
                 );
               } else if (dataMediaAll[w]._MediaHeart) {
                 if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-regular", "fa-heart"]
                   );
                 } else {
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.value =
                     "";
 
                   mediaImage[
                     i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
+                  ].offsetParent.nextElementSibling.nextElementSibling.classList.add(
                     ...["fa-solid", "fa-heart"]
                   );
                 }
@@ -488,9 +486,7 @@ const expandedTris = (event) => {
     divTris.setAttribute("aria-expanded", "true");
     divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
     divTris.insertBefore(btnDate, btnTitre);
-    event.type === "keydown" &&
-      btnPopulaire.focus() &&
-      btnPopulaire.setAttribute("tabindex=", "0");
+    event.type === "keydown" && btnPopulaire.focus();
   } else if (
     (Number(event.detail) >= Number(2) &&
       divTris.classList.contains("div-btn-tris-click")) ||
@@ -515,6 +511,7 @@ const expandedTris = (event) => {
   }
 };
 
+let arrayBtnstris = [];
 const focusBtns = (e) => {
   e.preventDefault();
   let indexBtn = arrayBtnstris.findIndex(
@@ -535,7 +532,6 @@ const focusBtns = (e) => {
   return arrayBtnstris[indexBtn].focus();
 };
 
-let arrayBtnstris = [];
 const btsTris = document.querySelectorAll(".buttonTri");
 btsTris.forEach((b) => {
   b.addEventListener("keydown", (e) => {
@@ -590,19 +586,19 @@ class LikesMedia extends SortMedia {
     const likesFull = document.getElementById("calcul-like-id");
     const articleMedia = e.target.closest("#article-media-id");
     const media = articleMedia.querySelector("#figcaption-media-id");
-    const btnHeart = articleMedia.querySelector("#button-heart-id");
     const likesMedia = articleMedia.querySelector("#number-likes-id");
     const iconHeart = e.target;
+    console.log(e);
     if (iconHeart.classList.contains("fa-regular")) {
       iconHeart.classList.remove("fa-regular");
       iconHeart.classList.add("fa-solid");
-      btnHeart.setAttribute("aria-pressed", "true");
+      iconHeart.setAttribute("aria-pressed", "true");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
     } else if (iconHeart.classList.contains("fa-solid")) {
       iconHeart.classList.remove("fa-solid");
       iconHeart.classList.add("fa-regular");
-      btnHeart.setAttribute("aria-pressed", "false");
+      iconHeart.setAttribute("aria-pressed", "false");
       likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
     }
