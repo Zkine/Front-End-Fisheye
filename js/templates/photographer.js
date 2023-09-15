@@ -144,19 +144,24 @@ class PhotographerTemplate {
 
     const spanBtn = document.createElement("span");
     spanBtn.classList.add("screenreader-text");
-    spanBtn.textContent = `Ajouter un like ou retirer un like que vous avez ajouté à ${namePhotographer.textContent}`;
+    spanBtn.textContent = `Ajouter un like ou retirer un like à ${namePhotographer.textContent}`;
     iconHeart.insertAdjacentElement("afterend", spanBtn);
 
     const HeartId = document.getElementById("fontawesome-id");
     HeartId.addEventListener("click", LikesMedia.gestionLikes);
     HeartId.addEventListener("keydown", (e) => {
       if (e.code === "Enter") {
-        LikesMedia.gestionLikes(e);
+        return LikesMedia.gestionLikes(e);
       }
     });
 
     const mediaId = document.getElementById("item-media-id");
     mediaId.addEventListener("click", Lightbox.DomLightbox);
+    mediaId.addEventListener("keydown", (e) => {
+      if (e.code === "Enter") {
+        return Lightbox.DomLightbox(e);
+      }
+    });
 
     return articlePhoto;
   }
@@ -328,8 +333,8 @@ class SortMedia extends PhotographerTemplate {
                 cloneImage,
                 figureMedia[f].childNodes[0]
               );
-
-              cloneImage.addEventListener("click", Lightbox.DomLightbox);
+              cloneImage.addEventListener("click", (e) => CloneEvent(e));
+              cloneImage.addEventListener("keydown", (e) => CloneEvent(e));
             }
           } else if (
             dataMediaAll[w].MediaItems.includes("mp4") &&
@@ -427,7 +432,8 @@ class SortMedia extends PhotographerTemplate {
                 cloneVideo,
                 figureMedia[f].childNodes[0]
               );
-              cloneVideo.addEventListener("click", Lightbox.DomLightbox);
+              cloneVideo.addEventListener("click", (e) => CloneEvent(e));
+              cloneVideo.addEventListener("keydown", (e) => CloneEvent(e));
             }
           }
         }
@@ -463,6 +469,14 @@ class SortMedia extends PhotographerTemplate {
     return mediaImage;
   }
 }
+
+const CloneEvent = (e) => {
+  if (e.code === "Enter") {
+    return Lightbox.DomLightbox(e);
+  } else if (e.pointerType === "mouse") {
+    return Lightbox.DomLightbox(e);
+  }
+};
 
 let arrayBtnTris = [];
 
@@ -552,7 +566,6 @@ btsTris.forEach((b) => {
 
 const leaveTris = (e) => {
   e.cancelable;
-  console.log(e);
   divTris.setAttribute("aria-expanded", "false");
   divTris.classList.remove("div-btn-tris-click");
   arrayBtnTris[0] &&
@@ -588,7 +601,6 @@ class LikesMedia extends SortMedia {
     const media = articleMedia.querySelector("#figcaption-media-id");
     const likesMedia = articleMedia.querySelector("#number-likes-id");
     const iconHeart = e.target;
-    console.log(e);
     if (iconHeart.classList.contains("fa-regular")) {
       iconHeart.classList.remove("fa-regular");
       iconHeart.classList.add("fa-solid");

@@ -23,9 +23,20 @@ class Lightbox {
       figureItem,
     ];
   }
+  static focusKeydown(keydowsFocus, asideLightbox, arrayInput) {
+    keydowsFocus = document.querySelectorAll(
+      "#figure-lightbox-id video,#figure-lightbox-id img,#figcaption-lightbox-id, #previous-link-id,#next-link-id,#button-modal-id"
+    );
 
+    asideLightbox = document.getElementById("lightbox-modal");
+
+    arrayInput = [...keydowsFocus];
+    return [keydowsFocus, asideLightbox, arrayInput];
+  }
   //création du DOM de la lightbox
   static DomLightbox(e) {
+    e.stopPropagation();
+
     e.stopPropagation();
     const asideLightbox = document.getElementById("lightbox-modal");
     const mainDocument = document.getElementById("main-id");
@@ -54,11 +65,13 @@ class Lightbox {
         imgLightbox.setAttribute("alt", nameMedia);
         imgLightbox.id = "media-lightbox-id";
         imgLightbox.setAttribute("aria-label", `${nameMedia}`);
+        imgLightbox.setAttribute("tabindex", "0");
         figureLightbox.insertAdjacentElement("afterbegin", imgLightbox);
 
         const figcaption = document.createElement("figcaption");
         figcaption.classList.add("figcaption-lightbox");
         figcaption.id = "figcaption-lightbox-id";
+        figcaption.setAttribute("tabindex", "0");
         figcaption.textContent = `${nameMedia}`;
         figureLightbox.insertAdjacentElement("beforeend", figcaption);
       } else {
@@ -67,6 +80,7 @@ class Lightbox {
         video.setAttribute("autoplay", "");
         video.setAttribute("controls", "");
         video.setAttribute("aria-label", `${nameMedia}`);
+        video.setAttribute("tabindex", "0");
         figureLightbox.insertAdjacentElement("afterbegin", video);
 
         const source = document.createElement("source");
@@ -78,6 +92,7 @@ class Lightbox {
         const figcaptionVideo = document.createElement("figcaption");
         figcaptionVideo.classList.add("figcaption-lightbox");
         figcaptionVideo.id = "figcaption-lightbox-id";
+        figcaptionVideo.setAttribute("tabindex", "0");
         figcaptionVideo.textContent = `${nameMedia}`;
         figureLightbox.appendChild(figcaptionVideo);
       }
@@ -119,6 +134,7 @@ class Lightbox {
       previousLink.classList.add("previous-link");
       previousLink.id = "previous-link-id";
       previousLink.setAttribute("aria-label", "Next image");
+      previousLink.setAttribute("tabindex", "0");
       liPrevious.insertAdjacentElement("afterbegin", previousLink);
 
       const liNext = document.createElement("li");
@@ -131,6 +147,7 @@ class Lightbox {
       nextLink.classList.add("next-link");
       nextLink.id = "next-link-id";
       nextLink.setAttribute("aria-label", "Next image");
+      nextLink.setAttribute("tabindex", "0");
       liNext.insertAdjacentElement("afterbegin", nextLink);
 
       const buttonModal = document.createElement("button");
@@ -139,8 +156,15 @@ class Lightbox {
       buttonModal.id = "button-modal-id";
       buttonModal.setAttribute("aria-label", "Close dialog");
       buttonModal.setAttribute("aria-pressed", "false");
+      buttonModal.setAttribute("tabindex", "0");
       section.appendChild(buttonModal);
 
+      const [keydowsFocus] = Lightbox.focusKeydown(e);
+      keydowsFocus.forEach((f) =>
+        f.addEventListener("keydown", (e) => {
+          return Lightbox.navigationMedia(e);
+        })
+      );
       const previousLinkId = document.getElementById("previous-link-id");
       previousLinkId.addEventListener("click", Lightbox.prevImg);
 
@@ -149,8 +173,11 @@ class Lightbox {
 
       const buttonModalId = document.getElementById("button-modal-id");
       buttonModalId.addEventListener("click", Lightbox.lightboxClose);
+      buttonModalId.addEventListener("keydown", Lightbox.lightboxClose);
 
-      return section;
+      if (e.type === "keydown") {
+        return Lightbox.focusLightbox(e);
+      }
     } else if (asideLightbox.classList[0].includes("lightbox-modal-close")) {
       asideLightbox.classList.remove("lightbox-modal-close");
       const figcaptionMedia = document.querySelector("#figcaption-lightbox-id");
@@ -170,6 +197,10 @@ class Lightbox {
         cloneImage.setAttribute("alt", `${nameMedia}`);
         cloneImage.setAttribute("aria-label", `${nameMedia}`);
         cloneImage.id = "media-lightbox-id";
+        console.log(cloneImage.id);
+        cloneImage.addEventListener("keydown", (e) => {
+          return Lightbox.navigationMedia(e);
+        });
         lightboxVideo
           ? figureItem.replaceChild(cloneImage, lightboxVideo)
           : figureItem.replaceChild(cloneImage, lightboxImage);
@@ -178,7 +209,9 @@ class Lightbox {
         sourceVideo.id = "media-lightbox-id";
         cloneVideo.classList.remove("item-media");
         cloneVideo.classList.add("media-lightbox");
-
+        cloneVideo.addEventListener("keydown", (e) => {
+          return Lightbox.navigationMedia(e);
+        });
         cloneVideo.setAttribute("controls", "");
         cloneVideo.setAttribute("autoplay", "");
         cloneVideo.setAttribute("aria-label", `${nameMedia}`);
@@ -214,21 +247,66 @@ class Lightbox {
       }
 
       nextLink.setAttribute("href", `${media[mediaItems + 1]}`);
-      const btnClaoseLightbox = document.getElementById("button-modal-id");
-      btnClaoseLightbox.setAttribute("aria-pressed", "false");
+      const btnCloseLightbox = document.getElementById("button-modal-id");
+      btnCloseLightbox.setAttribute("aria-pressed", "false");
+
+      if (e.type === "keydown") {
+        return Lightbox.focusLightbox(e);
+      }
     }
   }
 
+  static navigationMedia(e) {
+    e.stopPropagation();
+    if (e.code === "Escape") {
+      return Lightbox.lightboxClose(e);
+    } else if (e.code === "Tab") {
+      console.log(e);
+      return Lightbox.keyboardNavigation(e);
+    }
+  }
+  static focusLightbox(e) {
+    e.stopPropagation();
+    const [keydowsFocus] = Lightbox.focusKeydown(e);
+    keydowsFocus[0].focus();
+  }
+
+  static async keyboardNavigation(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const [keydowsFocus, asideLightbox, arrayInput] = Lightbox.focusKeydown(e);
+    console.log(arrayInput);
+    let indexBtn = await arrayInput.findIndex(
+      (b) => b === asideLightbox.querySelector(":focus")
+    );
+    if (e.shiftKey === true) {
+      indexBtn--;
+    } else {
+      indexBtn++;
+    }
+
+    if (indexBtn >= arrayInput.length) {
+      indexBtn = 0;
+    } else if (indexBtn < 0) {
+      indexBtn = arrayInput.length - 1;
+    }
+    return arrayInput[indexBtn].focus();
+  }
   // fermeture de la lightbox
   static lightboxClose(e) {
     e.stopPropagation();
+    const [keydowsFocus, asideLightbox, arrayInput] = Lightbox.focusKeydown(e);
+    const fullMedia = [...document.querySelectorAll("#item-media-id")];
+    const media = fullMedia.find(
+      (b) => b.currentSrc === arrayInput[0].currentSrc
+    );
     const mainDocument = document.getElementById("main-id");
-    const asideLightbox = e.target.closest("#lightbox-modal");
     if (!asideLightbox.classList.contains("lightbox-modal-close")) {
       e.target.setAttribute("aria-pressed", "true");
       mainDocument.classList.remove("no-scroll");
       asideLightbox.setAttribute("aria-hidden", "true");
       asideLightbox.classList.add("lightbox-modal-close");
+      e.type === "keydown" && media.focus();
     }
   }
 
@@ -246,6 +324,8 @@ class Lightbox {
     MediaItems = Media.findIndex(
       (element) => element === linkMedia.attributes[1].textContent
     );
+    console.log(Media);
+    console.log(linkMedia);
     MediaTitle = MediaTitleMap.findIndex(
       (element) => element === linkTitre.textContent
     );

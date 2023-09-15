@@ -264,32 +264,6 @@ class Modale {
   };
 }
 
-// let arrayInput = [];
-// const focusInputModal = (e) => {
-//   e.preventDefault();
-//   const inputModalInit =
-//     "#modale_titre-id, #label-prenom-id, #prenom, #label-nom-id, #nom,#label-mail-id, #mail, #label-message-id, #message, #button-envoi-id, #button-close-id";
-//   arrayInput = [...document.querySelectorAll(inputModalInit)];
-//   console.log(arrayInput);
-//   e.preventDefault();
-//   let indexBtn = arrayInput.findIndex(
-//     (b) => b === divTris.querySelector(":focus")
-//   );
-//   console.log(indexBtn);
-//   if (e.shiftKey === true) {
-//     indexBtn--;
-//   } else {
-//     indexBtn++;
-//   }
-
-//   if (indexBtn >= arrayInput.length) {
-//     indexBtn = 0;
-//   } else if (indexBtn < 0) {
-//     indexBtn = arrayInput.length - 1;
-//   }
-//   return arrayInput[indexBtn].focus();
-// };
-
 const asynsEcouteModal = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");

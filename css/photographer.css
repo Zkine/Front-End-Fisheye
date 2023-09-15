@@ -374,7 +374,7 @@ header {
     text-align: center;
 }
 
-.fa-heart {
+.number-likes+.fa-heart {
     cursor: pointer;
     position: absolute;
     right: 0;
@@ -382,7 +382,7 @@ header {
     color: #000000;
 }
 
-.fa-solid {
+.number-likes+.fa-solid {
     color: #901C1C;
 }
 
