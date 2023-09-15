@@ -159,12 +159,6 @@ class Lightbox {
       buttonModal.setAttribute("tabindex", "0");
       section.appendChild(buttonModal);
 
-      const [keydowsFocus] = Lightbox.focusKeydown(e);
-      keydowsFocus.forEach((f) =>
-        f.addEventListener("keydown", (e) => {
-          return Lightbox.navigationMedia(e);
-        })
-      );
       const previousLinkId = document.getElementById("previous-link-id");
       previousLinkId.addEventListener("click", Lightbox.prevImg);
 
@@ -173,8 +167,17 @@ class Lightbox {
 
       const buttonModalId = document.getElementById("button-modal-id");
       buttonModalId.addEventListener("click", Lightbox.lightboxClose);
-      buttonModalId.addEventListener("keydown", Lightbox.lightboxClose);
-
+      buttonModalId.addEventListener("keydown", (e) => {
+        if (e.code === "Enter") {
+          Lightbox.lightboxClose(e);
+        }
+      });
+      const [keydowsFocus] = Lightbox.focusKeydown(e);
+      keydowsFocus.forEach((f) =>
+        f.addEventListener("keydown", (e) => {
+          return Lightbox.navigationMedia(e);
+        })
+      );
       if (e.type === "keydown") {
         return Lightbox.focusLightbox(e);
       }
@@ -197,7 +200,6 @@ class Lightbox {
         cloneImage.setAttribute("alt", `${nameMedia}`);
         cloneImage.setAttribute("aria-label", `${nameMedia}`);
         cloneImage.id = "media-lightbox-id";
-        console.log(cloneImage.id);
         cloneImage.addEventListener("keydown", (e) => {
           return Lightbox.navigationMedia(e);
         });
@@ -261,7 +263,6 @@ class Lightbox {
     if (e.code === "Escape") {
       return Lightbox.lightboxClose(e);
     } else if (e.code === "Tab") {
-      console.log(e);
       return Lightbox.keyboardNavigation(e);
     }
   }
@@ -271,12 +272,11 @@ class Lightbox {
     keydowsFocus[0].focus();
   }
 
-  static async keyboardNavigation(e) {
+  static keyboardNavigation(e) {
     e.preventDefault();
     e.stopPropagation();
     const [keydowsFocus, asideLightbox, arrayInput] = Lightbox.focusKeydown(e);
-    console.log(arrayInput);
-    let indexBtn = await arrayInput.findIndex(
+    let indexBtn = arrayInput.findIndex(
       (b) => b === asideLightbox.querySelector(":focus")
     );
     if (e.shiftKey === true) {
@@ -324,8 +324,6 @@ class Lightbox {
     MediaItems = Media.findIndex(
       (element) => element === linkMedia.attributes[1].textContent
     );
-    console.log(Media);
-    console.log(linkMedia);
     MediaTitle = MediaTitleMap.findIndex(
       (element) => element === linkTitre.textContent
     );
