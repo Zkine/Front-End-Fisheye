@@ -8,9 +8,11 @@ class PhotographerTemplate {
     this.$imgSection = document.getElementById("img-section-id");
     // affichage des likes
     this.$claculLikes = document.getElementById("calcul-like-id");
+    // eslint-disable-next-line
     this.$claculLikes.textContent = MediaModel.MediaFullLickes();
     // affichage du prix
     this.$claculPrice = document.getElementById("calcul-price-id");
+    // eslint-disable-next-line
     this.$claculPrice.textContent = MediaModel.MediaFullprice();
   }
 
@@ -156,9 +158,11 @@ class PhotographerTemplate {
     });
 
     const mediaId = document.getElementById("item-media-id");
+    // eslint-disable-next-line
     mediaId.addEventListener("click", Lightbox.DomLightbox);
     mediaId.addEventListener("keydown", (e) => {
       if (e.code === "Enter") {
+        // eslint-disable-next-line
         return Lightbox.DomLightbox(e);
       }
     });
@@ -172,14 +176,8 @@ class SortMedia extends PhotographerTemplate {
   static LikesUpdate(dataMediaAll) {
     if (dataMedia[0]._name) {
       dataMedia.shift();
-
-      const likesfull = document.getElementById("calcul-like-id");
-      const likesFull = Number(parseInt(likesfull.textContent));
-      if (likesFull === dataMedia) {
-        likesfull = dataMedia.push(data);
-      } else if (likesFull !== dataMedia) {
-        likesFull;
-      }
+      let likesfull = document.getElementById("calcul-like-id");
+      Number(parseInt(likesfull.textContent));
     }
 
     dataMediaAll = dataMedia;
@@ -472,8 +470,10 @@ class SortMedia extends PhotographerTemplate {
 
 const CloneEvent = (e) => {
   if (e.code === "Enter") {
+    // eslint-disable-next-line
     return Lightbox.DomLightbox(e);
   } else if (e.pointerType === "mouse") {
+    // eslint-disable-next-line
     return Lightbox.DomLightbox(e);
   }
 };
@@ -649,7 +649,6 @@ class LikesMedia extends SortMedia {
             iconHeart.classList.contains("fa-regular")
           ) {
             const keymedialike = mediaLinked.indexOf(mediaLinkeName);
-            likesTrue.likesMedia = likesTrue.likesMedia;
             mediaLinked.splice(keymedialike, 1);
             likesTrue._MediaHeart = "fa-regular fa-heart";
             mediaLinked.push(likesTrue);

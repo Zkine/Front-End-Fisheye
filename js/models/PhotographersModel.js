@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 class PhotographersModel {
   constructor(data) {
     this._name = data.name;

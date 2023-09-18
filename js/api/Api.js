@@ -14,6 +14,8 @@ class Api {
             (element) => element.id === Number(this.params.get("id"))
           );
           return [Photographers];
+        } else {
+          console.log("error");
         }
       })
       .catch((err) => console.log("an error occurs", err));
@@ -29,12 +31,14 @@ class Api {
               element.photographerId === Number(this.params.get("id"))
           );
           return Media;
+        } else {
+          console.log("error");
         }
       })
       .catch((err) => console.log("an error occurs", err));
   }
 }
-
+// eslint-disable-next-line
 class PhotographeApi extends Api {
   // (url) récupèration du chemin du dossier data - photographers.json initialisé dans de le constructor le fichier App.js
   constructor(url) {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 class Lightbox {
   static constanteInit(
     cloneVideo,
@@ -31,13 +32,12 @@ class Lightbox {
     asideLightbox = document.getElementById("lightbox-modal");
 
     arrayInput = [...keydowsFocus];
-    return [keydowsFocus, asideLightbox, arrayInput];
+    return { keydowsFocus, asideLightbox, arrayInput };
   }
   //création du DOM de la lightbox
   static DomLightbox(e) {
     e.stopPropagation();
 
-    e.stopPropagation();
     const asideLightbox = document.getElementById("lightbox-modal");
     const mainDocument = document.getElementById("main-id");
     mainDocument.classList.add("no-scroll");
@@ -172,7 +172,7 @@ class Lightbox {
           Lightbox.lightboxClose(e);
         }
       });
-      const [keydowsFocus] = Lightbox.focusKeydown(e);
+      const { keydowsFocus } = Lightbox.focusKeydown(e);
       keydowsFocus.forEach((f) =>
         f.addEventListener("keydown", (e) => {
           return Lightbox.navigationMedia(e);
@@ -191,7 +191,7 @@ class Lightbox {
         lightboxImage,
         lightboxVideo,
         figureItem,
-      ] = Lightbox.constanteInit(e);
+      ] = Lightbox.constanteInit();
       if (e.target.nodeName === "IMG") {
         const cloneImage = neaudImage.cloneNode(true);
         cloneImage.classList.remove("item-media");
@@ -223,7 +223,7 @@ class Lightbox {
         figcaptionMedia.textContent = `${nameMedia}`;
       }
       const [media, mediaTitleMap, MediaItems, MediaTitle] =
-        Lightbox.MediaAllSetect(e);
+        Lightbox.MediaAllSetect();
       let mediaItems = MediaItems;
       let mediaTitle = MediaTitle;
       const previousLink = document.querySelector("#previous-link-id");
@@ -268,14 +268,14 @@ class Lightbox {
   }
   static focusLightbox(e) {
     e.stopPropagation();
-    const [keydowsFocus] = Lightbox.focusKeydown(e);
+    const { keydowsFocus } = Lightbox.focusKeydown(e);
     keydowsFocus[0].focus();
   }
 
   static keyboardNavigation(e) {
     e.preventDefault();
     e.stopPropagation();
-    const [keydowsFocus, asideLightbox, arrayInput] = Lightbox.focusKeydown(e);
+    const { asideLightbox, arrayInput } = Lightbox.focusKeydown();
     let indexBtn = arrayInput.findIndex(
       (b) => b === asideLightbox.querySelector(":focus")
     );
@@ -295,7 +295,7 @@ class Lightbox {
   // fermeture de la lightbox
   static lightboxClose(e) {
     e.stopPropagation();
-    const [keydowsFocus, asideLightbox, arrayInput] = Lightbox.focusKeydown(e);
+    const { asideLightbox, arrayInput } = Lightbox.focusKeydown();
     const fullMedia = [...document.querySelectorAll("#item-media-id")];
     const media = fullMedia.find(
       (b) => b.currentSrc === arrayInput[0].currentSrc
@@ -348,7 +348,7 @@ class Lightbox {
       lightboxImage,
       lightboxVideo,
       figureItem,
-    ] = Lightbox.constanteInit(e);
+    ] = Lightbox.constanteInit();
     const [media, mediaTitleMap, MediaItems, MediaTitle] =
       Lightbox.MediaAllSetect(e);
     let mediaItems = MediaItems;
@@ -382,9 +382,6 @@ class Lightbox {
       lightboxImage
         ? figureItem.replaceChild(cloneImage, lightboxImage)
         : figureItem.replaceChild(cloneImage, lightboxVideo);
-      figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
-    } else if (media[mediaItems + 1].includes("mp4") && lightboxVideo) {
-      itemsMedia.setAttribute("src", `${media[mediaItems + 1]}`);
       figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
     } else if (media[mediaItems + 1].includes("mp4") && !lightboxVideo) {
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
@@ -441,7 +438,7 @@ class Lightbox {
       lightboxImage,
       lightboxVideo,
       figureItem,
-    ] = Lightbox.constanteInit(e);
+    ] = Lightbox.constanteInit();
     const [media, mediaTitleMap, MediaItems, MediaTitle] =
       Lightbox.MediaAllSetect(e);
     let mediaItems = MediaItems;

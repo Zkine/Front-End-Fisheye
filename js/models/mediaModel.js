@@ -1,7 +1,7 @@
 // initialisation des deux constanes permettant le calcule des likes et du prix global du photographe
 const arrayLikes = [];
 const arrayPrice = [];
-
+// eslint-disable-next-line
 class MediaModel {
   constructor(data) {
     this._MediaId = data.id;

@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 class AccueilTemplate {
   constructor(data) {
     // renvoi les données data pour la création du DOM - index.html

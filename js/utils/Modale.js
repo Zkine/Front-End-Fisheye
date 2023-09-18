@@ -1,12 +1,11 @@
 class Modale {
   static focusInput(arrayInput, ImputModal, aside) {
-    arrayInput = [];
     aside = document.getElementById("contact_modal-id");
-    const inputModalInit =
-      "#modale_titre-id, #label-prenom-id, #prenom, #label-nom-id, #nom,#label-mail-id, #mail, #label-message-id, #message, #button-envoi-id, #button-close-id";
-    ImputModal = document.querySelectorAll(inputModalInit);
+    ImputModal = document.querySelectorAll(
+      "#modale_titre-id, #label-prenom-id, #prenom, #label-nom-id, #nom,#label-mail-id, #mail, #label-message-id, #message, #button-envoi-id, #button-close-id"
+    );
     arrayInput = [...ImputModal];
-    return [arrayInput, ImputModal, aside];
+    return { arrayInput, ImputModal, aside };
   }
 
   static renderModale(e) {
@@ -194,7 +193,7 @@ class Modale {
       const btnValidate = document.getElementById("button-envoi-id");
       btnValidate.addEventListener("click", (e) => validate(e));
 
-      const [ImputModal] = Modale.focusInput(e);
+      const { ImputModal } = Modale.focusInput(e);
       ImputModal.forEach((i) =>
         i.addEventListener("keydown", (e) => {
           if (e.code === "Escape") {
@@ -243,8 +242,7 @@ class Modale {
 
   static focusInputModal = (e) => {
     e.preventDefault();
-    let [arrayInput, ImputModal, aside] = Modale.focusInput(e);
-    e.preventDefault();
+    let { arrayInput, aside } = Modale.focusInput(e);
     let indexBtn = arrayInput.findIndex(
       (b) => b === aside.querySelector(":focus")
     );
@@ -263,7 +261,6 @@ class Modale {
     return arrayInput[indexBtn].focus();
   };
 }
-
 const asynsEcouteModal = async () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
@@ -278,7 +275,7 @@ const regexName = new RegExp("^[a-zA-Z]{0,10}[ -]{0,1}[a-zA-Z]{2,10}$");
 const regexEmail = new RegExp(
   "^[a-z0-9.-_]+[@]{1}[a-z0-9.-_]+[.]{1}[a-z]{2,4}$"
 );
-const regExMessage = new RegExp("^([a-zA-Z0-9.-_,:) \n]){65,}$");
+const regExMessage = new RegExp("^([a-zA-Z0-9.-_,:) \\n]){65,}$");
 
 const inputControl = (e) => {
   e.stopPropagation();
