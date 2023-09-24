@@ -26,6 +26,7 @@ class AccueilTemplate {
 
     const img = document.createElement("img");
     img.setAttribute("tabindex", "0");
+    img.setAttribute("loading", "lazy");
     img.classList.add("section_img");
     img.setAttribute(
       "src",

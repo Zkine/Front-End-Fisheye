@@ -246,7 +246,6 @@ class Modale {
     let indexBtn = arrayInput.findIndex(
       (b) => b === aside.querySelector(":focus")
     );
-    console.log(indexBtn);
     if (e.shiftKey === true) {
       indexBtn--;
     } else {
@@ -261,14 +260,14 @@ class Modale {
     return arrayInput[indexBtn].focus();
   };
 }
-const asynsEcouteModal = async () => {
+const contactModal = () => {
   setTimeout(() => {
     const buttonContact = document.getElementById("displayModal");
     buttonContact.addEventListener("click", Modale.renderModale);
   }, 1800);
 };
 
-asynsEcouteModal();
+contactModal();
 
 // regex permettant de valider les données inscrites par l'utilisateur
 const regexName = new RegExp("^[a-zA-Z]{0,10}[ -]{0,1}[a-zA-Z]{2,10}$");
@@ -323,7 +322,7 @@ const inputControl = (e) => {
       }
       break;
     default:
-      console.log();
+      console.log("error");
   }
 };
 

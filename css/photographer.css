@@ -374,15 +374,26 @@ header {
     text-align: center;
 }
 
-.number-likes+.fa-heart {
+.btn-heart {
     cursor: pointer;
     position: absolute;
-    right: 0;
-    bottom: 1.1em;
+    right: -6.7px;
+    bottom: 0.9em;
+    background-color: rgba(255, 255, 255, 0);
+    border: none;
     color: #000000;
 }
 
-.number-likes+.fa-solid {
+.btn-heart::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 0;
+    width: 24px;
+    height: 28px;
+}
+
+.btn-heart .fa-solid {
     color: #901C1C;
 }
 
@@ -419,6 +430,48 @@ header {
     border-radius: 5px;
     object-fit: cover;
 }
+
+.div-controle {
+    position: relative;
+    background-color: rgba(229, 226, 226, 0.301);
+    height: 3%;
+    bottom: 5%;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-around;
+    width: 60%;
+}
+
+.div-controle-img {
+    display: none;
+}
+
+.btn-controls {
+    cursor: pointer;
+}
+
+.btn-controls:nth-child(2) {
+    margin-right: 10px;
+}
+
+.div-reading {
+    display: flex;
+}
+
+.progress-reading {
+    cursor: pointer;
+    margin: auto;
+}
+
+.span-reading {
+    cursor: pointer;
+    width: 0%;
+    height: 100%;
+    display: inline-block;
+    background-color: #2a84cd;
+    margin: auto;
+}
+
 
 .figcaption-lightbox {
     width: 83.805%;
