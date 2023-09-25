@@ -156,9 +156,10 @@ class PhotographerTemplate {
 
     const spanHeart = document.createElement("span");
     spanHeart.classList.add("screenreader-text");
-    spanHeart.textContent = `Ajouter un like ou retirer un like à ${namePhotographer.textContent}`;
+    spanHeart.textContent = `Ajouter un like ou retirer un like au média ${this._data.MediaTitle}`;
     btnHeart.insertAdjacentElement("beforeend", spanHeart);
 
+    // écoutes du boutton des likes pour la souris et le clavier
     const HeartId = document.getElementById("btn-heart-id");
     HeartId.addEventListener("click", LikesMedia.gestionLikes);
     HeartId.addEventListener("keydown", (e) => {
@@ -167,6 +168,7 @@ class PhotographerTemplate {
       }
     });
 
+    // écoutes des médias au click de la souris et au clavier permettant d'ouvrir la lightbox
     const mediaId = document.getElementById("item-media-id");
     // eslint-disable-next-line
     mediaId.addEventListener("click", Lightbox.DomLightbox);
@@ -181,12 +183,13 @@ class PhotographerTemplate {
   }
 }
 
+// modification de l'objet dataMedia quand l'utilisateur ajoute ou retire un like
 let replacedNode = [];
+const likesfull = document.getElementById("calcul-like-id");
 class SortMedia extends PhotographerTemplate {
   static LikesUpdate(dataMediaAll) {
     if (dataMedia[0]._name) {
       dataMedia.shift();
-      let likesfull = document.getElementById("calcul-like-id");
       Number(parseInt(likesfull.textContent));
     }
 
@@ -212,6 +215,7 @@ class SortMedia extends PhotographerTemplate {
     return [dataMediaAll];
   }
 
+  // mise à jour du DOM des médias lorsque l'utilisateur utilise les boutons de tris
   static UpdateMedia(mediaImage) {
     const [dataMediaAll] = SortMedia.LikesUpdate();
     mediaImage = document.querySelectorAll("#item-media-id");
@@ -450,6 +454,7 @@ class SortMedia extends PhotographerTemplate {
     return [mediaImage];
   }
 
+  // trois functions qui tris les médias grâce à la méthode sort()
   static renderPopulaire(e) {
     const [dataMediaAll] = SortMedia.LikesUpdate(e);
     dataMediaAll.sort((a, b) => b._MediaLikes - a._MediaLikes);
@@ -478,6 +483,7 @@ class SortMedia extends PhotographerTemplate {
   }
 }
 
+// écoute des médias clonés permettant d'ouvrir la lightbox
 const CloneEvent = (e) => {
   if (e.code === "Enter") {
     // eslint-disable-next-line
@@ -499,6 +505,7 @@ btnDate.addEventListener("click", SortMedia.renderDate);
 const btnTitre = document.getElementById("button-titre-id");
 btnTitre.addEventListener("click", SortMedia.renderTitre);
 
+// ouverture du menu des tris
 const expandedTris = (event) => {
   event.stopPropagation();
   if (
@@ -538,6 +545,7 @@ const expandedTris = (event) => {
 };
 
 let arrayBtnstris = [];
+// permet de garder le focus des trois boutons des tris
 const focusBtns = (e) => {
   e.preventDefault();
   let indexBtn = arrayBtnstris.findIndex(
@@ -558,6 +566,7 @@ const focusBtns = (e) => {
 };
 
 const btsTris = document.querySelectorAll(".buttonTri");
+// écoute des boutons des tris lors de l'utilisation du clavier
 btsTris.forEach((b) => {
   b.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
@@ -576,6 +585,7 @@ btsTris.forEach((b) => {
   });
 });
 
+// fonction qui permet des gerer les boutons quand l'utilisateur à fini de trier les médias
 const leaveTris = (e) => {
   divTris.setAttribute("aria-expanded", "false");
   divTris.classList.remove("div-btn-tris-click");
@@ -605,9 +615,9 @@ class LikesMedia extends SortMedia {
     super(data);
     this._data = data;
   }
+  // function qui gére le likes des médias
   static gestionLikes(e) {
     e.stopPropagation();
-    const likesFull = document.getElementById("calcul-like-id");
     const articleMedia = e.target.closest("#article-media-id");
     const media = articleMedia.querySelector("#figcaption-media-id");
     const likesMedia = articleMedia.querySelector("#number-likes-id");
@@ -616,13 +626,13 @@ class LikesMedia extends SortMedia {
       iconHeart.classList.remove("fa-regular");
       iconHeart.classList.add("fa-solid");
       iconHeart.setAttribute("aria-pressed", "true");
-      likesFull.textContent = Number(parseInt(likesFull.textContent)) + 1;
+      likesfull.textContent = Number(parseInt(likesfull.textContent)) + 1;
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) + 1;
     } else if (iconHeart.classList.contains("fa-solid")) {
       iconHeart.classList.remove("fa-solid");
       iconHeart.classList.add("fa-regular");
       iconHeart.setAttribute("aria-pressed", "false");
-      likesFull.textContent = Number(parseInt(likesFull.textContent)) - 1;
+      likesfull.textContent = Number(parseInt(likesfull.textContent)) - 1;
       likesMedia.textContent = Number(parseInt(likesMedia.textContent)) - 1;
     }
 

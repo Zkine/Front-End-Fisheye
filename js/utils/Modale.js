@@ -8,6 +8,31 @@ class Modale {
     return { arrayInput, ImputModal, aside };
   }
 
+  static variableModal(
+    imputPrenom,
+    imputNom,
+    imputEmail,
+    imputMessage,
+    btnValidate,
+    formData
+  ) {
+    imputPrenom = document.getElementById("prenom");
+    imputNom = document.getElementById("nom");
+    imputEmail = document.getElementById("mail");
+    imputMessage = document.getElementById("message");
+    btnValidate = document.getElementById("button-envoi-id");
+    formData = document.querySelectorAll(".modale_paragraphe");
+
+    return {
+      imputPrenom,
+      imputNom,
+      imputEmail,
+      imputMessage,
+      btnValidate,
+      formData,
+    };
+  }
+
   static renderModale(e) {
     e.stopPropagation();
     const name = document.getElementById("photographer-h1-id");
@@ -178,19 +203,21 @@ class Modale {
         }
       });
 
-      const imputPrenom = document.getElementById("prenom");
+      const { imputPrenom, imputNom, imputEmail, imputMessage, btnValidate } =
+        Modale.variableModal(e);
+      // const imputPrenom = document.getElementById("prenom");
       imputPrenom.addEventListener("input", (e) => inputControl(e));
 
-      const imputNom = document.getElementById("nom");
+      // const imputNom = document.getElementById("nom");
       imputNom.addEventListener("input", (e) => inputControl(e));
 
-      const imputEmail = document.getElementById("mail");
+      // const imputEmail = document.getElementById("mail");
       imputEmail.addEventListener("input", (e) => inputControl(e));
 
-      const imputMessage = document.getElementById("message");
+      // const imputMessage = document.getElementById("message");
       imputMessage.addEventListener("input", (e) => inputControl(e));
 
-      const btnValidate = document.getElementById("button-envoi-id");
+      // const btnValidate = document.getElementById("button-envoi-id");
       btnValidate.addEventListener("click", (e) => validate(e));
 
       const { ImputModal } = Modale.focusInput(e);
@@ -240,6 +267,7 @@ class Modale {
     }
   }
 
+  // function qui gére le focus de la modale
   static focusInputModal = (e) => {
     e.preventDefault();
     let { arrayInput, aside } = Modale.focusInput(e);
@@ -276,9 +304,10 @@ const regexEmail = new RegExp(
 );
 const regExMessage = new RegExp("^([a-zA-Z0-9.-_,:) \\n]){65,}$");
 
+// function qui avertit l'utilisateur de la validation du formulaire à l'input
 const inputControl = (e) => {
   e.stopPropagation();
-  const formData = document.querySelectorAll(".modale_paragraphe");
+  const { formData } = Modale.variableModal(e);
   const testPrenomNom = regexName.test(e.target.value);
   const testEmail = regexEmail.test(e.target.value);
   const testMessage = regExMessage.test(e.target.value);
@@ -326,15 +355,12 @@ const inputControl = (e) => {
   }
 };
 
+// validation du formulaire lorsque l'utilisateur appuie sur le bouton de validation
 const validate = (e) => {
   e.preventDefault();
   e.stopPropagation();
-
-  const formData = document.querySelectorAll(".modale_paragraphe");
-  const imputPrenom = document.getElementById("prenom");
-  const imputNom = document.getElementById("nom");
-  const imputEmail = document.getElementById("mail");
-  const imputMessage = document.getElementById("message");
+  const { imputPrenom, imputNom, imputEmail, imputMessage, formData } =
+    Modale.variableModal(e);
 
   const testPrenom = regexName.test(imputPrenom.value);
   const testNom = regexName.test(imputNom.value);
@@ -369,10 +395,6 @@ const validate = (e) => {
     console.log(
       `Prémon: ${imputPrenom.value}\nNom: ${imputNom.value}\nEmail: ${imputEmail.value}\nMessage: ${imputMessage.value}`
     );
-    const sectionModal = e.target.closest("#contact_modal-id");
-    if (sectionModal.classList[0].includes("contact_modal")) {
-      sectionModal.classList.add("contact_modal_close");
-      document.form.reset();
-    }
+    return Modale.modalClose(e);
   }
 };

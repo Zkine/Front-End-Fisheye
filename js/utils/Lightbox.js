@@ -352,6 +352,10 @@ class Lightbox {
         if (divControls === null) {
           const { divControle } = Lightbox.controlsVideo(e);
           divControle;
+        } else {
+          divControls.remove();
+          const { divControle } = Lightbox.controlsVideo(e);
+          divControle;
         }
 
         figcaptionMedia.textContent = `${nameMedia}`;
@@ -392,6 +396,7 @@ class Lightbox {
     }
   }
 
+  // function qui gére la navigation clavier lors des clicks échape ou tab
   static navigationMedia(e) {
     if (e.code === "Escape") {
       return Lightbox.lightboxClose(e);
@@ -399,6 +404,8 @@ class Lightbox {
       return Lightbox.keyboardNavigation(e);
     }
   }
+
+  // function qui gére le focus au clavier lors de l'overture de la lightbox
   static focusLightbox(e) {
     e.stopPropagation();
     const { keydowsFocus } = Lightbox.focusKeydown();
@@ -409,6 +416,7 @@ class Lightbox {
     keydowsFocus[0].focus();
   }
 
+  // function qui gére la navigation clavier
   static keyboardNavigation(e) {
     e.preventDefault();
     const { asideLightbox, arrayInput } = Lightbox.focusKeydown();
@@ -452,6 +460,7 @@ class Lightbox {
     }
   }
 
+  // function qui récupere les mdédia de la page photographe et permet grâce à l'index des tableaux madiaAll et mediaTitre de mettre à jour le DOM
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("section #media-lightbox-id");
 
@@ -472,18 +481,43 @@ class Lightbox {
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
   }
 
+  // variable qui permet au l'utilisateur de naviguer vers l'image précédente ou la suivante
+  static variableLightbox(
+    e,
+    itemsMedia,
+    previousLink,
+    nextLink,
+    videoControls,
+    figcaptionMedia
+  ) {
+    const sectionLithtbox = e.target.closest("#section-lightbox-id");
+    itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
+    previousLink = sectionLithtbox.querySelector("#previous-link-id");
+    nextLink = sectionLithtbox.querySelector("#next-link-id");
+    videoControls = document.getElementById("div-controle-id");
+    figcaptionMedia = sectionLithtbox.querySelector("#figcaption-lightbox-id");
+    return {
+      sectionLithtbox,
+      itemsMedia,
+      previousLink,
+      nextLink,
+      videoControls,
+      figcaptionMedia,
+    };
+  }
+
   // image suivante
   static nextImg(e) {
     e.preventDefault();
     e.stopPropagation();
-    const sectionLithtbox = e.target.closest("#section-lightbox-id");
-    const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
-    const previousLink = sectionLithtbox.querySelector("#previous-link-id");
-    const nextLink = sectionLithtbox.querySelector("#next-link-id");
-    const videoControls = document.getElementById("div-controle-id");
-    const figcaptionMedia = sectionLithtbox.querySelector(
-      "#figcaption-lightbox-id"
-    );
+
+    const {
+      itemsMedia,
+      previousLink,
+      nextLink,
+      videoControls,
+      figcaptionMedia,
+    } = Lightbox.variableLightbox(e);
     const [
       cloneVideo,
       sourceVideo,
@@ -530,7 +564,6 @@ class Lightbox {
       sourceVideo.attributes[0].textContent = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
-      // cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
       cloneVideo.setAttribute("aria-label", `${mediaTitleMap[mediaTitle + 1]}`);
       lightboxVideo
@@ -569,14 +602,13 @@ class Lightbox {
     e.preventDefault();
     e.stopPropagation();
 
-    const sectionLithtbox = e.target.closest("#section-lightbox-id");
-    const itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
-    const previousLink = sectionLithtbox.querySelector("#previous-link-id");
-    const nextLink = sectionLithtbox.querySelector("#next-link-id");
-    const videoControls = document.getElementById("div-controle-id");
-    const figcaptionMedia = sectionLithtbox.querySelector(
-      "#figcaption-lightbox-id"
-    );
+    const {
+      itemsMedia,
+      previousLink,
+      nextLink,
+      videoControls,
+      figcaptionMedia,
+    } = Lightbox.variableLightbox(e);
     const [
       cloneVideo,
       sourceVideo,
@@ -613,7 +645,6 @@ class Lightbox {
       sourceVideo.id = "media-lightbox-id";
       cloneVideo.classList.remove("item-media");
       cloneVideo.classList.add("media-lightbox");
-      // cloneVideo.setAttribute("controls", "");
       cloneVideo.setAttribute("autoplay", "");
       cloneVideo.setAttribute("aria-label", `${mediaTitleMap[mediaTitle - 1]}`);
       figureItem.replaceChild(cloneVideo, lightboxImage);
