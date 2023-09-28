@@ -184,7 +184,6 @@ class PhotographerTemplate {
 }
 
 // modification de l'objet dataMedia quand l'utilisateur ajoute ou retire un like
-let replacedNode = [];
 const likesfull = document.getElementById("calcul-like-id");
 class SortMedia extends PhotographerTemplate {
   static LikesUpdate(dataMediaAll) {
@@ -394,7 +393,7 @@ class SortMedia extends PhotographerTemplate {
               (mediaImage[i].nodeName === "IMG" &&
                 noeudVideo === true &&
                 noeudImage === true) ||
-              (replacedNode && noeudImage === true)
+              noeudImage === true
             ) {
               mediaImage[
                 i
@@ -520,11 +519,7 @@ const expandedTris = (event) => {
     btnTitre.setAttribute("tabindex", "0");
     divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
     divTris.insertBefore(btnDate, btnTitre);
-  } else if (
-    (divTris.classList.contains("div-btn-tris-click") &&
-      event.type !== "click") ||
-    (event.code === "Enter" && event.target.nodeName === "BUTTON")
-  ) {
+  } else if (divTris.classList.contains("div-btn-tris-click")) {
     switch (event.target.textContent) {
       case "Popularité":
         arrayBtnTris.shift();
