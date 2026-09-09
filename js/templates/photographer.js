@@ -454,32 +454,32 @@ class SortMedia extends PhotographerTemplate {
   }
 
   // trois functions qui tris les médias grâce à la méthode sort()
-  static renderPopulaire(e) {
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    dataMediaAll.sort((a, b) => b._MediaLikes - a._MediaLikes);
-    const [mediaImage] = SortMedia.UpdateMedia(e);
-    return mediaImage;
+  static renderPopulaire() {
+   const [dataMediaAll] = SortMedia.LikesUpdate();
+   dataMediaAll.sort(
+     (a, b) => Number(b.Medialikes) - Number(a.Medialikes)
+   );
+
+   return SortMedia.UpdateMedia();
   }
-  static renderDate(e) {
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    dataMediaAll.sort(function (a, b) {
-      if (b._MediaDate < a._MediaDate) return -1;
-      if (b._MediaDate > b._MediaDate) return 1;
-      return 0;
-    });
-    const [mediaImage] = SortMedia.UpdateMedia(e);
-    return mediaImage;
-  }
-  static renderTitre(e) {
-    const [dataMediaAll] = SortMedia.LikesUpdate(e);
-    dataMediaAll.sort(function (a, b) {
-      if (b._MediaTitle > a._MediaTitle) return -1;
-      if (b._MediaTitle < b._MediaTitle) return 1;
-      return 0;
-    });
-    const [mediaImage] = SortMedia.UpdateMedia(e);
-    return mediaImage;
-  }
+
+static renderDate() {
+   const [dataMediaAll] = SortMedia.LikesUpdate();
+   dataMediaAll.sort(
+     (a, b) => new Date(b._MediaDate) - new Date(a._MediaDate)
+   );
+
+   return SortMedia.UpdateMedia();
+ }
+
+static renderTitre() {
+   const [dataMediaAll] = SortMedia.LikesUpdate();
+   dataMediaAll.sort((a, b) =>
+     a._MediaTitle.localeCompare(b._MediaTitle, "fr")
+   );
+
+   return SortMedia.UpdateMedia();
+ }
 }
 
 // écoute des médias clonés permettant d'ouvrir la lightbox
