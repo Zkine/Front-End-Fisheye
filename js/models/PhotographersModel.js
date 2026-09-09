@@ -35,6 +35,6 @@ class PhotographersModel {
   }
 
   get portrait() {
-    return `../../assets/photographers/${this._portrait}`;
+    return `./assets/photographers/${this._portrait}`;
   }
 }
