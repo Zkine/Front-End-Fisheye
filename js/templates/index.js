@@ -30,7 +30,7 @@ class AccueilTemplate {
     img.classList.add("section_img");
     img.setAttribute(
       "src",
-      `../../assets/photographers/${this._data.portrait}`
+      `./assets/photographers/${this._data.portrait}`
     );
     img.setAttribute("alt", "");
     link.insertAdjacentElement("afterbegin", img);
