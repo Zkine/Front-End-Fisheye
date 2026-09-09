@@ -453,33 +453,51 @@ class SortMedia extends PhotographerTemplate {
     return [mediaImage];
   }
 
-  // trois functions qui tris les médias grâce à la méthode sort()
-  static renderPopulaire() {
-   const [dataMediaAll] = SortMedia.LikesUpdate();
-   dataMediaAll.sort(
-     (a, b) => Number(b.Medialikes) - Number(a.Medialikes)
-   );
+  static reorderCards(compare) {
+    const section = document.getElementById("img-section-id");
 
-   return SortMedia.UpdateMedia();
+    const cards = [...section.querySelectorAll(".article-media")];
+
+    cards.sort(compare).forEach((card) => {
+      section.appendChild(card);
+    });
   }
 
-static renderDate() {
-   const [dataMediaAll] = SortMedia.LikesUpdate();
-   dataMediaAll.sort(
-     (a, b) => new Date(b._MediaDate) - new Date(a._MediaDate)
-   );
+  // trois functions qui tris les médias grâce à la méthode sort()
+  static renderPopulaire() {
+    SortMedia.reorderCards((a, b) => {
+      const likesA = Number(a.querySelector(".number-likes")?.textContent ?? 0);
+      const likesB = Number(b.querySelector(".number-likes")?.textContent ?? 0);
 
-   return SortMedia.UpdateMedia();
- }
+      return likesB - likesA;
+    });
+  }
 
-static renderTitre() {
-   const [dataMediaAll] = SortMedia.LikesUpdate();
-   dataMediaAll.sort((a, b) =>
-     a._MediaTitle.localeCompare(b._MediaTitle, "fr")
-   );
+  static renderDate() {
+    const getDate = (card) => {
+      const title = card.querySelector(".figcaption-media")?.textContent.trim();
 
-   return SortMedia.UpdateMedia();
- }
+      const media = dataMedia.find((item) => item._MediaTitle === title);
+
+      return media?._MediaDate ?? "";
+    };
+
+    SortMedia.reorderCards(
+      (a, b) => new Date(getDate(b)) - new Date(getDate(a)),
+    );
+  }
+
+  static renderTitre() {
+    SortMedia.reorderCards((a, b) => {
+      const titleA =
+        a.querySelector(".figcaption-media")?.textContent.trim() ?? "";
+
+      const titleB =
+        b.querySelector(".figcaption-media")?.textContent.trim() ?? "";
+
+      return titleA.localeCompare(titleB, "fr");
+    });
+  }
 }
 
 // écoute des médias clonés permettant d'ouvrir la lightbox
