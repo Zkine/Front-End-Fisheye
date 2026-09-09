@@ -6,7 +6,7 @@ class Lightbox {
     lightboxImage,
     lightboxVideo,
     figureItem,
-    cloneImage
+    cloneImage,
   ) {
     const neaudVideo = document.querySelector("video");
     cloneVideo = neaudVideo.cloneNode(true);
@@ -35,7 +35,7 @@ class Lightbox {
   }
   static focusKeydown(keydowsFocus, asideLightbox, arrayInput) {
     keydowsFocus = document.querySelectorAll(
-      "#figure-lightbox-id video,#figure-lightbox-id img,#figcaption-lightbox-id, #previous-link-id,#next-link-id,#button-modal-id,#btn-play-id,#btn-mute-id,#btn-fullscreen-id"
+      "#figure-lightbox-id video,#figure-lightbox-id img,#figcaption-lightbox-id, #previous-link-id,#next-link-id,#button-modal-id,#btn-play-id,#btn-mute-id,#btn-fullscreen-id",
     );
     asideLightbox = document.getElementById("lightbox-modal");
     arrayInput = [...keydowsFocus];
@@ -166,7 +166,7 @@ class Lightbox {
     const asideLightbox = document.getElementById("lightbox-modal");
     const mainDocument = document.getElementById("main-id");
     mainDocument.classList.add("no-scroll");
-    mainDocument.setAttribute("aria-hidden", "true");
+    mainDocument.inert = true;
     asideLightbox.setAttribute("aria-hidden", "false");
     const MediaLightbox = e.target.getAttribute("src")
       ? e.target.getAttribute("src")
@@ -307,7 +307,7 @@ class Lightbox {
       keydowsFocus.forEach((f) =>
         f.addEventListener("keydown", (e) => {
           return Lightbox.navigationMedia(e);
-        })
+        }),
       );
       if (e.type === "keydown") {
         return Lightbox.focusLightbox(e);
@@ -421,7 +421,7 @@ class Lightbox {
     e.preventDefault();
     const { asideLightbox, arrayInput } = Lightbox.focusKeydown();
     let indexBtn = arrayInput.findIndex(
-      (b) => b === asideLightbox.querySelector(":focus")
+      (b) => b === asideLightbox.querySelector(":focus"),
     );
     if (arrayInput[0].nodeName === "VIDEO") {
       e.stopPropagation();
@@ -447,20 +447,20 @@ class Lightbox {
     const headerDocument = document.getElementById("banner-id");
     const mainDocument = document.getElementById("main-id");
     const media = fullMedia.find(
-      (b) => b.currentSrc === arrayInput[0].currentSrc
+      (b) => b.currentSrc === arrayInput[0].currentSrc,
     );
     if (!asideLightbox.classList.contains("lightbox-modal-close")) {
       e.target.setAttribute("aria-pressed", "true");
       headerDocument.setAttribute("aria-hidden", "false");
       mainDocument.classList.remove("no-scroll");
-      mainDocument.setAttribute("aria-hidden", "false");
+      mainDocument.inert = false;
       asideLightbox.setAttribute("aria-hidden", "true");
       asideLightbox.classList.add("lightbox-modal-close");
       e.type === "keydown" && media.focus();
     }
   }
 
-  // function qui récupere les mdédia de la page photographe et permet grâce à l'index des tableaux madiaAll et mediaTitre de mettre à jour le DOM
+  // function qui récupere les médias de la page photographe et permet grâce à l'index des tableaux madiaAll et mediaTitre de mettre à jour le DOM
   static MediaAllSetect(Media, MediaTitleMap, MediaItems, MediaTitle) {
     const linkMedia = document.querySelector("section #media-lightbox-id");
 
@@ -468,15 +468,15 @@ class Lightbox {
     const mediaAll = [...document.querySelectorAll("article #item-media-id")];
     const mediaTitre = [...document.querySelectorAll("#figcaption-media-id")];
     Media = mediaAll.map(
-      (e) => e.getAttribute("src") || e.children[0].getAttribute("src")
+      (e) => e.getAttribute("src") || e.children[0].getAttribute("src"),
     );
 
     MediaItems = Media.findIndex(
-      (element) => element === linkMedia.attributes[1].textContent
+      (element) => element === linkMedia.attributes[1].textContent,
     );
     MediaTitleMap = mediaTitre.map((e) => e.textContent);
     MediaTitle = MediaTitleMap.findIndex(
-      (element) => element === linkTitre.textContent
+      (element) => element === linkTitre.textContent,
     );
     return [Media, MediaTitleMap, MediaItems, MediaTitle];
   }
@@ -488,7 +488,7 @@ class Lightbox {
     previousLink,
     nextLink,
     videoControls,
-    figcaptionMedia
+    figcaptionMedia,
   ) {
     const sectionLithtbox = e.target.closest("#section-lightbox-id");
     itemsMedia = sectionLithtbox.querySelector("#media-lightbox-id");
@@ -543,7 +543,7 @@ class Lightbox {
         itemsMedia.setAttribute("alt", `${mediaTitleMap[mediaTitle + 1]}`);
         itemsMedia.setAttribute(
           "aria-label",
-          `${mediaTitleMap[mediaTitle + 1]}`
+          `${mediaTitleMap[mediaTitle + 1]}`,
         );
 
         figcaptionMedia.textContent = `${mediaTitleMap[mediaTitle + 1]}`;
