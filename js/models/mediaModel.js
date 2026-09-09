@@ -28,31 +28,31 @@ class MediaModel {
     switch (this._MediaPhotographerId) {
       case 243:
         return this._MediaImage
-          ? `../../assets/images/Mimi/${this._MediaImage}`
-          : this._MediaVideo && `../../assets/images/Mimi/${this._MediaVideo}`;
+          ? `./assets/images/Mimi/${this._MediaImage}`
+          : this._MediaVideo && `./assets/images/Mimi/${this._MediaVideo}`;
       case 930:
         return this._MediaImage
-          ? `../../assets/images/Ellie Rose/${this._MediaImage}`
+          ? `./assets/images/Ellie Rose/${this._MediaImage}`
           : this._MediaVideo &&
-              `../../assets/images/Ellie Rose/${this._MediaVideo}`;
+              `./assets/images/Ellie Rose/${this._MediaVideo}`;
       case 82:
         return this._MediaImage
-          ? `../../assets/images/Tracy/${this._MediaImage}`
-          : this._MediaVideo && `../../assets/images/Tracy/${this._MediaVideo}`;
+          ? `./assets/images/Tracy/${this._MediaImage}`
+          : this._MediaVideo && `./assets/images/Tracy/${this._MediaVideo}`;
       case 527:
         return this._MediaImage
-          ? `../../assets/images/Nabeel/${this._MediaImage}`
+          ? `./assets/images/Nabeel/${this._MediaImage}`
           : this._MediaVideo &&
-              `../../assets/images/Nabeel/${this._MediaVideo}`;
+              `./assets/images/Nabeel/${this._MediaVideo}`;
       case 925:
         return this._MediaImage
-          ? `../../assets/images/Rhode/${this._MediaImage}`
-          : this._MediaVideo && `../../assets/images/Rhode/${this._MediaVideo}`;
+          ? `./assets/images/Rhode/${this._MediaImage}`
+          : this._MediaVideo && `./assets/images/Rhode/${this._MediaVideo}`;
       case 195:
         return this._MediaImage
-          ? `../../assets/images/Marcel/${this._MediaImage}`
+          ? `./assets/images/Marcel/${this._MediaImage}`
           : this._MediaVideo &&
-              `../../assets/images/Marcel/${this._MediaVideo}`;
+              `./assets/images/Marcel/${this._MediaVideo}`;
       default:
         throw "Vérifier le chemin des médias avec l'id de l'utilisateur";
     }
