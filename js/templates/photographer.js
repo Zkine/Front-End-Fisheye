@@ -62,7 +62,7 @@ class PhotographerTemplate {
     portrait.setAttribute("loading", "lazy");
     portrait.setAttribute(
       "src",
-      `../../assets/photographers/${this._data.portrait}`
+      `./assets/photographers/${this._data.portrait}`
     );
     portrait.setAttribute("alt", `Portrait d'${this._data.name}`);
     portrait.classList.add("portait-img");
