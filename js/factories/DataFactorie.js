@@ -6,7 +6,7 @@ class DataFactorie {
       return new PhotographersModel(data);
     } else if (type === "media") {
       // eslint-disable-next-line
-      return new mediaModel(data);
+      return new MediaModel(data);
     } else {
       throw "Unknown type format";
     }
