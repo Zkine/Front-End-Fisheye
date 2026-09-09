@@ -454,9 +454,9 @@ class Lightbox {
       headerDocument.setAttribute("aria-hidden", "false");
       mainDocument.classList.remove("no-scroll");
       mainDocument.inert = false;
+      e.type === "keydown" && media.focus();
       asideLightbox.setAttribute("aria-hidden", "true");
       asideLightbox.classList.add("lightbox-modal-close");
-      e.type === "keydown" && media.focus();
     }
   }
 
