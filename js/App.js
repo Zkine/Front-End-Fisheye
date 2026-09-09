@@ -4,7 +4,7 @@ class App {
     this.$bannerPhotograph = document.getElementById("photograph-banner");
     this.$imgSection = document.getElementById("img-section-id");
     // eslint-disable-next-line
-    this.photographeApi = new PhotographeApi("data/photographers.json");
+    this.photographeApi = new PhotographeApi("./data/photographers.json");
     this.params = new URL(document.location).searchParams;
   }
 
