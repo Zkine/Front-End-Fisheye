@@ -160,9 +160,10 @@ class Lightbox {
   //création du DOM de la lightbox
   static DomLightbox(e) {
     e.stopPropagation();
-
+    Lightbox.lastFocusedElement =
+      e.target.closest("#item-media-id") || e.target;
     const headerDocument = document.getElementById("banner-id");
-    headerDocument.setAttribute("aria-hidden", "true");
+    headerDocument.inert = true;
     const asideLightbox = document.getElementById("lightbox-modal");
     const mainDocument = document.getElementById("main-id");
     mainDocument.classList.add("no-scroll");
@@ -441,22 +442,35 @@ class Lightbox {
   }
   // fermeture de la lightbox
   static lightboxClose(e) {
+    e.preventDefault();
     e.stopPropagation();
+
     const { asideLightbox, arrayInput } = Lightbox.focusKeydown();
     const fullMedia = [...document.querySelectorAll("#item-media-id")];
     const headerDocument = document.getElementById("banner-id");
     const mainDocument = document.getElementById("main-id");
+    const buttonModal = document.getElementById("button-modal-id");
+
+    const mediaSource = arrayInput[0]?.currentSrc;
+
     const media = fullMedia.find(
-      (b) => b.currentSrc === arrayInput[0].currentSrc,
+      (element) => element.currentSrc === mediaSource,
     );
+
     if (!asideLightbox.classList.contains("lightbox-modal-close")) {
-      e.target.setAttribute("aria-pressed", "true");
-      headerDocument.setAttribute("aria-hidden", "false");
+      // Le fond redevient accessible.
+      headerDocument.inert = false;
       mainDocument.classList.remove("no-scroll");
       mainDocument.inert = false;
-      e.type === "keydown" && media.focus();
+
+      // Le focus quitte la lightbox AVANT qu'elle soit masquée.
+      const elementAFocus = media || Lightbox.lastFocusedElement;
+      elementAFocus?.focus();
+
+      // La lightbox peut maintenant être cachée sans avertissement.
       asideLightbox.setAttribute("aria-hidden", "true");
       asideLightbox.classList.add("lightbox-modal-close");
+      buttonModal?.setAttribute("aria-pressed", "true");
     }
   }
 
