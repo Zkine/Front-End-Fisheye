@@ -62,7 +62,7 @@ class PhotographerTemplate {
     portrait.setAttribute("loading", "lazy");
     portrait.setAttribute(
       "src",
-      `./assets/photographers/${this._data.portrait}`
+      `./assets/photographers/${this._data.portrait}`,
     );
     portrait.setAttribute("alt", `Portrait d'${this._data.name}`);
     portrait.classList.add("portait-img");
@@ -110,7 +110,7 @@ class PhotographerTemplate {
       video.id = "item-media-id";
       video.setAttribute(
         "aria-label",
-        `${this._data.MediaTitle}, closeup view`
+        `${this._data.MediaTitle}, closeup view`,
       );
       video.setAttribute("aria-labelledby", "lightbox-modal");
       video.setAttribute("tabindex", "0");
@@ -149,7 +149,7 @@ class PhotographerTemplate {
     iconHeart.setAttribute("aria-label", "likes");
     iconHeart.setAttribute(
       "title",
-      `Ajouter un like ou retirer un like à ${namePhotographer.textContent}`
+      `Ajouter un like ou retirer un like à ${namePhotographer.textContent}`,
     );
     iconHeart.setAttribute("aria-hidden", "true");
     btnHeart.insertAdjacentElement("afterbegin", iconHeart);
@@ -185,274 +185,8 @@ class PhotographerTemplate {
 
 // modification de l'objet dataMedia quand l'utilisateur ajoute ou retire un like
 const likesfull = document.getElementById("calcul-like-id");
+// Tri des médias sans recréer les cartes : les likes et les écouteurs restent actifs.
 class SortMedia extends PhotographerTemplate {
-  static LikesUpdate(dataMediaAll) {
-    if (dataMedia[0]._name) {
-      dataMedia.shift();
-      Number(parseInt(likesfull.textContent));
-    }
-
-    dataMediaAll = dataMedia;
-    for (const likesValue of mediaLinked) {
-      dataMediaAll.forEach((v) => {
-        if (
-          v._MediaTitle === likesValue.media &&
-          v._MediaLikes !== likesValue.likesMedia
-        ) {
-          Object.defineProperty(v, "_MediaLikes", {
-            value: likesValue.likesMedia,
-            writable: false,
-          });
-          Object.defineProperty(v, "_MediaHeart", {
-            value: likesValue._MediaHeart,
-            writable: true,
-          });
-        }
-      });
-    }
-
-    return [dataMediaAll];
-  }
-
-  // mise à jour du DOM des médias lorsque l'utilisateur utilise les boutons de tris
-  static UpdateMedia(mediaImage) {
-    const [dataMediaAll] = SortMedia.LikesUpdate();
-    mediaImage = document.querySelectorAll("#item-media-id");
-    const figureMedia = document.querySelectorAll("#imgModal");
-    const neaudVideo = document.querySelector("video");
-    const cloneVideo = neaudVideo.cloneNode(true);
-
-    const neaudImage = document.querySelector("figure img");
-    const cloneImage = neaudImage.cloneNode(true);
-
-    for (let w = 0; w < dataMediaAll.length; w++) {
-      for (let i = 0; i < mediaImage.length; i++) {
-        for (let f = 0; f < figureMedia.length; f++) {
-          const noeudVideo = figureMedia[f].childNodes[0].nodeName === "VIDEO";
-          const noeudImage =
-            figureMedia[f].childNodes[0].alt === mediaImage[i].alt;
-          if (
-            dataMediaAll[w].MediaItems.includes("jpg") &&
-            Number([w]) === Number([i]) &&
-            Number([w]) === Number([f])
-          ) {
-            if (mediaImage[i].nodeName === "IMG") {
-              mediaImage[i].setAttribute(
-                "src",
-                `${dataMediaAll[w].MediaItems}`
-              );
-              mediaImage[i].setAttribute(
-                "aria-label",
-                `${dataMediaAll[w].MediaTitle}, closeup view`
-              );
-
-              mediaImage[
-                i
-              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
-
-              mediaImage[
-                i
-              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
-
-              if (!dataMediaAll[w]._MediaHeart) {
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                  "";
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...["fa-heart", "fa-regular"]
-                );
-              } else if (dataMediaAll[w]._MediaHeart) {
-                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-regular", "fa-heart"]
-                  );
-                } else {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-solid", "fa-heart"]
-                  );
-                }
-              }
-            } else if (
-              mediaImage[i].nodeName === "VIDEO" &&
-              noeudVideo === true &&
-              noeudImage === true
-            ) {
-              mediaImage[
-                i
-              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
-
-              mediaImage[
-                i
-              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
-
-              if (!dataMediaAll[w]._MediaHeart) {
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                  "";
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...["fa-regular", "fa-heart"]
-                );
-              } else if (dataMediaAll[w]._MediaHeart) {
-                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-regular", "fa-heart"]
-                  );
-                } else {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-solid", "fa-heart"]
-                  );
-                }
-              }
-              mediaImage[i].parentElement.classList.remove(
-                "figure-media-video"
-              );
-              cloneImage.setAttribute("src", `${dataMediaAll[w].MediaItems}`);
-
-              figureMedia[f].replaceChild(
-                cloneImage,
-                figureMedia[f].childNodes[0]
-              );
-
-              cloneImage.addEventListener("click", (e) => CloneEvent(e));
-              cloneImage.addEventListener("keydown", (e) => CloneEvent(e));
-            }
-          } else if (
-            dataMediaAll[w].MediaItems.includes("mp4") &&
-            Number([w]) === Number([i]) &&
-            Number([w]) === Number([f])
-          ) {
-            if (mediaImage[i].nodeName === "VIDEO") {
-              if (!dataMediaAll[w]._MediaHeart) {
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                  "";
-
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...["fa-regular", "fa-heart"]
-                );
-              } else if (dataMediaAll[w]._MediaHeart) {
-                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-regular", "fa-heart"]
-                  );
-                } else {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-solid", "fa-heart"]
-                  );
-                }
-              }
-            } else if (
-              (mediaImage[i].nodeName === "IMG" &&
-                noeudVideo === true &&
-                noeudImage === true) ||
-              noeudImage === true
-            ) {
-              mediaImage[
-                i
-              ].nextElementSibling.textContent = `${dataMediaAll[w].MediaTitle}`;
-
-              mediaImage[
-                i
-              ].offsetParent.nextElementSibling.textContent = `${dataMediaAll[w].Medialikes}`;
-
-              if (!dataMediaAll[w]._MediaHeart) {
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                  "";
-                mediaImage[
-                  i
-                ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                  ...["fa-regular", "fa-heart"]
-                );
-              } else if (dataMediaAll[w]._MediaHeart) {
-                if (dataMediaAll[w]._MediaHeart === "fa-regular fa-heart") {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-regular", "fa-heart"]
-                  );
-                } else {
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.value =
-                    "";
-
-                  mediaImage[
-                    i
-                  ].offsetParent.nextElementSibling.nextElementSibling.firstElementChild.classList.add(
-                    ...["fa-solid", "fa-heart"]
-                  );
-                }
-              }
-
-              mediaImage[i].parentElement.classList.add("figure-media-video");
-
-              figureMedia[f].replaceChild(
-                cloneVideo,
-                figureMedia[f].childNodes[0]
-              );
-              cloneVideo.addEventListener("click", (e) => CloneEvent(e));
-            }
-          }
-        }
-      }
-    }
-    return [mediaImage];
-  }
-
   static reorderCards(compare) {
     const section = document.getElementById("img-section-id");
 
@@ -463,10 +197,10 @@ class SortMedia extends PhotographerTemplate {
     });
   }
 
-  // trois functions qui tris les médias grâce à la méthode sort()
   static renderPopulaire() {
     SortMedia.reorderCards((a, b) => {
       const likesA = Number(a.querySelector(".number-likes")?.textContent ?? 0);
+
       const likesB = Number(b.querySelector(".number-likes")?.textContent ?? 0);
 
       return likesB - likesA;
@@ -475,9 +209,10 @@ class SortMedia extends PhotographerTemplate {
 
   static renderDate() {
     const getDate = (card) => {
-      const title = card.querySelector(".figcaption-media")?.textContent.trim();
+      const title =
+        card.querySelector(".figcaption-media")?.textContent.trim() ?? "";
 
-      const media = dataMedia.find((item) => item._MediaTitle === title);
+      const media = dataMedia.find((item) => item?._MediaTitle === title);
 
       return media?._MediaDate ?? "";
     };
@@ -500,127 +235,82 @@ class SortMedia extends PhotographerTemplate {
   }
 }
 
-// écoute des médias clonés permettant d'ouvrir la lightbox
-const CloneEvent = (e) => {
-  if (e.code === "Enter") {
-    // eslint-disable-next-line
-    return Lightbox.DomLightbox(e);
-  } else if (e.pointerType === "mouse") {
-    // eslint-disable-next-line
-    return Lightbox.DomLightbox(e);
-  }
-};
-
-let arrayBtnTris = [];
-
+// Menu de tri
 const btnPopulaire = document.getElementById("button-populaire-id");
-btnPopulaire.addEventListener("click", SortMedia.renderPopulaire);
-
 const btnDate = document.getElementById("button-date-id");
-btnDate.addEventListener("click", SortMedia.renderDate);
-
 const btnTitre = document.getElementById("button-titre-id");
-btnTitre.addEventListener("click", SortMedia.renderTitre);
+const divTris = document.getElementById("div-btn-tris-id");
 
-// ouverture du menu des tris
-const expandedTris = (event) => {
-  event.stopPropagation();
-  if (
-    (Number(event.detail) === Number(1) &&
-      !divTris.classList.contains("div-btn-tris-click")) ||
-    (event.code === "Enter" && event.target.nodeName === "DIV")
-  ) {
-    divTris.classList.add("div-btn-tris-click");
-    divTris.setAttribute("aria-expanded", "true");
-    btnPopulaire.setAttribute("tabindex", "0");
-    btnDate.setAttribute("tabindex", "0");
-    btnTitre.setAttribute("tabindex", "0");
-    divTris.insertBefore(btnPopulaire, divTris.firstElementChild);
-    divTris.insertBefore(btnDate, btnTitre);
-  } else if (divTris.classList.contains("div-btn-tris-click")) {
-    switch (event.target.textContent) {
-      case "Popularité":
-        arrayBtnTris.shift();
-        arrayBtnTris.push(btnPopulaire);
-        break;
-      case "Date":
-        arrayBtnTris.shift();
-        arrayBtnTris.push(btnDate);
-        break;
-      case "Titre":
-        arrayBtnTris.shift();
-        arrayBtnTris.push(btnTitre);
-        break;
-      default:
-        console.log("Debbuger la gestion des buttons.");
+const buttonsTri = [btnPopulaire, btnDate, btnTitre];
+
+const actionsTri = {
+  "button-populaire-id": SortMedia.renderPopulaire,
+  "button-date-id": SortMedia.renderDate,
+  "button-titre-id": SortMedia.renderTitre,
+};
+
+let boutonSelectionne = btnPopulaire;
+
+const setMenuTri = (isOpen) => {
+  divTris.classList.toggle("div-btn-tris-click", isOpen);
+  divTris.setAttribute("aria-expanded", String(isOpen));
+
+  buttonsTri.forEach((button) => {
+    button.tabIndex = isOpen || button === boutonSelectionne ? 0 : -1;
+  });
+};
+
+buttonsTri.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const menuEstOuvert = divTris.classList.contains("div-btn-tris-click");
+
+    // Premier clic : ouverture du menu.
+    if (!menuEstOuvert) {
+      setMenuTri(true);
+      return;
     }
-  }
-};
 
-let arrayBtnstris = [];
-// permet de garder le focus des trois boutons des tris
-const focusBtns = (e) => {
-  e.preventDefault();
-  let indexBtn = arrayBtnstris.findIndex(
-    (b) => b === divTris.querySelector(":focus")
-  );
-  if (e.shiftKey === true) {
-    indexBtn--;
-  } else {
-    indexBtn++;
-  }
+    // Deuxième clic : application du tri.
+    actionsTri[button.id]();
 
-  if (indexBtn >= arrayBtnstris.length) {
-    indexBtn = 0;
-  } else if (indexBtn < 0) {
-    indexBtn = arrayBtnstris.length - 1;
-  }
-  return arrayBtnstris[indexBtn].focus();
-};
+    boutonSelectionne = button;
+    divTris.insertBefore(button, divTris.firstElementChild);
 
-const btsTris = document.querySelectorAll(".buttonTri");
-// écoute des boutons des tris lors de l'utilisation du clavier
-btsTris.forEach((b) => {
-  b.addEventListener("keydown", (e) => {
-    if (e.code === "Escape") {
-      return leaveTris(e);
-    } else if (e.code === "Tab") {
-      arrayBtnstris = [...document.querySelectorAll(".buttonTri")];
-      return focusBtns(e);
-    } else if (e.code === "Enter" && e.target.textContent === "Popularité") {
-      expandedTris(e);
-      return SortMedia.renderPopulaire(e);
-    } else if (e.code === "Enter" && e.target.textContent === "Date") {
-      return SortMedia.renderDate(e);
-    } else if (e.code === "Enter" && e.target.textContent === "Titre") {
-      return SortMedia.renderTitre(e);
+    setMenuTri(false);
+  });
+
+  button.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      event.stopPropagation();
+      button.click();
     }
   });
 });
 
-// fonction qui permet des gerer les boutons quand l'utilisateur à fini de trier les médias
-const leaveTris = (e) => {
-  divTris.setAttribute("aria-expanded", "false");
-  divTris.classList.remove("div-btn-tris-click");
-  btnPopulaire.setAttribute("tabindex", "-1");
-  btnDate.setAttribute("tabindex", "-1");
-  btnTitre.setAttribute("tabindex", "-1");
-  arrayBtnTris[0]
-    ? divTris.insertBefore(arrayBtnTris[0], divTris.firstElementChild)
-    : e.type === "keydown" && divTris.focus();
-};
+// Clic sur la zone libre du menu.
+divTris.addEventListener("click", (event) => {
+  if (event.target === divTris) {
+    const menuEstOuvert = divTris.classList.contains("div-btn-tris-click");
 
-const divTris = document.getElementById("div-btn-tris-id");
-divTris.addEventListener("click", expandedTris);
-divTris.addEventListener("keydown", (e) => {
-  if (e.code === "Enter") {
-    return expandedTris(e);
+    setMenuTri(!menuEstOuvert);
   }
 });
 
-divTris.addEventListener("mouseleave", (e) => {
-  return leaveTris(e);
+// Utilisation du menu au clavier.
+divTris.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+
+    const menuEstOuvert = divTris.classList.contains("div-btn-tris-click");
+
+    setMenuTri(!menuEstOuvert);
+  }
 });
+
+setMenuTri(false);
 
 let mediaLinked = [];
 class LikesMedia extends SortMedia {
@@ -657,14 +347,14 @@ class LikesMedia extends SortMedia {
     let likesTrue = new LikesTrue(
       media.textContent,
       likesMedia.textContent,
-      iconHeart.classList.value
+      iconHeart.classList.value,
     );
 
     if (!mediaLinked.length) {
       mediaLinked.push(likesTrue);
     } else {
       const mediaLinkeName = mediaLinked.find(
-        (m) => m.media === media.textContent
+        (m) => m.media === media.textContent,
       );
       if (!mediaLinkeName) {
         mediaLinked.push(likesTrue);
